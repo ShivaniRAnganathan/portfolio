@@ -1,0 +1,29 @@
+---
+import Badge from './Badge.astro';
+import Text from './Text.astro';
+import { resolveCopy } from '../lib/copy';
+import { url } from '../lib/url';
+import type { Copy as CopyText } from '../data/site';
+
+interface Props {
+  copy: CopyText;
+  as?: 'p' | 'span';
+}
+const { copy, as = 'p' } = Astro.props;
+const { text, pending } = resolveCopy(copy);
+const Tag = as;
+const href = copy.href ? url(copy.href) : undefined;
+const external = href ? /^https?:/.test(href) : false;
+---
+<Tag>
+  <Text text={text} />
+  {pending && <Badge />}
+</Tag>
+{href && (
+  <p class="source-link">
+    <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+      Read the write-up
+      {external && <span class="vh"> (opens in a new tab)</span>}
+    </a>
+  </p>
+)}

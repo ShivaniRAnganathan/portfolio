@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import Text from '../components/Text.astro';
+import { site } from '../data/site';
+import { url } from '../lib/url';
+---
+<Base title="About" description={site.intro}>
+  <div class="page">
+    <p class="eyebrow">About</p>
+    <h1>{site.name}</h1>
+    <p class="lede">{site.intro}</p>
+    <p class="where">{site.location}</p>
+
+    <section class="block" aria-labelledby="experience-heading">
+      <h2 id="experience-heading" class="section-label">Experience</h2>
+      <ol class="cv">
+        {site.experience.map((job) => (
+          <li>
+            <h3>{job.company}</h3>
+            <p class="role">{job.role}</p>
+            <p class="detail"><Text text={job.detail} /></p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="block" aria-labelledby="education-heading">
+      <h2 id="education-heading" class="section-label">Education</h2>
+      <ul class="edu">
+        {site.education.map((school) => (
+          <li>
+            <h3>{school.credential}</h3>
+            <p>{school.school} · {school.year}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="block" aria-labelledby="about-contact">
+      <h2 id="about-contact" class="section-label">Contact</h2>
+      <ul class="contact-list">
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span class="vh"> (opens in a new tab)</span></a></li>
+        <li><a href={url(site.resumePath)}>Resume</a></li>
+      </ul>
+      <p class="quiet">{site.resumeNote}</p>
+    </section>
+  </div>
+</Base>

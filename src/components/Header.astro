@@ -1,0 +1,32 @@
+---
+import { site } from '../data/site';
+import { url } from '../lib/url';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+
+function current(href: string) {
+  const full = url(href).replace(/\/$/, '') || '/';
+  const here = path === base ? '/' : path;
+  if (href === '/') return here === '/' || here === base || here === '';
+  return here === full || here.startsWith(`${full}/`);
+}
+
+const links = [
+  { href: '/work', label: 'Work' },
+  { href: '/writing', label: 'Writing' },
+  { href: '/about', label: 'About' },
+  { href: site.resumePath, label: 'Resume' },
+];
+---
+<a class="skip" href="#content">Skip to content</a>
+<header class="site-header page">
+  <a class="logo" href={url('/')}>{site.name}</a>
+  <nav class="nav" aria-label="Primary">
+    {links.map((link) => (
+      <a href={url(link.href)} aria-current={current(link.href) ? 'page' : undefined}>
+        {link.label}
+      </a>
+    ))}
+  </nav>
+</header>
