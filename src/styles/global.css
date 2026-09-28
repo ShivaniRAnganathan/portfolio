@@ -776,6 +776,69 @@ h1 {
   }
 }
 
+.project-list {
+  list-style: none;
+  margin-top: 1.6rem;
+}
+
+.project-entry + .project-entry {
+  margin-top: 2.1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.pill-project {
+  background: #bfdbfe;
+  color: #1e3a8a;
+}
+
+.project-art-link {
+  display: inline-block;
+  margin-top: 0.65rem;
+  background-image: none;
+}
+
+.project-art-link:hover {
+  background-image: none;
+}
+
+.project-art {
+  display: block;
+  width: 8.75rem;
+  height: auto;
+  margin-top: 0.65rem;
+  background: #fffdf8;
+  border: 1.5px solid var(--ink);
+  border-radius: 2px 10px 8px 3px;
+  box-shadow: 3px 3px 0 var(--hi);
+}
+
+.project-art-link .project-art {
+  margin-top: 0;
+}
+
+.project-entry h2 {
+  margin-top: 0.55rem;
+  max-width: var(--prose);
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.project-entry h2 a {
+  color: var(--ink);
+}
+
+.project-entry h2 a:hover {
+  color: var(--accent);
+}
+
+.project-entry > p {
+  max-width: var(--prose);
+  margin-top: 0.7rem;
+}
+
 @media print {
   .nav,
   .site-footer,

@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectArt from '../../components/ProjectArt.astro';
+import { projects } from '../../data/projects';
+import { url } from '../../lib/url';
+---
+<Base title="Projects" description="Side projects, still in progress.">
+  <div class="page">
+    <p class="back"><a href={url('/')}>← back to the notebook</a></p>
+    <p class="kicker">Side projects</p>
+    <h1 class="page-title">Projects</h1>
+    <p class="deck">Still in progress.</p>
+    <ul class="project-list">
+      {projects.map((project) => (
+        <li class="project-entry">
+          <p class="note-meta">
+            <span class="pill pill-project"><span class="glyph" aria-hidden="true">✧</span>{project.status}</span>
+          </p>
+          <a class="project-art-link" href={url(`/projects/${project.slug}`)} tabindex="-1" aria-hidden="true">
+            <ProjectArt slug={project.slug} />
+          </a>
+          <h2><a href={url(`/projects/${project.slug}`)}>{project.title}</a></h2>
+          <p>{project.summary}</p>
+          <p class="writing-meta">GitHub link coming soon</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>
