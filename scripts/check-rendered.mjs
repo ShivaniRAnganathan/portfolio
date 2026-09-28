@@ -9,12 +9,17 @@ const rules = [
   { label: 'editor note', re: /EDITOR\s+NOTES?/i },
 ];
 
-/** Figures Shivani approved on 28 Sep 2026. Anything else with a digit stays gated. */
+/** Figures Shivani has approved. Anything else with a digit stays gated. */
 const approvedFigures = [
   /about\s+6%\s+to\s+9\.5%/gi,
   /8\.5%\s+to\s+14\.6%/gi,
+  /1\.1\s+to\s+6\.1/g,
   /18%/g,
   /12%/g,
+  /47%/g,
+  /45%/g,
+  /60%/g,
+  /more than 40/gi,
   /\b600\b/g,
   /\b4 people\b/gi,
 ];

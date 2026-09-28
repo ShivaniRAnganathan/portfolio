@@ -14,8 +14,12 @@ timeline:
 featured: true
 order: 2
 outcome:
-  - primary: "Daily use rose 47% in January 2026 versus December 2025, after the app card. More than 40 valuation reports were downloaded a day."
-    fallback: "Daily use rose after the app card. Valuation reports were downloaded every day."
+  - primary: "Daily use rose 47% after the app card."
+    approved: true
+  - primary: "More than 40 valuation reports were downloaded a day."
+    approved: true
+  - primary: "That comparison is January 2026 versus December 2025."
+    fallback: "That comparison is the month after the app card against the month before."
     pending: true
   - primary: "Weekly portfolio mailer open rates rose from 8.5% to 14.6%."
     approved: true
@@ -66,15 +70,13 @@ sections:
         pending: true
   - heading: Outcome
     items:
-      - primary: "Daily active use was up 47% in January 2026 versus December 2025, attributed to the app card."
-        fallback: "Daily active use rose after the app card launched."
-        pending: true
+      - primary: "Daily active use was up 47%, attributed to the app card."
+        approved: true
       - primary: "Daily users rose from mostly under 50 through the second half of 2025 to peaks of about 500 early the next year. Those levels are read from a chart, so treat them as approximate."
         fallback: "Daily users were a small group for months, then climbed to a much larger peak after the app card. Those levels are read from a chart, so treat them as approximate."
         pending: true
       - primary: "More than 40 valuation reports were downloaded a day after reports were added to the relationship-manager dashboard."
-        fallback: "Valuation reports were downloaded every day after they were added to the relationship-manager dashboard."
-        pending: true
+        approved: true
       - primary: "Weekly portfolio mailer open rates rose from 8.5% to 14.6%."
         approved: true
       - primary: "Saturday daily users rose about 20%."

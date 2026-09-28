@@ -12,9 +12,11 @@ timeline:
 featured: false
 order: 4
 outcome:
-  primary: "6 items shipped in July and 13 were queued for August and September. About 60% of recipients opened the first newsletter."
-  fallback: "Some of the quarter's chosen items shipped and the rest were queued. Most recipients opened the first newsletter."
-  pending: true
+  - primary: "6 items shipped in July and 13 were queued for August and September."
+    fallback: "Some of the quarter's chosen items shipped and the rest were queued."
+    pending: true
+  - primary: "About 60% of recipients opened the first newsletter."
+    approved: true
 dek: Relationship-manager feedback ranked into a quarterly roadmap, with a newsletter so they can see what happened.
 scale:
   - primary: "600 relationship managers."
@@ -67,11 +69,15 @@ sections:
       - primary: "19 of 45 feedback items made the quarter. 6 shipped in July and 13 were queued for August and September."
         fallback: "A subset of the feedback made the quarter. Some of those items shipped, and the rest were queued for the following months."
         pending: true
-      - primary: "The first newsletter was delivered to 663 people, with 395 unique opens, about 60%. Clicks were low: 7 unique clicks, about 1%."
-        fallback: "The first newsletter reached the relationship-manager list. Most recipients opened it. Almost nobody clicked."
+      - primary: "About 60% of recipients opened the first newsletter."
+        approved: true
+      - primary: "It was delivered to 663 people, with 395 unique opens. Clicks were low: 7 unique clicks, about 1%."
+        fallback: "It reached the relationship-manager list. Almost nobody clicked."
         pending: true
-      - primary: "At the May review, the Advisor Productivity pillar was marked 85% complete, and onboarding status on the dashboard reached 45% daily use. Those are review figures from the same period, not results of the newsletter."
-        fallback: "At that review, most of the Advisor Productivity pillar was marked complete, and a substantial share of relationship managers used onboarding status on a typical day. Those are review notes from the same period, not results of the newsletter."
+      - primary: "Onboarding status on the dashboard reached 45% daily use among relationship managers. That figure is from the same period, and it is not a result of the newsletter."
+        approved: true
+      - primary: "At the May review, the Advisor Productivity pillar was marked 85% complete. That is a delivery status, not a result of the newsletter."
+        fallback: "At that review, most of the Advisor Productivity pillar was marked complete. That is a delivery status, not a result of the newsletter."
         pending: true
       - primary: "Targets, not results. The deck set onboarding from 14 days to 3, query resolution from 2 days to 1, and platform-adoption queries from 50 to 20 a month. I have no measured results against them yet."
         fallback: "Targets, not results. The deck set targets for onboarding time, query resolution, and how often relationship managers needed help adopting the platform. I have no measured results against them yet."

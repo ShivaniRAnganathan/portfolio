@@ -13,8 +13,7 @@ featured: false
 order: 3
 outcome:
   primary: "Time in the dashboard rose from 1.1 to 6.1 minutes a session. More than 40 valuation reports were downloaded a day. Onboarding status reached 45% daily use."
-  fallback: "Relationship managers spent longer in the dashboard. Valuation reports were downloaded every day. A substantial share opened onboarding status on a typical day."
-  pending: true
+  approved: true
 dek: Reports, alerts and a client's onboarding status, in the dashboard relationship managers already use.
 scale:
   primary: "600 relationship managers."
@@ -56,14 +55,11 @@ sections:
   - heading: Outcome
     items:
       - primary: "Dashboard engagement rose from 1.1 to 6.1 minutes per session. The write-up doesn't say which dates that covers."
-        fallback: "Relationship managers spent longer in each dashboard session. The write-up doesn't say which period that covers."
-        pending: true
+        approved: true
       - primary: "More than 40 valuation reports were downloaded every day since release."
-        fallback: "Valuation reports were downloaded every day after release."
-        pending: true
+        approved: true
       - primary: "Onboarding status reached 45% daily use among relationship managers."
-        fallback: "A substantial share of relationship managers used onboarding status on a typical day."
-        pending: true
+        approved: true
       - primary: "At the May review, the Advisor Productivity pillar was marked 85% complete. That is a delivery status, not a usage result."
         fallback: "At that review, most of the Advisor Productivity pillar was marked complete. That is a delivery status, not a usage result."
         pending: true
