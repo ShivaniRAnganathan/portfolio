@@ -31,6 +31,7 @@ export type Copy = {
 };
 
 export const site = {
+  masthead: 'Shiv Says Hi',
   name: 'Shivani Ranganathan',
   email: 'rshivani98@gmail.com',
   linkedin: 'https://www.linkedin.com/in/shivaniranganathan0/',
@@ -128,4 +129,31 @@ export const site = {
   ],
   resumeNote: 'The PDF linked here is a placeholder. Replace it before sharing.',
   updated: 'September 2026',
+  /** Scaffolding only. Do not add facts here until Shivani writes them. */
+  life: [
+    {
+      id: 'roll-and-wear',
+      title: 'Roll & Wear',
+      line: 'Roll & Wear, a t-shirt brand I run.',
+      filed: 'Filed soon.',
+    },
+    {
+      id: 'gaming',
+      title: 'Board gaming',
+      line: 'Filed soon.',
+      filed: '',
+    },
+    {
+      id: 'fitness',
+      title: 'Fitness',
+      line: 'Filed soon.',
+      filed: '',
+    },
+    {
+      id: 'travel',
+      title: 'Travel dispatches',
+      line: 'Filed soon.',
+      filed: '',
+    },
+  ],
 };

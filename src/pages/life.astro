@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import { getCollection } from 'astro:content';
+
+const pieces = (await getCollection('pieces')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Life" description="Roll & Wear, and room for the rest of life. Most of it is not written yet.">
+  <div class="page">
+    <p class="kicker">Off the clock</p>
+    <h1 class="page-title">Life, outside the case files</h1>
+    <p class="deck">Work stays on the front page. This is the rest, as it gets written.</p>
+    <ul class="life-grid">
+      {site.life.map((slot) => {
+        const filed = pieces.filter((piece) => piece.data.slot === slot.id);
+        return (
+          <li>
+            <h2>{slot.title}</h2>
+            <p>{slot.line}</p>
+            {slot.filed && <p class="filed">{slot.filed}</p>}
+            {filed.length > 0 && (
+              <ul class="piece-list">
+                {filed.map((piece) => (
+                  <li>
+                    <p class="piece-title">{piece.data.title}</p>
+                    {piece.data.date && <p class="writing-meta">{piece.data.date}</p>}
+                    <p>{piece.data.summary}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</Base>

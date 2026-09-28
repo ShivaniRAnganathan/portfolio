@@ -8,9 +8,10 @@ const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b
 ---
 <Base title="Writing" description="Public essays and write-ups.">
   <div class="page">
+    <p class="kicker">Dispatches</p>
     <h1 class="page-title">Writing</h1>
-    <p class="group-note">Public links only. Where a write-up states a result without a baseline or timeframe, that line is marked unconfirmed.</p>
-    <ul class="writing-list">
+    <p class="deck">Public links only. Where a write-up states a result without a baseline or timeframe, that line is marked unconfirmed.</p>
+    <ul class="writing-list archive">
       {writing.map((entry) => {
         const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
         return (

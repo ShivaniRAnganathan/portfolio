@@ -2,6 +2,32 @@
    Fallbacks are size-adjusted so a late font swap does not reflow the page. */
 
 @font-face {
+  font-family: "Playfair Fallback";
+  src: local("Palatino Linotype"), local("Palatino"), local("Georgia");
+  size-adjust: 112%;
+  ascent-override: 88%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../../node_modules/@fontsource/playfair-display/files/playfair-display-latin-ext-700-normal.woff2") format("woff2");
+  unicode-range: U+20B9;
+}
+
+@font-face {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../../node_modules/@fontsource/playfair-display/files/playfair-display-latin-700-normal.woff2") format("woff2");
+}
+
+@font-face {
   font-family: "Newsreader Fallback";
   src: local("Georgia"), local("Noto Serif"), local("Times New Roman");
   size-adjust: 103%;

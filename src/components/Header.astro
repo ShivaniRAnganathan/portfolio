@@ -15,18 +15,24 @@ function current(href: string) {
 const links = [
   { href: '/work', label: 'Work' },
   { href: '/writing', label: 'Writing' },
+  { href: '/life', label: 'Life' },
   { href: '/about', label: 'About' },
   { href: site.resumePath, label: 'Resume' },
 ];
 ---
 <a class="skip" href="#content">Skip to content</a>
-<header class="site-header page">
-  <a class="logo" href={url('/')}>{site.name}</a>
-  <nav class="nav" aria-label="Primary">
-    {links.map((link) => (
-      <a href={url(link.href)} aria-current={current(link.href) ? 'page' : undefined}>
-        {link.label}
-      </a>
-    ))}
-  </nav>
+<header class="masthead">
+  <div class="page">
+    <p class="edition">Chennai edition · {site.updated}</p>
+    <a class="masthead-name" href={url('/')}>{site.masthead}</a>
+    <p class="dateline">{site.name} · Product Manager · Chennai</p>
+    <div class="masthead-rule" aria-hidden="true"></div>
+    <nav class="nav" aria-label="Primary">
+      {links.map((link) => (
+        <a href={url(link.href)} aria-current={current(link.href) ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
 </header>

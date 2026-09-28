@@ -30,7 +30,7 @@ const description = `${entry.data.company}. ${entry.data.title}.`;
   <article class="page">
     <p class="back"><a href={url('/work')}>Work</a></p>
     <header class="opening">
-      <p class="eyebrow">{entry.data.company}</p>
+      <p class="kicker">Case file · {entry.data.company}</p>
       <h1>
         <Text text={outcome.text} />
         {outcome.pending && <span class="badge">Unconfirmed</span>}

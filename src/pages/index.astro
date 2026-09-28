@@ -16,11 +16,12 @@ const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b
 
 const index = (n: number) => String(n + 1).padStart(2, '0');
 const heroMetrics = site.heroMetrics.filter((metric) => SHOW_RESUME_ONLY_CLAIMS || !metric.resumeOnly);
+const [brand, ...otherLife] = site.life;
 ---
 <Base>
-  <div class="page">
+  <div class="page front">
     <section class:list={['hero', { 'has-metrics': heroMetrics.length > 0 }]} aria-labelledby="positioning">
-      <p class="eyebrow">Product manager · Chennai</p>
+      <p class="kicker">Product desk</p>
       <h1 id="positioning">{site.positioning}</h1>
       <div class="hero-copy">
         <p class="lede">{site.intro}</p>
@@ -57,7 +58,7 @@ const heroMetrics = site.heroMetrics.filter((metric) => SHOW_RESUME_ONLY_CLAIMS 
 
     <section class="block" aria-labelledby="work-heading">
       <div class="section-head">
-        <h2 id="work-heading" class="section-label">Selected work</h2>
+        <h2 id="work-heading" class="section-label">Case files</h2>
         <a href={url('/work')}>All work</a>
       </div>
       <ol class="work-list feature-list">
@@ -79,49 +80,65 @@ const heroMetrics = site.heroMetrics.filter((metric) => SHOW_RESUME_ONLY_CLAIMS 
       </ol>
     </section>
 
-    <section class="block" aria-labelledby="how-heading">
-      <h2 id="how-heading" class="section-label">How I work</h2>
-      <ol class="principles">
-        {site.howIWork.map((item, i) => (
-          <li>
-            <span class="principle-index">{index(i)}</span>
-            <h3 class="principle">{item.principle}</h3>
-            <p class="principle-example">{item.example}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
-
-    <section class="block" aria-labelledby="writing-heading">
-      <div class="section-head">
-        <h2 id="writing-heading" class="section-label">Writing</h2>
-        <a href={url('/writing')}>All writing</a>
-      </div>
-      <ul class="writing-list">
-        {writing.map((entry) => {
-          const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
-          return (
+    <div class="front-lower">
+      <section class="block" aria-labelledby="how-heading">
+        <h2 id="how-heading" class="section-label">The method</h2>
+        <ol class="principles">
+          {site.howIWork.map((item, i) => (
             <li>
-              <a href={entry.data.href} target="_blank" rel="noopener noreferrer">
-                {entry.data.title}
-                <span class="vh"> (opens in a new tab)</span>
-              </a>
-              <p class="writing-meta">{entry.data.outlet}{entry.data.date ? ` · ${entry.data.date}` : ''}</p>
-              <p class="writing-summary">{entry.data.summary}</p>
-              {metric && (
-                <p class="writing-summary">
-                  {metric.text}
-                  {metric.pending && <Badge />}
-                </p>
-              )}
+              <span class="principle-index">{index(i)}</span>
+              <h3 class="principle">{item.principle}</h3>
+              <p class="principle-example">{item.example}</p>
             </li>
-          );
-        })}
-      </ul>
-    </section>
+          ))}
+        </ol>
+      </section>
 
-    <section class="block" aria-labelledby="contact-heading">
-      <h2 id="contact-heading" class="section-label">Contact</h2>
+      <div class="front-side">
+        <section class="block" aria-labelledby="writing-heading">
+          <div class="section-head">
+            <h2 id="writing-heading" class="section-label">Dispatches</h2>
+            <a href={url('/writing')}>Archive</a>
+          </div>
+          <ul class="writing-list">
+            {writing.map((entry) => {
+              const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
+              return (
+                <li>
+                  <a href={entry.data.href} target="_blank" rel="noopener noreferrer">
+                    {entry.data.title}
+                    <span class="vh"> (opens in a new tab)</span>
+                  </a>
+                  <p class="writing-meta">{entry.data.outlet}{entry.data.date ? ` · ${entry.data.date}` : ''}</p>
+                  <p class="writing-summary">{entry.data.summary}</p>
+                  {metric && (
+                    <p class="writing-summary">
+                      {metric.text}
+                      {metric.pending && <Badge />}
+                    </p>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section class="life-teaser" aria-labelledby="life-heading">
+          <h2 id="life-heading" class="section-label">Off the clock</h2>
+          <p class="deck">{brand.line}</p>
+          {brand.filed && <p class="filed">{brand.filed}</p>}
+          <ul class="teaser-slots">
+            {otherLife.map((slot) => (
+              <li>{slot.title}. Filed soon.</li>
+            ))}
+          </ul>
+          <a class="teaser-link" href={url('/life')}>Life</a>
+        </section>
+      </div>
+    </div>
+
+    <section class="classifieds" aria-labelledby="contact-heading">
+      <h2 id="contact-heading" class="section-label">Classifieds / Contact</h2>
       <ul class="contact-list">
         <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
         <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span class="vh"> (opens in a new tab)</span></a></li>
