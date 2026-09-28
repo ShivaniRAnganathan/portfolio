@@ -21,6 +21,7 @@ sections:
         fallback: In May 2025 it reported its contributor and fundraiser totals. I am not claiming that as a result of this project. It is the company's scale.
         pending: true
       - primary: I owned growth, monetization and engagement across core transaction flows on a platform with 210M+ annual visits. It is not stated whether that figure is site-wide traffic or a specific year.
+        fallback: I owned growth, monetization and engagement across core transaction flows.
         pending: true
         resumeOnly: true
   - heading: The problem
@@ -49,8 +50,11 @@ sections:
   - heading: Result
     paragraphs:
       - primary: "Launch date, subscriber count and a retention figure for recurring donations: [Copy pending]."
+        fallback: The live app offers a monthly gift next to a one-time donation. A launch date, subscriber count and retention figure are not in the write-up.
+        pending: true
     items:
       - primary: 37% GMV growth, with materially improved donor retention. No baseline, period, or split between the app and recurring donations is stated.
+        fallback: The write-up discusses donor retention. No baseline, period, or split between the app and recurring donations is stated.
         pending: true
         resumeOnly: true
   - heading: What I'd do next

@@ -55,6 +55,7 @@ const description = `${entry.data.company}. ${entry.data.headline}`;
       <h1>{entry.data.headline}</h1>
       <p class="lede">{entry.data.dek}</p>
       <StatStrip stats={entry.data.stats} />
+      {facts.length > 0 && (
       <div class="summary">
         <p class="fact-kicker">The facts</p>
         <dl>
@@ -72,6 +73,7 @@ const description = `${entry.data.company}. ${entry.data.headline}`;
           ))}
         </dl>
       </div>
+      )}
     </header>
 
     {entry.data.sections.map((section) => {

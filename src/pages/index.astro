@@ -90,13 +90,8 @@ function toolsIn(text: string) {
 
 function statParagraphs(stats: { value: string; label: string; note?: string; fallback?: string; pending?: boolean }[] | undefined): Para[] {
   return (stats ?? []).flatMap((stat) => {
+    if (stat.pending) return [];
     const note = stat.note ? ` ${stat.note}` : '';
-    if (stat.pending) {
-      const fallback = stat.fallback?.trim();
-      if (!fallback || hasUnapprovedFigure(fallback)) return [];
-      const sentence = /[.!?]$/.test(fallback) ? fallback : `${fallback}.`;
-      return [{ text: `${sentence}${note}` }];
-    }
     const label = stat.label.charAt(0).toLowerCase() + stat.label.slice(1);
     return [{ text: `${stat.value} ${label}.${note}` }];
   });
@@ -120,31 +115,12 @@ const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b
 const ai = (await getCollection('ai')).sort((a, b) => a.data.order - b.data.order);
 const builder = ai.find((entry) => entry.id === 'how-i-build');
 
-const items: Item[] = [];
+const aiPremise = builder ? aiLines(builder.data.problem)[0]?.text : '';
+const aiTools = builder
+  ? toolsIn(aiLines(builder.data.system).map((line) => line.text).join(' '))
+  : undefined;
 
-if (builder) {
-  const data = builder.data;
-  const problem = aiLines(data.problem);
-  const principles = aiLines(data.principles);
-  const system = aiLines(data.system);
-  const outcome = aiLines(data.outcome);
-  const next = aiLines(data.next);
-  const cards: Card[] = [
-    { heading: 'How I broke it down', paragraphs: principles },
-    { heading: 'The system', tools: toolsIn(system.map((line) => line.text).join(' ')), paragraphs: system },
-    { heading: 'Outcome', paragraphs: outcome },
-    { heading: "What's next", paragraphs: next },
-  ].filter((card) => card.paragraphs.length > 0);
-  items.push({
-    sort: '9999-01-01',
-    kind: 'ai',
-    title: data.title,
-    paragraphs: problem,
-    id: builder.id,
-    cards,
-    more: { href: url('/ai'), label: 'All dispatches' },
-  });
-}
+const items: Item[] = [];
 
 for (const entry of studies) {
   const when = caseWhen[entry.id];
@@ -201,6 +177,17 @@ items.sort((a, b) => (a.sort < b.sort ? 1 : a.sort > b.sort ? -1 : 0));
 ---
 <Base description={site.hook}>
   <div class="page">
+    {builder && aiPremise && (
+      <section class="ai-feature" aria-labelledby="ai-feature-heading">
+        <p class="note-meta">
+          <span class="pill pill-ai"><span class="glyph" aria-hidden="true">✶</span>ai</span>
+        </p>
+        <h2 id="ai-feature-heading">{builder.data.title}</h2>
+        <p>{aiPremise}</p>
+        {aiTools && <p class="tools">{aiTools}</p>}
+        <p class="more"><a href={url('/ai')}>read more</a></p>
+      </section>
+    )}
     <section class="selected" aria-labelledby="selected-heading">
       <h2 id="selected-heading">Selected work</h2>
       <ul>

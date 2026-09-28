@@ -8,6 +8,10 @@ import { url } from '../lib/url';
 const recognition = site.recognition
   .map((item) => visibleCopy(item))
   .filter((item) => item !== null);
+
+function known(value: string) {
+  return /\[[^\]]*pending\]/i.test(value) ? '' : value;
+}
 ---
 <Base title="About" description={site.intro}>
   <div class="page">
@@ -32,25 +36,32 @@ const recognition = site.recognition
     <section class="block" aria-labelledby="experience-heading">
       <h2 id="experience-heading" class="section-label">Experience</h2>
       <ol class="cv">
-        {site.experience.map((job) => (
+        {site.experience.map((job) => {
+          const role = [known(job.role), known(job.dates)].filter(Boolean).join(' · ');
+          const detail = known(job.detail);
+          return (
           <li>
             <h3>{job.company}</h3>
-            <p class="role"><Text text={`${job.role} · ${job.dates}`} /></p>
-            <p class="detail"><Text text={job.detail} /></p>
+            {role && <p class="role"><Text text={role} /></p>}
+            {detail && <p class="detail"><Text text={detail} /></p>}
           </li>
-        ))}
+          );
+        })}
       </ol>
     </section>
 
     <section class="block" aria-labelledby="education-heading">
       <h2 id="education-heading" class="section-label">Education</h2>
       <ul class="edu">
-        {site.education.map((school) => (
+        {site.education.map((school) => {
+          const year = known(school.year);
+          return (
           <li>
             <h3>{school.credential}</h3>
-            <p><Text text={`${school.school} · ${school.year}`} /></p>
+            <p><Text text={year ? `${school.school} · ${year}` : school.school} /></p>
           </li>
-        ))}
+          );
+        })}
       </ul>
     </section>
 

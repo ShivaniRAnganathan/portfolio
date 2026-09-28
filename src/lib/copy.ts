@@ -8,6 +8,8 @@ import { cleanContent } from './content';
 
 export type ResolvedCopy = { text: string; pending: boolean };
 
+const placeholder = /\[[^\]]*pending\]/i;
+
 const plainNonMetrics = [
   /\b\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b/gi,
   /\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b/gi,
@@ -31,6 +33,19 @@ export function visibleCopy(copy: Copy | undefined): ResolvedCopy | null {
   if (copy.resumeOnly && !SHOW_RESUME_ONLY_CLAIMS) return null;
   const fallback = copy.fallback?.trim();
   const cleaned = cleanContent(copy.primary ?? '');
+  if (placeholder.test(cleaned.text)) {
+    if (fallback && !placeholder.test(fallback) && !hasUnapprovedFigure(fallback)) {
+      const safe = cleanContent(fallback);
+      if (safe.text) return { text: safe.text, pending: false };
+    }
+    const stripped = cleaned.text
+      .replace(/\[[^\]]*pending\]/gi, '')
+      .replace(/\s+/g, ' ')
+      .replace(/^[\s:,.\-–]+|[\s:,.\-–]+$/g, '')
+      .trim();
+    if (!stripped || placeholder.test(stripped)) return null;
+    return { text: stripped, pending: false };
+  }
   const flagged = Boolean(copy.pending) || cleaned.pending;
   if (flagged && hasUnapprovedFigure(cleaned.text)) {
     if (!fallback) return null;

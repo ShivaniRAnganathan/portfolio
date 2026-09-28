@@ -32,7 +32,8 @@ const index = (n: number) => String(n + 1).padStart(2, '0');
         })}
         {shippedLinks.map((entry, i) => {
           const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
-          const kicker = [entry.data.label, entry.data.when].filter(Boolean).join(' · ');
+          const when = entry.data.when && !/\[[^\]]*pending\]/i.test(entry.data.when) ? entry.data.when : undefined;
+          const kicker = [entry.data.label, when].filter(Boolean).join(' · ');
           return (
             <li>
               <WorkRow
@@ -55,7 +56,8 @@ const index = (n: number) => String(n + 1).padStart(2, '0');
       <p class="group-note">These are not shipped work. The two FundsIndia roadmaps were take-home assignments. The BRSR tool is a proposal.</p>
       <ol class="work-list">
         {proposals.map((entry, i) => {
-          const kicker = [entry.data.label, entry.data.when].filter(Boolean).join(' · ');
+          const when = entry.data.when && !/\[[^\]]*pending\]/i.test(entry.data.when) ? entry.data.when : undefined;
+          const kicker = [entry.data.label, when].filter(Boolean).join(' · ');
           return (
             <li>
               <WorkRow
