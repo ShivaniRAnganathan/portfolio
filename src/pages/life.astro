@@ -4,6 +4,8 @@ import { site } from '../data/site';
 import { getCollection } from 'astro:content';
 
 const pieces = (await getCollection('pieces')).sort((a, b) => a.data.order - b.data.order);
+const slotIds = new Set(site.life.map((slot) => slot.id));
+const loosePieces = pieces.filter((piece) => !piece.data.slot || !slotIds.has(piece.data.slot));
 ---
 <Base title="Life" description="Roll & Wear, and room for the rest of life. Most of it is not written yet.">
   <div class="page">
@@ -33,5 +35,19 @@ const pieces = (await getCollection('pieces')).sort((a, b) => a.data.order - b.d
         );
       })}
     </ul>
+    {loosePieces.length > 0 && (
+      <section class="block" aria-labelledby="pieces-heading">
+        <h2 id="pieces-heading" class="section-label">Pieces</h2>
+        <ul class="piece-list">
+          {loosePieces.map((piece) => (
+            <li>
+              <p class="piece-title">{piece.data.title}</p>
+              {piece.data.date && <p class="writing-meta">{piece.data.date}</p>}
+              <p>{piece.data.summary}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
   </div>
 </Base>

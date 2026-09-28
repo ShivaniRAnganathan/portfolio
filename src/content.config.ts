@@ -64,8 +64,9 @@ const pieces = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/pieces' }),
   schema: z.object({
     title: z.string(),
-    slot: z.enum(['roll-and-wear', 'gaming', 'fitness', 'travel']),
     summary: z.string(),
+    /** Optional label, for example a life slot id. Not a fixed list. */
+    slot: z.string().optional(),
     date: z.string().optional(),
     order: z.number().default(0),
   }),

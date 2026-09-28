@@ -1042,22 +1042,19 @@ h1 .badge,
   }
 
   .life-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     display: grid;
     column-gap: 0;
   }
 
   .life-grid > li {
-    padding: 1.35rem 1.5rem 1.5rem 0;
-  }
-
-  .life-grid > li:nth-child(2n) {
-    border-left: 1px solid var(--ink);
-    padding-left: 1.5rem;
-  }
-
-  .life-grid > li:nth-last-child(-n + 2) {
+    padding: 1.35rem 1.35rem 1.5rem 0;
     border-bottom: 1px solid var(--ink);
+  }
+
+  .life-grid > li + li {
+    border-left: 1px solid var(--ink);
+    padding-left: 1.35rem;
   }
 }
 

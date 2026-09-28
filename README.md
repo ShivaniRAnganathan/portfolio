@@ -12,7 +12,7 @@ The built pages send `noindex`, and `public/robots.txt` disallows all crawlers. 
 | Case studies | `src/content/case-studies/*.md` |
 | Writing links | `src/content/writing/*.md` |
 | Life slots (names only until real copy arrives) | `src/data/site.ts` (`life`) |
-| Travel and personal pieces | `src/content/pieces/*.md` |
+| Personal pieces | `src/content/pieces/*.md` |
 | Internship card, take-homes, proposal | `src/content/links/*.md` |
 | Resume PDF | `public/resume.pdf` (placeholder today) |
 
@@ -51,6 +51,6 @@ Hosting is not wired up. For a later deploy, set:
 - `/work` shipped work, then proposals and take-homes
 - `/work/<slug>` one case study
 - `/writing`
-- `/life` — Off the clock. Slots for Roll & Wear, board gaming, fitness, and travel dispatches. New pieces are markdown files in `src/content/pieces/` with `title`, `slot` (`roll-and-wear`, `gaming`, `fitness`, or `travel`), `summary`, optional `date`, and `order`.
+- `/life` — Off the clock. Slots for Roll & Wear, board gaming, and fitness. New pieces are markdown files in `src/content/pieces/` with `title`, `summary`, optional `slot` (such as `roll-and-wear`, `gaming`, or `fitness`), optional `date`, and `order`.
 - `/about`
 - `/resume.pdf`

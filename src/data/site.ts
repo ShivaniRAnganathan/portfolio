@@ -149,11 +149,5 @@ export const site = {
       line: 'Filed soon.',
       filed: '',
     },
-    {
-      id: 'travel',
-      title: 'Travel dispatches',
-      line: 'Filed soon.',
-      filed: '',
-    },
   ],
 };
