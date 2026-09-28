@@ -25,9 +25,9 @@ In `src/data/site.ts`:
 
 - `SHOW_PENDING_BADGES` — `true` shows an Unconfirmed badge on every figure marked `pending: true`. Set it to `false` to remove them all.
 - `USE_CONFIDENTIAL_FALLBACKS` — `true` swaps FundsIndia figures, and the Wealth Spectrum name, for the safer wording stored as `fallback` next to each claim. Fallback lines are not badged.
-- `SHOW_RESUME_ONLY_CLAIMS` — `true` shows resume-only lines (hero metrics, the Ketto app and 37% / 210M+ claims, and the recognition lines) with an Unconfirmed badge. `false` removes those lines. Empty sections are omitted, and the hero metric row hides.
+- `SHOW_RESUME_ONLY_CLAIMS` — `true` shows resume-only lines (the 37% and 210M+ hero metrics, the Ketto app and 37% / 210M+ claims, and the recognition lines) with an Unconfirmed badge. `false` removes those lines. Empty sections are omitted, and the hero metric row hides when nothing in it remains.
 
-Hero metrics stay in `src/data/site.ts` and are resume-only. The front page does not render that row. The same switch still shows or hides resume-only lines inside case studies and on About.
+The premature-exits figure of −18% is approved. It stays in the hero metrics with no Unconfirmed badge and no resume-only flag. The front page does not render that row. The same switch still shows or hides resume-only lines inside case studies and on About.
 
 ## Develop
 

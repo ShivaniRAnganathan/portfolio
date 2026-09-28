@@ -28,6 +28,8 @@ export type Copy = {
   /** Only on the resume. Hidden entirely when SHOW_RESUME_ONLY_CLAIMS is false. */
   resumeOnly?: boolean;
   href?: string;
+  /** Approved for publishing. No badge, and no confidentiality fallback. */
+  approved?: boolean;
 };
 
 export const site = {
@@ -46,7 +48,7 @@ export const site = {
     "I'm Shivani, a product manager in Private Wealth at FundsIndia in Chennai, with 4+ years in fintech and high-scale consumer products across FundsIndia, Ketto, HSBC and ElasticRun. I start with the people closest to the problem, turn what they tell me into a roadmap they can check, and ship. I'm looking for a remote product manager role where I own a product from the first user conversation to the numbers after launch.",
   heroMetrics: [
     { value: '37%', label: 'GMV growth', pending: true, resumeOnly: true },
-    { value: '−18%', label: 'Churn', pending: true, resumeOnly: true },
+    { value: '−18%', label: 'Premature exits' },
     { value: '210M+', label: 'Visits', pending: true, resumeOnly: true },
   ],
   homeRecognition:

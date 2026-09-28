@@ -7,14 +7,15 @@ interface Props {
   href: string;
   index: string;
   kicker: string;
-  heading: string;
+  heading?: string;
   pending?: boolean;
+  parts?: { text: string; pending: boolean }[];
   detail?: string;
   extra?: string;
   extraPending?: boolean;
 }
 
-const { href, index, kicker, heading, pending = false, detail, extra, extraPending = false } = Astro.props;
+const { href, index, kicker, heading = '', pending = false, parts, detail, extra, extraPending = false } = Astro.props;
 const external = /^https?:/.test(href);
 ---
 <a
@@ -26,8 +27,17 @@ const external = /^https?:/.test(href);
   <span>
     <span class="work-kicker">{kicker}</span>
     <span class="work-heading">
-      <Text text={heading} />
-      {pending && <Badge />}
+      {parts ? parts.map((part) => (
+        <span class="heading-part">
+          <Text text={part.text} />
+          {part.pending && <Badge />}
+        </span>
+      )) : (
+        <>
+          <Text text={heading} />
+          {pending && <Badge />}
+        </>
+      )}
       {external && <span aria-hidden="true"> ↗</span>}
       {external && <span class="vh"> (opens in a new tab)</span>}
     </span>

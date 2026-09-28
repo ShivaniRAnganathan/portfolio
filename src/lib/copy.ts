@@ -25,9 +25,33 @@ export function resolveCopy(copy: Copy): ResolvedCopy {
   return visibleCopy(copy) ?? { text: copy.primary.trim(), pending: false };
 }
 
-export function caseHeadline(data: { outcome: Copy; resumeOutcome?: Copy }): ResolvedCopy {
-  return visibleCopy(data.resumeOutcome) ?? visibleCopy(data.outcome) ?? {
-    text: data.outcome.primary.trim(),
-    pending: false,
+type OutcomeValue = string | Copy | Copy[];
+
+function asCopies(value: OutcomeValue | undefined): Copy[] {
+  if (!value) return [];
+  if (typeof value === 'string') return [{ primary: value }];
+  if (Array.isArray(value)) return value;
+  return [value];
+}
+
+/** One resolved line per outcome sentence, so an approved figure is not badged with its neighbours. */
+export function caseParts(data: { outcome: OutcomeValue; resumeOutcome?: Copy }): ResolvedCopy[] {
+  const resume = visibleCopy(data.resumeOutcome);
+  if (resume) return [resume];
+  return asCopies(data.outcome).flatMap((part) => {
+    const visible = visibleCopy(part);
+    return visible ? [visible] : [];
+  });
+}
+
+export function caseHeadline(data: { outcome: OutcomeValue; resumeOutcome?: Copy }): ResolvedCopy {
+  const parts = caseParts(data);
+  if (parts.length === 0) {
+    const outcome = asCopies(data.outcome)[0];
+    return { text: outcome?.primary.trim() ?? '', pending: false };
+  }
+  return {
+    text: parts.map((part) => part.text).join(' '),
+    pending: parts.some((part) => part.pending),
   };
 }

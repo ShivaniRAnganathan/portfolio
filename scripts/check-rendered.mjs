@@ -6,7 +6,24 @@ const rules = [
   { label: 'GAPS', re: /\bGAPS\b/ },
   { label: 'resume only', re: /resume only/i },
   { label: 'html comment', re: /<!--/ },
+  { label: 'editor note', re: /EDITOR\s+NOTES?/i },
 ];
+
+/** Figures Shivani approved on 28 Sep 2026. Anything else with a digit stays gated. */
+const approvedFigures = [
+  /about\s+6%\s+to\s+9\.5%/gi,
+  /8\.5%\s+to\s+14\.6%/gi,
+  /18%/g,
+  /12%/g,
+  /\b600\b/g,
+  /\b4 people\b/gi,
+];
+
+function unapprovedDigits(text) {
+  let rest = text;
+  for (const pattern of approvedFigures) rest = rest.replace(pattern, ' ');
+  return /\d/.test(rest);
+}
 
 async function htmlFiles(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -49,17 +66,19 @@ function copiesIn(text) {
     const primary = unquote(match[2]);
     let fallback = null;
     let pending = false;
+    let approved = false;
     for (let j = i + 1; j < lines.length; j++) {
       const line = lines[j];
       if (line.trim() === '') continue;
       const inner = line.match(/^(\s*)/)[1].length;
-      const sibling = /^\s*(fallback|pending|resumeOnly|href):/.test(line);
+      const sibling = /^\s*(fallback|pending|resumeOnly|href|approved):/.test(line);
       if (inner < indent || (inner === indent && !sibling)) break;
       const fallbackMatch = line.match(/^\s*fallback:\s*(.*)$/);
       if (fallbackMatch) fallback = unquote(fallbackMatch[1]);
       if (/^\s*pending:\s*true\s*$/.test(line)) pending = true;
+      if (/^\s*approved:\s*true\s*$/.test(line)) approved = true;
     }
-    copies.push({ primary, fallback, pending, line: i + 1 });
+    copies.push({ primary, fallback, pending, approved, line: i + 1 });
   }
   return copies;
 }
@@ -69,14 +88,25 @@ for (const file of figureFiles) {
   for (const rule of rules) {
     if (rule.re.test(text)) failures.push(`${file}: found ${rule.label}`);
   }
+  for (const key of ['title', 'dek', 'role']) {
+    const plain = text.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
+    if (plain && unapprovedDigits(unquote(plain[1]))) {
+      failures.push(`${file}: ${key} has an unapproved number`);
+    }
+  }
   for (const copy of copiesIn(text)) {
     const where = `${file}:${copy.line}`;
-    if (copy.fallback != null && /\d/.test(copy.fallback)) {
-      failures.push(`${where}: fallback still has a number`);
-    }
-    if (/\d/.test(copy.primary)) {
+    const gated = unapprovedDigits(copy.primary);
+    if (copy.approved) {
+      if (gated) failures.push(`${where}: approved line still has an unapproved number`);
+      if (copy.pending) failures.push(`${where}: approved line is marked pending`);
+      if (copy.fallback) failures.push(`${where}: approved line has a fallback`);
+    } else if (gated) {
       if (!copy.fallback) failures.push(`${where}: figure has no fallback`);
       if (!copy.pending) failures.push(`${where}: figure is not marked pending`);
+    }
+    if (copy.fallback != null && unapprovedDigits(copy.fallback)) {
+      failures.push(`${where}: fallback still has a number`);
     }
   }
 }

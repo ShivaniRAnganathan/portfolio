@@ -3,8 +3,10 @@ title: One view of every Private Wealth portfolio
 company: FundsIndia
 role: Product owner and vendor lead
 team:
-  primary: "Wealth Spectrum, FundsIndia engineering, Operations, and relationship managers"
-  fallback: "A third-party wealth platform, FundsIndia engineering, Operations, and relationship managers"
+  - primary: "4 people."
+    approved: true
+  - primary: "Working with the Wealth Spectrum vendor, FundsIndia engineering, Operations, and relationship managers."
+    fallback: "Working with a third-party wealth platform, FundsIndia engineering, Operations, and relationship managers."
 timeline:
   primary: "Live for all Private Wealth clients on 21 May 2025. A card in the app around January 2026. The web dashboard for all Private Wealth users on 30 June 2026."
   fallback: "Live for all Private Wealth clients first, then a card in the app, then a web dashboard for those clients."
@@ -12,9 +14,14 @@ timeline:
 featured: true
 order: 2
 outcome:
-  primary: "Daily use rose 47% in January 2026 versus December 2025, after the app card. More than 40 valuation reports were downloaded a day."
-  fallback: "Daily use rose after the app card. Valuation reports were downloaded every day."
-  pending: true
+  - primary: "Daily use rose 47% in January 2026 versus December 2025, after the app card. More than 40 valuation reports were downloaded a day."
+    fallback: "Daily use rose after the app card. Valuation reports were downloaded every day."
+    pending: true
+  - primary: "Weekly portfolio mailer open rates rose from 8.5% to 14.6%."
+    approved: true
+  - primary: "Saturday daily users rose about 20%."
+    fallback: "Saturday daily users rose as well."
+    pending: true
 dek: Every Private Wealth holding in one place, for the client and their relationship manager.
 scale:
   primary: "All Private Wealth clients. Daily users went from under 50 before the app card to peaks of about 500. Those levels are read from a chart."
@@ -33,14 +40,14 @@ sections:
         pending: true
   - heading: Options and tradeoffs
     items:
-      - primary: "Build consolidation in-house, or use a vendor platform. We used Wealth Spectrum for consolidation, with FundsIndia's client and relationship-manager surfaces on top. That was faster to cover every product type. The cost is depending on a vendor for the data."
-        fallback: "Build consolidation in-house, or use a vendor platform. We used a third-party wealth platform for consolidation, with FundsIndia's client and relationship-manager surfaces on top. That was faster to cover every product type. The cost is depending on a vendor for the data."
+      - primary: "Build consolidation in-house, or use a vendor platform. We used Wealth Spectrum for consolidation, with FundsIndia's client and relationship-manager surfaces on top. That was faster to cover every product type, at the cost of depending on a vendor."
+        fallback: "Build consolidation in-house, or use a vendor platform. We used a third-party wealth platform for consolidation, with FundsIndia's client and relationship-manager surfaces on top. That was faster to cover every product type, at the cost of depending on a vendor."
         pending: true
       - primary: "Launch fast, or validate first. I held go-live until a cross-product data check came back clean."
       - primary: "Everything at once, or staged. Staged: Wealth Spectrum for all Private Wealth clients, then the app card, then the web dashboard."
         fallback: "Everything at once, or staged. Staged: the wealth platform for all Private Wealth clients, then the app card, then the web dashboard."
-      - primary: "Not shipped: replacing Wealth Spectrum with an in-house advisory platform. Leadership raised it as a future goal. It is not shipped."
-        fallback: "Not shipped: replacing the wealth platform with an in-house advisory platform. Leadership raised it as a future goal. It is not shipped."
+      - primary: "Wait for clients to log in, or bring the portfolio to them. Both. The app card for clients who open the app, and a weekly portfolio mailer for those who don't."
+        pending: true
   - heading: What I did
     items:
       - primary: "I ran a data consistency check across 15–20 client portfolios spanning PMS, AIF, mutual funds and equities before launch. There were no mismatches between the FundsIndia portal and Wealth Spectrum."
@@ -51,6 +58,12 @@ sections:
         fallback: "I approved the client dashboard, on top of the third-party wealth platform, for all Private Wealth clients. Engineering then enabled it on the web."
         pending: true
       - primary: "I tracked adoption after the app card launch."
+      - primary: "I redesigned the weekly portfolio mailer and made the Let's Talk section much more prominent, so clients could reach their advisor directly from their portfolio summary. It rolled out on 13 September 2025."
+        fallback: "I redesigned the weekly portfolio mailer and made the Let's Talk section much more prominent, so clients could reach their advisor directly from their portfolio summary."
+        pending: true
+      - primary: "I owned the day-to-day vendor relationship for the platform from June through September 2026."
+        fallback: "I owned the day-to-day vendor relationship for the platform."
+        pending: true
   - heading: Outcome
     items:
       - primary: "Daily active use was up 47% in January 2026 versus December 2025, attributed to the app card."
@@ -61,6 +74,11 @@ sections:
         pending: true
       - primary: "More than 40 valuation reports were downloaded a day after reports were added to the relationship-manager dashboard."
         fallback: "Valuation reports were downloaded every day after they were added to the relationship-manager dashboard."
+        pending: true
+      - primary: "Weekly portfolio mailer open rates rose from 8.5% to 14.6%."
+        approved: true
+      - primary: "Saturday daily users rose about 20%."
+        fallback: "Saturday daily users rose as well."
         pending: true
       - primary: "Leadership noted very good feedback from relationship managers on Private Wealth."
       - primary: "What's still unclear. The chart has an adoption line that stays flat along the bottom, and the chart doesn't define it. Usage also moves around a lot after the peak. I would want a steady reading, not the launch spike, before calling this adopted."

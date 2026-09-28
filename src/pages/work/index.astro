@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import WorkRow from '../../components/WorkRow.astro';
-import { caseHeadline, visibleCopy } from '../../lib/copy';
+import { caseParts, visibleCopy } from '../../lib/copy';
 import { getCollection } from 'astro:content';
 
 const studies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
@@ -18,15 +18,13 @@ const index = (n: number) => String(n + 1).padStart(2, '0');
       <p class="group-note">Case studies open with the outcome, then the reasoning. The last item is an internship write-up that lives on Notion.</p>
       <ol class="work-list">
         {studies.map((entry, i) => {
-          const outcome = caseHeadline(entry.data);
           return (
             <li>
               <WorkRow
                 href={`/work/${entry.id}`}
                 index={index(i)}
                 kicker={entry.data.company}
-                heading={outcome.text}
-                pending={outcome.pending}
+                parts={caseParts(entry.data)}
                 detail={entry.data.title}
               />
             </li>

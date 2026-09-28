@@ -8,7 +8,11 @@ const copy = z.object({
   pending: z.boolean().optional(),
   resumeOnly: z.boolean().optional(),
   href: z.string().optional(),
+  /** Published as written. The confidentiality switch does not replace it. */
+  approved: z.boolean().optional(),
 });
+
+const fact = z.union([z.string(), copy, z.array(copy)]);
 
 const section = z.object({
   heading: z.string(),
@@ -21,16 +25,16 @@ const caseStudies = defineCollection({
   schema: z.object({
     title: z.string(),
     company: z.string(),
-    /** Plain string, or copy when the line has a figure that needs a fallback. */
-    role: z.union([z.string(), copy]),
-    team: z.union([z.string(), copy]).optional(),
-    timeline: z.union([z.string(), copy]),
+    /** Plain string, copy, or a list when approved and unapproved figures must render apart. */
+    role: fact,
+    team: fact.optional(),
+    timeline: fact,
     featured: z.boolean(),
     order: z.number(),
-    outcome: copy,
+    outcome: fact,
     resumeOutcome: copy.optional(),
     dek: z.string(),
-    scale: copy,
+    scale: fact,
     sections: z.array(section),
   }),
 });

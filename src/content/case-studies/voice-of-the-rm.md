@@ -2,7 +2,9 @@
 title: Voice of the RM
 company: FundsIndia
 role: Product owner for the Private Wealth roadmap
-team: Private Wealth relationship managers, Product Ops, Marketing, design and engineering, with data support from a colleague
+team:
+  primary: "4 people, working with Product Ops, Marketing, design and engineering, with data support from a colleague"
+  approved: true
 timeline:
   primary: "Focus groups on 5 February 2026. Roadmap on 17 March 2026. A feedback session on 18 March 2026. First newsletter on 12 August 2026."
   fallback: "Focus groups, then the roadmap and a feedback session, then a first newsletter."
@@ -15,13 +17,16 @@ outcome:
   pending: true
 dek: Relationship-manager feedback ranked into a quarterly roadmap, with a newsletter so they can see what happened.
 scale:
-  primary: "45 pieces of feedback. 19 picked for the quarter."
-  fallback: "Feedback from relationship managers, with a subset picked for the quarter."
-  pending: true
+  - primary: "600 relationship managers."
+    approved: true
+  - primary: "45 pieces of feedback. 19 picked for the quarter."
+    fallback: "Feedback from relationship managers, with a subset picked for the quarter."
+    pending: true
 sections:
   - heading: Problem
     paragraphs:
-      - primary: "FundsIndia's platform grew up retail-first and mutual-fund-first. Private Wealth serves high-net-worth clients through relationship managers."
+      - primary: "FundsIndia's platform grew up retail-first and mutual-fund-first. Private Wealth serves high-net-worth clients through a network of 600 relationship managers."
+        approved: true
     items:
       - primary: "In focus groups, relationship managers said clients who held only AIF or PMS couldn't be onboarded, because a mutual-fund account was mandatory."
       - primary: "One corporate account took about 20 days to open."
@@ -43,7 +48,8 @@ sections:
       - primary: "Work down the list by the loudest request. Quick, but it favours whoever complains most and hides the tradeoffs."
         pending: true
       - primary: "A theme-based quarterly roadmap. This is what we shipped. Four themes: Onboarding, Core Investment Journeys, Reports and Servicing, and Enabling and Learning. The cost is that most items wait, so the queue had to be shown openly."
-      - primary: "Onboarding first, with an AIF or PMS-only login as the top priority, because it blocked revenue outright while other items only slowed it down."
+      - primary: "Onboarding first, with an AIF or PMS-only login as priority 0, because it blocked revenue outright while other items only slowed it down."
+        fallback: "Onboarding first, with an AIF or PMS-only login as the top priority, because it blocked revenue outright while other items only slowed it down."
         pending: true
       - primary: "Not done: promising everything. Only 19 of 45 items made the quarter."
         fallback: "Not done: promising everything. Only a subset of the feedback made the quarter."
@@ -67,7 +73,9 @@ sections:
       - primary: "At the May review, the Advisor Productivity pillar was marked 85% complete, and onboarding status on the dashboard reached 45% daily use. Those are review figures from the same period, not results of the newsletter."
         fallback: "At that review, most of the Advisor Productivity pillar was marked complete, and a substantial share of relationship managers used onboarding status on a typical day. Those are review notes from the same period, not results of the newsletter."
         pending: true
-      - primary: "Targets, not results. The deck set targets for onboarding time, query resolution, and how often relationship managers needed help adopting the platform. I have no measured results against them yet."
+      - primary: "Targets, not results. The deck set onboarding from 14 days to 3, query resolution from 2 days to 1, and platform-adoption queries from 50 to 20 a month. I have no measured results against them yet."
+        fallback: "Targets, not results. The deck set targets for onboarding time, query resolution, and how often relationship managers needed help adopting the platform. I have no measured results against them yet."
+        pending: true
   - heading: What I learned
     items:
       - primary: "Opens without clicks mean awareness, not action. Later editions should link each item to where relationship managers use it."

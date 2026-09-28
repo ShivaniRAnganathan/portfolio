@@ -3,16 +3,20 @@ import Base from '../../layouts/Base.astro';
 import Badge from '../../components/Badge.astro';
 import Copy from '../../components/Copy.astro';
 import Text from '../../components/Text.astro';
-import { caseHeadline, visibleCopy } from '../../lib/copy';
+import { caseParts, visibleCopy, type ResolvedCopy } from '../../lib/copy';
 import { url } from '../../lib/url';
 import type { Copy as CopyText } from '../../data/site';
 import { getCollection } from 'astro:content';
 
-type FactValue = string | CopyText;
+type FactValue = string | CopyText | CopyText[];
 
-function resolveFact(value: FactValue | undefined) {
-  if (!value) return null;
-  return visibleCopy(typeof value === 'string' ? { primary: value } : value);
+function resolveFact(value: FactValue | undefined): ResolvedCopy[] {
+  if (!value) return [];
+  const list = typeof value === 'string' ? [{ primary: value }] : Array.isArray(value) ? value : [value];
+  return list.flatMap((part) => {
+    const resolved = visibleCopy(part);
+    return resolved ? [resolved] : [];
+  });
 }
 
 export async function getStaticPaths() {
@@ -30,7 +34,7 @@ if (!entry) {
 
 const prev = index > 0 ? studies[index - 1] : undefined;
 const next = index < studies.length - 1 ? studies[index + 1] : undefined;
-const outcome = caseHeadline(entry.data);
+const outcome = caseParts(entry.data);
 const facts = [
   { label: 'Role', value: entry.data.role, wide: false },
   { label: 'Team', value: entry.data.team, wide: false },
@@ -38,8 +42,8 @@ const facts = [
   { label: 'Scale', value: entry.data.scale, wide: true },
   { label: 'Outcome', value: entry.data.outcome, wide: true },
 ].flatMap((fact) => {
-  const resolved = resolveFact(fact.value);
-  return resolved ? [{ ...fact, resolved }] : [];
+  const parts = resolveFact(fact.value);
+  return parts.length > 0 ? [{ ...fact, parts }] : [];
 });
 const description = `${entry.data.company}. ${entry.data.title}.`;
 ---
@@ -49,8 +53,12 @@ const description = `${entry.data.company}. ${entry.data.title}.`;
     <header class="opening">
       <p class="kicker">Case file · {entry.data.company}</p>
       <h1>
-        <Text text={outcome.text} />
-        {outcome.pending && <span class="badge">Unconfirmed</span>}
+        {outcome.map((part) => (
+          <span class="outcome-part">
+            <Text text={part.text} />
+            {part.pending && <span class="badge">Unconfirmed</span>}
+          </span>
+        ))}
       </h1>
       <p class="case-name">{entry.data.title}</p>
       <p class="lede">{entry.data.dek}</p>
@@ -61,8 +69,12 @@ const description = `${entry.data.company}. ${entry.data.title}.`;
             <div class={fact.wide ? 'wide' : undefined}>
               <dt>{fact.label}</dt>
               <dd>
-                <Text text={fact.resolved.text} />
-                {fact.resolved.pending && <Badge />}
+                {fact.parts.map((part) => (
+                  <span class="fact-part">
+                    <Text text={part.text} />
+                    {part.pending && <Badge />}
+                  </span>
+                ))}
               </dd>
             </div>
           ))}

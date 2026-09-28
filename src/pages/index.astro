@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Badge from '../components/Badge.astro';
 import WorkRow from '../components/WorkRow.astro';
 import { SHOW_PENDING_BADGES, site } from '../data/site';
-import { caseHeadline, visibleCopy } from '../lib/copy';
+import { caseParts, visibleCopy } from '../lib/copy';
 import { url } from '../lib/url';
 import { getCollection } from 'astro:content';
 
@@ -36,15 +36,13 @@ const index = (n: number) => String(n + 1).padStart(2, '0');
       </div>
       <ol class="work-list feature-list">
         {studies.map((entry, i) => {
-          const outcome = caseHeadline(entry.data);
           return (
             <li>
               <WorkRow
                 href={`/work/${entry.id}`}
                 index={index(i)}
                 kicker={entry.data.company}
-                heading={outcome.text}
-                pending={outcome.pending}
+                parts={caseParts(entry.data)}
                 detail={entry.data.title}
               />
             </li>

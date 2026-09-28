@@ -395,6 +395,18 @@ h1,
   text-wrap: pretty;
 }
 
+.heading-part,
+.outcome-part,
+.fact-part {
+  display: block;
+}
+
+.heading-part + .heading-part,
+.outcome-part + .outcome-part,
+.fact-part + .fact-part {
+  margin-top: 0.4rem;
+}
+
 .work-link:hover .work-heading {
   color: var(--accent-deep);
 }

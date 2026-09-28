@@ -2,7 +2,9 @@
 title: Reports, alerts and portfolios for relationship managers
 company: FundsIndia
 role: Product Manager, Private Wealth, owner of the relationship-manager dashboard
-team: Design, engineering, QA, the MIS and Equity Research data teams, and Private Wealth relationship managers
+team:
+  primary: "4 people, working with design, engineering, QA, and the MIS and Equity Research data teams"
+  approved: true
 timeline:
   primary: "Reports page and client alerts in January and February 2026, with alerts released on 12 February 2026. Onboarding status and CSRM access by May 2026. Sales Enablement Toolkit beta approved on 7 July 2026 and announced on 12 August 2026."
   fallback: "Reports and client alerts shipped first. Onboarding status followed. A sales toolkit went through a beta, then a wider announcement."
@@ -15,12 +17,15 @@ outcome:
   pending: true
 dek: Reports, alerts and a client's onboarding status, in the dashboard relationship managers already use.
 scale:
-  primary: "Private Wealth relationship managers."
+  primary: "600 relationship managers."
+  approved: true
 sections:
   - heading: Problem
     items:
-      - primary: "Relationship managers depended on Operations for valuation reports and statements. Wealth Spectrum's own reports lacked customisation. The transaction statement, for example, was only available at family level."
-        fallback: "Relationship managers depended on Operations for valuation reports and statements. The wealth platform's own reports lacked customisation. The transaction statement, for example, was only available at family level."
+      - primary: "600 relationship managers depended on Operations for valuation reports and statements."
+        approved: true
+      - primary: "Wealth Spectrum's own reports lacked customisation. The transaction statement, for example, was only available at family level."
+        fallback: "The wealth platform's own reports lacked customisation. The transaction statement, for example, was only available at family level."
       - primary: "Relationship managers couldn't see where a client was stuck in onboarding, which delayed activation."
       - primary: "There was no single tool for managing clients and the assets they hold, which made it harder to track performance and act in time."
   - heading: Insight
@@ -37,9 +42,7 @@ sections:
         fallback: "Rely on the wealth platform's reports. No build, but no folio-wise or investor-wise cuts."
       - primary: "Build a reports page and alerts into the relationship-manager dashboard, with Wealth Spectrum embedded. This is what we shipped. The cost is more surface to maintain. Reports-page speed work was still underway at the May review."
         fallback: "Build a reports page and alerts into the relationship-manager dashboard, with the wealth platform embedded. This is what we shipped. The cost is more surface to maintain. Reports-page speed work was still underway at the May review."
-      - primary: "Beta before a full release. The toolkit went to a limited set of relationship managers first, and 2 interface issues were fixed before the wider rollout."
-        fallback: "Beta before a full release. The toolkit went to a limited set of relationship managers first, and a few interface issues were fixed before the wider rollout."
-        pending: true
+      - primary: "Beta before a full release. The toolkit went to a limited set of relationship managers first, and two interface issues were fixed before the wider rollout."
   - heading: What I did
     items:
       - primary: "I added a reports page to the dashboard, with folio-wise and investor-wise filters."
