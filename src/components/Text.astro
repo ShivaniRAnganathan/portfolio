@@ -1,10 +1,16 @@
 ---
+import Badge from './Badge.astro';
+import { SHOW_PENDING_BADGES } from '../data/site';
+import { cleanContent } from '../lib/content';
+
 interface Props {
   text: string;
 }
 const { text } = Astro.props;
-const parts = text.split(/(\[[^\]]+ pending\])/g);
+const cleaned = cleanContent(text);
+const parts = cleaned.text.split(/(\[[^\]]+ pending\])/g);
 ---
 {parts.map((part) => (
   part.match(/^\[[^\]]+ pending\]$/) ? <span class="placeholder">{part}</span> : part
 ))}
+{cleaned.pending && SHOW_PENDING_BADGES && <Badge />}

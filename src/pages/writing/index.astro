@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Badge from '../../components/Badge.astro';
+import { SHOW_PENDING_BADGES } from '../../data/site';
+import { cleanContent } from '../../lib/content';
 import { visibleCopy } from '../../lib/copy';
 import { getCollection } from 'astro:content';
 
@@ -26,9 +28,16 @@ const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b
             <p class="writing-summary">{entry.data.summary}</p>
             {entry.body?.trim() && (
               <div class="writing-excerpt">
-                {entry.body.trim().split(/\n\n+/).map((paragraph) => (
-                  <p>{paragraph}</p>
-                ))}
+                {entry.body.trim().split(/\n\n+/).map((paragraph) => {
+                  const cleaned = cleanContent(paragraph);
+                  if (!cleaned.text) return null;
+                  return (
+                    <p>
+                      {cleaned.text}
+                      {cleaned.pending && SHOW_PENDING_BADGES && <Badge />}
+                    </p>
+                  );
+                })}
               </div>
             )}
             {metric && (

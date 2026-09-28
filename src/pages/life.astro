@@ -1,25 +1,35 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site } from '../data/site';
+import Badge from '../components/Badge.astro';
+import { SHOW_PENDING_BADGES, site } from '../data/site';
+import { cleanContent } from '../lib/content';
+import { url } from '../lib/url';
 import { getCollection } from 'astro:content';
 
 const pieces = (await getCollection('pieces')).sort((a, b) => a.data.order - b.data.order);
 const slotIds = new Set(site.life.map((slot) => slot.id));
 const loosePieces = pieces.filter((piece) => !piece.data.slot || !slotIds.has(piece.data.slot));
 ---
-<Base title="Life" description="Roll & Wear, and room for the rest of life. Most of it is not written yet.">
+<Base title="Life" description="Roll & Wear, board games, and movement.">
   <div class="page">
     <p class="kicker">Off the clock</p>
     <h1 class="page-title">Life, outside the case files</h1>
-    <p class="deck">Work stays on the front page. This is the rest, as it gets written.</p>
+    <p class="deck">Roll & Wear, board games, and movement.</p>
     <ul class="life-grid">
       {site.life.map((slot) => {
         const filed = pieces.filter((piece) => piece.data.slot === slot.id);
         return (
           <li>
             <h2>{slot.title}</h2>
-            <p>{slot.line}</p>
-            {slot.filed && <p class="filed">{slot.filed}</p>}
+            {slot.paragraphs.map((paragraph) => {
+              const cleaned = cleanContent(paragraph);
+              return (
+                <p>
+                  {cleaned.text}
+                  {cleaned.pending && SHOW_PENDING_BADGES && <Badge />}
+                </p>
+              );
+            })}
             {filed.length > 0 && (
               <ul class="piece-list">
                 {filed.map((piece) => (
@@ -35,6 +45,11 @@ const loosePieces = pieces.filter((piece) => !piece.data.slot || !slotIds.has(pi
         );
       })}
     </ul>
+    <section class="block" aria-labelledby="ai-life-heading">
+      <h2 id="ai-life-heading" class="section-label">How I build with AI</h2>
+      <p class="deck">I use a set of AI assistants to automate the recurring parts of my work and keep everything organised.</p>
+      <a class="teaser-link" href={url('/ai')}>AI Desk</a>
+    </section>
     {loosePieces.length > 0 && (
       <section class="block" aria-labelledby="pieces-heading">
         <h2 id="pieces-heading" class="section-label">Pieces</h2>

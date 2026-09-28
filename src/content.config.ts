@@ -79,6 +79,7 @@ const ai = defineCollection({
     system: notes.optional(),
     stillDecide: notes.optional(),
     outcome: notes.optional(),
+    next: notes.optional(),
   }),
 });
 

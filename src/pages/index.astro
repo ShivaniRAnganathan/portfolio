@@ -15,7 +15,6 @@ const dispatches = (await getCollection('ai')).sort((a, b) => a.data.order - b.d
 const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
 
 const index = (n: number) => String(n + 1).padStart(2, '0');
-const [brand, ...otherLife] = site.life;
 ---
 <Base description={site.hook}>
   <div class="page front">
@@ -89,11 +88,12 @@ const [brand, ...otherLife] = site.life;
           <h2 id="life-heading" class="section-label">Off the clock</h2>
           <a href={url('/life')}>Life</a>
         </div>
-        <p class="deck">{brand.line}</p>
-        {brand.filed && <p class="filed">{brand.filed}</p>}
         <ul class="teaser-slots">
-          {otherLife.map((slot) => (
-            <li>{slot.title}. Filed soon.</li>
+          {site.life.map((slot) => (
+            <li>
+              <span class="work-kicker">{slot.title}</span>
+              <p>{slot.paragraphs[0]}</p>
+            </li>
           ))}
         </ul>
       </section>

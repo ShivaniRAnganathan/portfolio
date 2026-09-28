@@ -2,13 +2,20 @@
 import Base from '../layouts/Base.astro';
 import Badge from '../components/Badge.astro';
 import { SHOW_PENDING_BADGES } from '../data/site';
+import { cleanContent } from '../lib/content';
 import { getCollection } from 'astro:content';
 
 type Note = { text: string; pending?: boolean };
 
 function notes(value?: Note | Note[]): Note[] {
   if (!value) return [];
-  return Array.isArray(value) ? value : [value];
+  const list = Array.isArray(value) ? value : [value];
+  return list
+    .map((line) => {
+      const cleaned = cleanContent(line.text);
+      return { text: cleaned.text, pending: Boolean(line.pending) || cleaned.pending };
+    })
+    .filter((line) => line.text.length > 0);
 }
 
 const dispatches = (await getCollection('ai')).sort((a, b) => a.data.order - b.data.order);
@@ -19,9 +26,10 @@ const fields = [
   ['system', 'The system'],
   ['stillDecide', 'What I still decide'],
   ['outcome', 'Outcome'],
+  ['next', "What's next"],
 ] as const;
 ---
-<Base title="AI Desk" description="AI Desk. Dispatches are filed soon.">
+<Base title="AI Desk" description="How I build with AI.">
   <div class="page">
     <p class="kicker">AI Desk</p>
     <h1 class="page-title">Dispatches</h1>

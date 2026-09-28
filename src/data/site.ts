@@ -130,25 +130,29 @@ export const site = {
     { credential: 'B.S. Computer Science', school: 'Anurag University', year: '[Dates pending]' },
   ],
   updated: 'September 2026',
-  /** Scaffolding only. Do not add facts here until Shivani writes them. */
   life: [
     {
       id: 'roll-and-wear',
       title: 'Roll & Wear',
-      line: 'Founder of Roll & Wear, where I design gaming t-shirts.',
-      filed: '',
+      paragraphs: [
+        "Roll & Wear is a T-shirt brand I co-founded with a friend, and it's heavily inspired by board games. Each tee is tied to a specific game. My co-founder is the design brain and I'm the marketing brain.",
+        "We started in July 2024, so it's been about two years now. The Indian board game scene is really picking up, and we've been part of it: we've had stalls at several major board game meetups. We sell board gaming merchandise, people buy it, and we're still going.",
+        'Next, I want to use AI to test whether AI-made marketing commercials work for a brand like ours.',
+      ],
     },
     {
       id: 'gaming',
       title: 'Board games',
-      line: 'Filed soon.',
-      filed: '',
+      paragraphs: [
+        'I absolutely adore playing board games, and I have a regular board game group I play with. My favourites are Oros and Ark Nova.',
+      ],
     },
     {
-      id: 'fitness',
-      title: 'Fitness',
-      line: 'Filed soon.',
-      filed: '',
+      id: 'movement',
+      title: 'Movement',
+      paragraphs: [
+        'I make sure every day has at least one movement activity, and it brings me a lot of joy. For me that means pole, a lot of Pilates, and trekking whenever I can.',
+      ],
     },
   ],
 };

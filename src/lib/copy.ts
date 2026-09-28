@@ -4,6 +4,7 @@ import {
   USE_CONFIDENTIAL_FALLBACKS,
   type Copy,
 } from '../data/site';
+import { cleanContent } from './content';
 
 export type ResolvedCopy = { text: string; pending: boolean };
 
@@ -13,9 +14,10 @@ export function visibleCopy(copy: Copy | undefined): ResolvedCopy | null {
   if (copy.resumeOnly && !SHOW_RESUME_ONLY_CLAIMS) return null;
   const fallback = copy.fallback?.trim();
   const usingFallback = USE_CONFIDENTIAL_FALLBACKS && Boolean(fallback);
+  const cleaned = cleanContent((usingFallback ? fallback : copy.primary) ?? '');
   return {
-    text: (usingFallback ? fallback : copy.primary).trim(),
-    pending: Boolean(copy.pending) && !usingFallback && SHOW_PENDING_BADGES,
+    text: cleaned.text,
+    pending: !usingFallback && SHOW_PENDING_BADGES && (Boolean(copy.pending) || cleaned.pending),
   };
 }
 
