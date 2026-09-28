@@ -4,7 +4,7 @@ company: Ketto
 role: "[Title pending]"
 timeline: "[Dates pending]"
 featured: true
-order: 2
+order: 5
 outcome:
   primary: About ₹50 crore in additional revenue, from one checkout for several causes.
   pending: true

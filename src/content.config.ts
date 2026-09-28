@@ -21,8 +21,10 @@ const caseStudies = defineCollection({
   schema: z.object({
     title: z.string(),
     company: z.string(),
-    role: z.string(),
-    timeline: z.string(),
+    /** Plain string, or copy when the line has a figure that needs a fallback. */
+    role: z.union([z.string(), copy]),
+    team: z.union([z.string(), copy]).optional(),
+    timeline: z.union([z.string(), copy]),
     featured: z.boolean(),
     order: z.number(),
     outcome: copy,

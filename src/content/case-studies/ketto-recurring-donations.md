@@ -4,7 +4,7 @@ company: Ketto
 role: "[Title pending]"
 timeline: "[Dates pending]"
 featured: false
-order: 4
+order: 6
 outcome:
   primary: A donor can set a monthly amount once, instead of being asked again for every campaign.
 dek: Recurring donations, specified with a checklist instead of a long PRD.

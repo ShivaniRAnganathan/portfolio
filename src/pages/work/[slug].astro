@@ -5,7 +5,15 @@ import Copy from '../../components/Copy.astro';
 import Text from '../../components/Text.astro';
 import { caseHeadline, visibleCopy } from '../../lib/copy';
 import { url } from '../../lib/url';
+import type { Copy as CopyText } from '../../data/site';
 import { getCollection } from 'astro:content';
+
+type FactValue = string | CopyText;
+
+function resolveFact(value: FactValue | undefined) {
+  if (!value) return null;
+  return visibleCopy(typeof value === 'string' ? { primary: value } : value);
+}
 
 export async function getStaticPaths() {
   const studies = await getCollection('caseStudies');
@@ -23,7 +31,16 @@ if (!entry) {
 const prev = index > 0 ? studies[index - 1] : undefined;
 const next = index < studies.length - 1 ? studies[index + 1] : undefined;
 const outcome = caseHeadline(entry.data);
-const scale = visibleCopy(entry.data.scale);
+const facts = [
+  { label: 'Role', value: entry.data.role, wide: false },
+  { label: 'Team', value: entry.data.team, wide: false },
+  { label: 'Timeline', value: entry.data.timeline, wide: true },
+  { label: 'Scale', value: entry.data.scale, wide: true },
+  { label: 'Outcome', value: entry.data.outcome, wide: true },
+].flatMap((fact) => {
+  const resolved = resolveFact(fact.value);
+  return resolved ? [{ ...fact, resolved }] : [];
+});
 const description = `${entry.data.company}. ${entry.data.title}.`;
 ---
 <Base title={entry.data.title} description={description}>
@@ -38,28 +55,17 @@ const description = `${entry.data.company}. ${entry.data.title}.`;
       <p class="case-name">{entry.data.title}</p>
       <p class="lede">{entry.data.dek}</p>
       <div class="summary">
+        <p class="fact-kicker">The facts</p>
         <dl>
-          <div>
-            <dt>Company</dt>
-            <dd>{entry.data.company}</dd>
-          </div>
-          <div>
-            <dt>Role</dt>
-            <dd><Text text={entry.data.role} /></dd>
-          </div>
-          <div>
-            <dt>Timeline</dt>
-            <dd><Text text={entry.data.timeline} /></dd>
-          </div>
-          {scale && (
-            <div class="span">
-              <dt>Scale</dt>
+          {facts.map((fact) => (
+            <div class={fact.wide ? 'wide' : undefined}>
+              <dt>{fact.label}</dt>
               <dd>
-                <Text text={scale.text} />
-                {scale.pending && <Badge />}
+                <Text text={fact.resolved.text} />
+                {fact.resolved.pending && <Badge />}
               </dd>
             </div>
-          )}
+          ))}
         </dl>
       </div>
     </header>
