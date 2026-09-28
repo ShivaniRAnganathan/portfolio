@@ -28,7 +28,15 @@ interface Props {
   more?: { href: string; label: string };
 }
 
+const kinds: Record<Kind, { glyph: string; label: string }> = {
+  work: { glyph: '◆', label: 'work' },
+  ai: { glyph: '✶', label: 'ai' },
+  writing: { glyph: '✎', label: 'writing' },
+  life: { glyph: '♡', label: 'life' },
+};
+
 const {
+  kind,
   date,
   title,
   paragraphs = [],
@@ -39,15 +47,21 @@ const {
   cards = [],
   more,
 } = Astro.props;
+const meta = kinds[kind];
 ---
-<article class="note" id={id}>
-  {date && (
-    <p class="note-date">
-      <span class="date-day">{date.day}</span>
-      <span class="date-year">{date.year}</span>
-    </p>
-  )}
-  <div class="note-body">
+<article class:list={['note', `note-${kind}`]} id={id}>
+  <p class="note-meta">
+    <span class:list={['pill', `pill-${kind}`]}>
+      <span class="glyph" aria-hidden="true">{meta.glyph}</span>
+      {meta.label}
+    </span>
+    {date && (
+      <span class="note-date">
+        <span class="date-day">{date.day}</span>
+        <span class="date-year">{date.year}</span>
+      </span>
+    )}
+  </p>
   <h2>
     {href ? (
       <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
@@ -88,5 +102,4 @@ const {
       <a href={more.href}>{more.label}</a>
     </p>
   )}
-  </div>
 </article>

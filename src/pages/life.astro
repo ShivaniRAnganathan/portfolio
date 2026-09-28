@@ -19,7 +19,7 @@ const loosePieces = pieces.filter((piece) => !piece.data.slot || !slotIds.has(pi
       {site.life.map((slot) => {
         const filed = pieces.filter((piece) => piece.data.slot === slot.id);
         return (
-          <li id={slot.id}>
+          <li>
             <h2>{slot.title}</h2>
             {slot.paragraphs.map((paragraph) => {
               const cleaned = cleanContent(paragraph);

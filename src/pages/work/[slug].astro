@@ -3,7 +3,8 @@ import Base from '../../layouts/Base.astro';
 import Copy from '../../components/Copy.astro';
 import StatStrip from '../../components/StatStrip.astro';
 import Text from '../../components/Text.astro';
-import { visibleCopy, type ResolvedCopy } from '../../lib/copy';
+import { countsAsPendingFigure, visibleCopy, type ResolvedCopy } from '../../lib/copy';
+import { SHOW_PENDING_BADGES, USE_CONFIDENTIAL_FALLBACKS } from '../../data/site';
 import { url } from '../../lib/url';
 import type { Copy as CopyText } from '../../data/site';
 import { getCollection } from 'astro:content';
@@ -45,11 +46,37 @@ const facts = [
   return parts.length > 0 ? [{ ...fact, parts }] : [];
 });
 
+let pendingFigures = 0;
+const tally = (text: string, pending: boolean) => {
+  if (countsAsPendingFigure(text, pending)) pendingFigures += 1;
+};
+for (const fact of facts) {
+  for (const part of fact.parts) tally(part.text, part.pending);
+}
+for (const section of entry.data.sections) {
+  for (const paragraph of section.paragraphs ?? []) {
+    const visible = visibleCopy(paragraph);
+    if (visible) tally(visible.text, visible.pending);
+  }
+  for (const item of section.items ?? []) {
+    const visible = visibleCopy(item);
+    if (visible) tally(visible.text, visible.pending);
+  }
+}
+for (const stat of entry.data.stats ?? []) {
+  const fallback = stat.fallback?.trim();
+  const usingFallback = USE_CONFIDENTIAL_FALLBACKS && Boolean(fallback);
+  tally(usingFallback ? fallback! : stat.value, !usingFallback && SHOW_PENDING_BADGES && Boolean(stat.pending));
+}
+
 const description = `${entry.data.company}. ${entry.data.headline}`;
 ---
 <Base title={entry.data.headline} description={description}>
   <article class="page">
     <p class="back"><a href={url('/work')}>Work</a></p>
+    {pendingFigures >= 3 && (
+      <p class="editors-note">Editor's note. Dotted underlines mark figures not yet approved for publishing.</p>
+    )}
     <header class="opening">
       <p class="kicker">{entry.data.company}</p>
       <h1>{entry.data.headline}</h1>

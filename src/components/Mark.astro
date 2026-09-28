@@ -1,34 +1,21 @@
 ---
 import { existsSync } from 'node:fs';
-import path from 'node:path';
 import { url } from '../lib/url';
 
 /**
- * Portrait frame. public/me.jpg is Shivani's public LinkedIn photo.
- * The face is shown as photographed. The drawn monogram is only the fallback,
- * and the favicon.
+ * Hand-drawn monogram. If public/me.jpg is added later, it fills this frame.
+ * Do not generate a portrait.
  */
-interface Props {
-  priority?: boolean;
-}
-const { priority = false } = Astro.props;
-const hasPhoto = existsSync(path.join(process.cwd(), 'public', 'me.jpg'));
+const hasPhoto = existsSync(new URL('../../public/me.jpg', import.meta.url));
 ---
 <div class="mark">
   {hasPhoto ? (
-    <img
-      src={url('/me.jpg')}
-      alt="Shivani Ranganathan"
-      width="400"
-      height="400"
-      loading={priority ? 'eager' : 'lazy'}
-      fetchpriority={priority ? 'high' : 'auto'}
-    />
+    <img src={url('/me.jpg')} alt="Shivani Ranganathan" width="88" height="88" />
   ) : (
     <svg viewBox="0 0 88 88" aria-hidden="true">
       <path
-        fill="#fff"
-        stroke="#111"
+        fill="#fff4b8"
+        stroke="#1c1917"
         stroke-width="1.8"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -36,18 +23,18 @@ const hasPhoto = existsSync(path.join(process.cwd(), 'public', 'me.jpg'));
       />
       <path
         fill="none"
-        stroke="#111"
+        stroke="#c2410c"
         stroke-width="2.7"
         stroke-linecap="round"
         d="M54 31c-1-7-9-10-15-7-7 3-8 11-2 15 7 4 12 6 11 13-1 7-9 10-16 7"
       />
       <path
-        fill="#111"
+        fill="#e11d48"
         d="M63 17.2l1.15 2.7 2.9.25-2.2 1.9.7 2.8-2.55-1.5-2.55 1.5.7-2.8-2.2-1.9 2.9-.25z"
       />
       <path
         fill="none"
-        stroke="#111"
+        stroke="#1c1917"
         stroke-width="1.3"
         stroke-linecap="round"
         d="M24 63c7 5 16 6.5 25 2.5"

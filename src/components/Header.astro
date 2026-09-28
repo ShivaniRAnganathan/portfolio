@@ -26,33 +26,26 @@ const links = [
 ---
 <a class="skip" href="#content">Skip to content</a>
 <header class:list={['top', home && 'is-home']}>
-  {home ? (
-    <h1 class="name"><a href={url('/')}>{site.masthead}</a></h1>
-  ) : (
-    <div class="hello">
-      <Mark />
-      <p class="name"><a href={url('/')}>{site.masthead}</a></p>
+  <div class="hello">
+    <Mark />
+    <div>
+      {home ? (
+        <h1 class="name"><a href={url('/')}>{site.masthead}</a></h1>
+      ) : (
+        <p class="name"><a href={url('/')}>{site.masthead}</a></p>
+      )}
     </div>
-  )}
+  </div>
   {home && <p class="bio">{site.greeting}</p>}
-  {home && <Mark priority />}
   {home && (
-    <section class="tracks" aria-label="Building, working, and doing">
-      {site.direction.map((group) => (
-        <div class="track">
-          <h2 class="track-label">{group.label}</h2>
-          <ul>
-            {group.items.map((item) => (
-              <li>
-                {item.map((piece) =>
-                  piece.href ? <a href={url(piece.href)}>{piece.text}</a> : <span>{piece.text}</span>,
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </section>
+    <aside class="clock" aria-label="Off the clock">
+      <p class="clock-label"><a href={url('/life')}>off the clock</a></p>
+      <ul>
+        {site.offClock.map((line) => (
+          <li>{line}</li>
+        ))}
+      </ul>
+    </aside>
   )}
   <nav class="nav" aria-label="Primary">
     {links.map((link) => (

@@ -13,19 +13,11 @@ export function visibleCopy(copy: Copy | undefined): ResolvedCopy | null {
   if (!copy) return null;
   if (copy.resumeOnly && !SHOW_RESUME_ONLY_CLAIMS) return null;
   const fallback = copy.fallback?.trim();
-  const cleaned = cleanContent(copy.primary ?? '');
-  const flagged = Boolean(copy.pending) || cleaned.pending;
-  if (flagged && hasUnapprovedFigure(cleaned.text)) {
-    if (!fallback) return null;
-    const safe = cleanContent(fallback);
-    if (!safe.text || hasUnapprovedFigure(safe.text)) return null;
-    return { text: safe.text, pending: false };
-  }
   const usingFallback = USE_CONFIDENTIAL_FALLBACKS && Boolean(fallback);
-  const published = cleanContent((usingFallback ? fallback : copy.primary) ?? '');
+  const cleaned = cleanContent((usingFallback ? fallback : copy.primary) ?? '');
   return {
-    text: published.text,
-    pending: !usingFallback && SHOW_PENDING_BADGES && flagged,
+    text: cleaned.text,
+    pending: !usingFallback && SHOW_PENDING_BADGES && (Boolean(copy.pending) || cleaned.pending),
   };
 }
 
@@ -52,27 +44,12 @@ export function caseParts(data: { outcome: OutcomeValue; resumeOutcome?: Copy })
   });
 }
 
-const plainNonMetrics = [
-  /\b\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b/gi,
-  /\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b/gi,
-  /\b(?:19|20)\d{2}\b/g,
-  /\b\d+\s+hours\b/gi,
-  /₹\s?1\.25\s+lakh/gi,
-  /\bpriority\s+0\b/gi,
-  /\b15[–-]20\b/g,
-];
-
-/** A performance figure that is not a date, a year, or one of the plain non-metrics. */
-export function hasUnapprovedFigure(text: string) {
-  let rest = text;
-  for (const pattern of plainNonMetrics) rest = rest.replace(pattern, ' ');
-  return /\d/.test(rest);
-}
+const yearFigure = /\b(?:19|20)\d{2}\b/g;
 
 /** A pending line that still contains a performance figure, ignoring calendar years. */
 export function countsAsPendingFigure(text: string, pending: boolean): boolean {
   if (!pending) return false;
-  return hasUnapprovedFigure(text);
+  return /\d/.test(text.replace(yearFigure, ' '));
 }
 
 export function caseHeadline(data: { outcome: OutcomeValue; resumeOutcome?: Copy }): ResolvedCopy {

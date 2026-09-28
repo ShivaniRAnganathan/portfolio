@@ -2,8 +2,8 @@
  * Site-wide flags and short copy.
  *
  * SHOW_PENDING_BADGES
- *   false: no dotted underline. Unapproved figures are omitted, or
- *   replaced by their number-free fallback, in visibleCopy.
+ *   Set to false after Shivani confirms the unverified figures.
+ *   That hides the dotted underline on figures not yet approved.
  *
  * USE_CONFIDENTIAL_FALLBACKS
  *   Set to true to publish the safer FundsIndia wording stored beside
@@ -17,7 +17,7 @@
  *   false: they are removed. Sections that would be empty are omitted.
  */
 
-export const SHOW_PENDING_BADGES = false;
+export const SHOW_PENDING_BADGES = true;
 export const USE_CONFIDENTIAL_FALLBACKS = false;
 export const SHOW_RESUME_ONLY_CLAIMS = true;
 
@@ -43,46 +43,16 @@ export const site = {
   /** Front-page headline. Swap this line without touching the layout. */
   hook: "Hi, I'm Shiv. I break problems down to first principles, then build the AI system that solves them.",
   /**
-   * Home bio. Identity only. The jobs and the life sit in `direction`,
-   * so this line does not repeat them. ElasticRun stays off it.
+   * Home bio. First person, from the hook, the intro, and life.
+   * ElasticRun stays off this line, same as the previous short bio.
    */
-  greeting: "I'm a product manager in Chennai who reasons from first principles.",
-  /**
-   * Three short groups under the bio. Every line is already in the repo.
-   * A line can be one link, or a few links in a single sentence.
-   */
-  direction: [
-    {
-      label: 'building',
-      items: [
-        [{ href: '/life#roll-and-wear', text: 'Roll & Wear, the t-shirt brand I co-founded, inspired by board games.' }],
-        [{ href: '/#how-i-build', text: 'How I build with AI, to automate the recurring parts of my work.' }],
-        [{ href: '/projects', text: 'Projects in progress.' }],
-      ],
-    },
-    {
-      label: 'working',
-      items: [
-        [{ href: '/work', text: 'Product at FundsIndia Private Wealth.' }],
-        [
-          { href: '/work/redemption-tax-exit-load/', text: 'Showing tax and exit load before a redemption' },
-          { text: ', ' },
-          { href: '/work/wealth-spectrum-one-view/', text: 'one view of every Private Wealth portfolio' },
-          { text: ', and ' },
-          { href: '/work/ketto-bulk-donation/', text: 'bulk donation at Ketto' },
-          { text: '.' },
-        ],
-        [{ href: '/about#experience-heading', text: 'Previously Ketto and HSBC.' }],
-      ],
-    },
-    {
-      label: 'doing',
-      items: [
-        [{ href: '/writing', text: 'Writing on Medium.' }],
-        [{ href: '/life#gaming', text: 'Oros and Ark Nova with my regular group.' }],
-        [{ href: '/life#movement', text: 'Pole, a lot of Pilates, and trekking whenever I can.' }],
-      ],
-    },
+  greeting:
+    "I'm a product manager who reasons from first principles. I work in Private Wealth at FundsIndia, in Chennai, and before that at Ketto and HSBC. On the side I run a t-shirt brand called Roll & Wear, play board games, and train.",
+  /** Compact life lines. Each one is already in site.life. */
+  offClock: [
+    'Roll & Wear, the t-shirt brand I co-founded, inspired by board games.',
+    'Oros and Ark Nova with my regular group.',
+    'Pole, a lot of Pilates, and trekking whenever I can.',
   ],
   signoff: 'thanks for stopping by',
   positioning:

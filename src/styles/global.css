@@ -1,15 +1,15 @@
 @import "./fonts.css";
 
 :root {
-  --bg: #ffffff;
-  --ink: #111111;
-  --muted: #686c76;
-  --line: #e6e6e6;
-  --underline: #969ba6;
+  --bg: #fffaf4;
+  --ink: #1c1917;
+  --muted: #5c534c;
+  --line: #eadfd4;
+  --accent: #c2410c;
+  --hi: #ffe56a;
   --sans: "Source Sans 3", "Source Sans Fallback", "Segoe UI", sans-serif;
   --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
-  --prose: 28.25rem;
-  --column: 35.5rem;
+  --prose: 65ch;
   color-scheme: light;
 }
 
@@ -28,8 +28,8 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 1.0625rem;
+  line-height: 1.55;
   font-variant-numeric: tabular-nums;
   text-rendering: optimizeLegibility;
 }
@@ -51,15 +51,18 @@ ol {
 }
 
 a {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--underline);
-  text-underline-offset: 0.15em;
+  color: var(--accent);
+  text-decoration: none;
+  background-image: linear-gradient(var(--hi), var(--hi));
+  background-repeat: no-repeat;
+  background-size: 100% 0.28em;
+  background-position: 0 92%;
 }
 
 a:hover {
-  color: #000;
-  text-decoration-color: #111;
+  color: var(--ink);
+  background-size: 100% 0.72em;
+  background-position: 0 88%;
 }
 
 :focus {
@@ -67,12 +70,12 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
 ::selection {
-  background: #ececec;
+  background: var(--hi);
   color: var(--ink);
 }
 
@@ -83,7 +86,7 @@ a:hover {
   transform: translateY(-120%);
   background: var(--bg);
   color: var(--ink);
-  text-decoration: none;
+  background-image: none;
   padding: 0.5rem 0.75rem;
   z-index: 5;
 }
@@ -92,37 +95,34 @@ a:hover {
   transform: translateY(0.75rem);
 }
 
-.page,
-.top {
-  width: min(var(--column), 100%);
+.page {
+  width: min(40rem, 100%);
   margin-inline: auto;
   padding-inline: 1.25rem;
 }
 
-.page-wide {
-  --column: 50.5rem;
-}
-
 .top {
-  padding-top: 2.25rem;
+  width: min(40rem, 100%);
+  margin-inline: auto;
+  padding: 2.25rem 1.25rem 0;
 }
 
 .name {
-  font-size: 32px;
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1.15;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
   text-transform: lowercase;
 }
 
 .name a {
   color: var(--ink);
-  text-decoration: none;
+  background-image: none;
 }
 
 .name a:hover {
-  color: #000;
-  text-decoration: none;
+  color: var(--accent);
+  background-image: none;
 }
 
 .hello {
@@ -132,15 +132,14 @@ a:hover {
 }
 
 .mark {
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 4.25rem;
+  height: 4.25rem;
   flex: none;
 }
 
-.is-home .mark {
-  width: 11.5rem;
-  height: 11.5rem;
-  margin-top: 1rem;
+.top:not(.is-home) .mark {
+  width: 2.6rem;
+  height: 2.6rem;
 }
 
 .mark svg,
@@ -152,45 +151,47 @@ a:hover {
 
 .mark img {
   object-fit: cover;
-  border: 1px solid #111;
+  border: 1.5px solid var(--ink);
+  border-radius: 46% 54% 48% 52% / 42% 46% 54% 58%;
 }
 
 .bio {
   margin-top: 0.9rem;
   max-width: var(--prose);
   color: var(--ink);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 1.0625rem;
+  line-height: 1.5;
 }
 
-.tracks {
-  margin-top: 1.15rem;
-  display: grid;
-  gap: 0.85rem;
+.clock {
+  margin-top: 1rem;
   max-width: var(--prose);
+  padding: 0.7rem 0.85rem 0.8rem;
+  background: #fffdf8;
+  border: 1.5px solid var(--ink);
+  border-radius: 2px 14px 10px 4px;
+  box-shadow: 4px 4px 0 var(--hi);
 }
 
-.track-label {
+.clock-label {
   font-family: var(--mono);
   font-size: 0.72rem;
-  font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: lowercase;
-  color: var(--muted);
 }
 
-.track ul {
+.clock ul {
   list-style: none;
-  margin-top: 0.18rem;
+  margin-top: 0.35rem;
 }
 
-.track li {
-  font-size: 1.02rem;
+.clock li {
+  font-size: 0.98rem;
   line-height: 1.4;
 }
 
-.track li + li {
-  margin-top: 0.16rem;
+.clock li + li {
+  margin-top: 0.12rem;
 }
 
 .nav {
@@ -201,14 +202,19 @@ a:hover {
 }
 
 .nav a {
-  color: var(--ink);
-  font-size: 13px;
+  color: var(--accent);
+  font-size: 0.98rem;
 }
 
 .nav a[aria-current="page"] {
   color: var(--ink);
 }
 
+.selected {
+  margin-top: 1.85rem;
+}
+
+.selected h2,
 .kicker,
 .eyebrow,
 .section-label,
@@ -221,89 +227,115 @@ a:hover {
   color: var(--muted);
 }
 
+.selected ul,
 .link-list {
   list-style: none;
   margin-top: 0.55rem;
 }
 
+.selected li + li,
 .link-list li + li {
   margin-top: 0.35rem;
 }
 
+.selected a,
 .link-list a {
   color: var(--ink);
-  font-size: 13px;
+  font-size: 1.0625rem;
   line-height: 1.4;
-  text-decoration-color: var(--underline);
+  text-decoration-color: var(--accent);
 }
 
 .notes {
-  margin-top: 2.25rem;
+  margin-top: 3.25rem;
 }
 
 .note + .note {
   margin-top: 3.15rem;
 }
 
-.note-date {
+.note-meta {
   display: flex;
-  gap: 0.35rem;
-  margin: 0 0 0.35rem;
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1.5;
+  align-items: center;
+  gap: 0.7rem;
 }
 
-.note-date span {
-  display: inline;
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 0.12rem 0.48rem 0.16rem;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: lowercase;
+}
+
+.glyph {
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.pill-work {
+  background: #ffd7c2;
+  color: #9a3412;
+}
+
+.pill-ai {
+  background: #ddd6fe;
+  color: #5b21b6;
+}
+
+.pill-writing {
+  background: #fde68a;
+  color: #92400e;
+}
+
+.pill-life {
+  background: #bbf7d0;
+  color: #166534;
+}
+
+.note:hover .pill {
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.note-date {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 0 0.2em 0.08em;
+  background-image: linear-gradient(var(--hi), var(--hi));
+  background-repeat: no-repeat;
+  background-size: 100% 0.4em;
+  background-position: 0 100%;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  line-height: 1.05;
+  transform: rotate(-2deg);
 }
 
 .aside {
   max-width: var(--prose);
   margin-top: 0.75rem;
+  padding: 0.15rem 0 0.15rem 0.7rem;
+  border-left: 3px solid var(--hi);
   color: var(--ink);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 1.02rem;
+  line-height: 1.45;
 }
 
-@media (min-width: 900px) {
-  .note {
-    display: grid;
-    grid-template-columns: 4.25rem minmax(0, 1fr);
-    column-gap: 1.75rem;
-    margin-left: -6rem;
-  }
-
-  .note-date {
-    display: block;
-    margin: 0.45rem 0 0;
-    text-align: right;
-  }
-
-  .note-date span {
-    display: block;
-  }
-}
-
-.note h2 {
-  margin-top: 0;
-  max-width: none;
-  font-size: 24px;
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1.2;
-}
-
+.note h2,
 .page-title {
   margin-top: 0.3rem;
   max-width: var(--prose);
-  font-size: 32px;
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1.15;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
 .note h2 a {
@@ -312,12 +344,10 @@ a:hover {
 }
 
 .note h2 a:hover {
-  color: #000;
-  text-decoration: underline;
-  text-decoration-color: var(--underline);
+  color: var(--accent);
 }
 
-.note-body > p,
+.note > p,
 .card p,
 .lede,
 .deck,
@@ -328,8 +358,8 @@ a:hover {
 .writing-summary {
   max-width: var(--prose);
   margin-top: 0.7rem;
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 1.0625rem;
+  line-height: 1.55;
 }
 
 .card {
@@ -361,15 +391,15 @@ a:hover {
 }
 
 .card .more,
-.note-body > .more {
+.note > .more {
   margin-top: 0.85rem;
 }
 
 h1 {
-  max-width: none;
-  font-size: 32px;
-  font-weight: 500;
-  letter-spacing: -0.035em;
+  max-width: var(--prose);
+  font-size: clamp(1.7rem, 3vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
   line-height: 1.15;
 }
 
@@ -405,7 +435,7 @@ h1 {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--accent);
 }
 
 .prose p + p,
@@ -433,7 +463,7 @@ h1 {
   top: 0.72em;
   width: 0.4rem;
   height: 1px;
-  background: var(--ink);
+  background: var(--accent);
 }
 
 .summary {
@@ -458,11 +488,11 @@ h1 {
   font-size: 0.72rem;
   letter-spacing: 0.04em;
   text-transform: lowercase;
-  color: var(--ink);
+  color: var(--accent);
 }
 
 .summary dd {
-  font-size: 13px;
+  font-size: 1.0625rem;
   line-height: 1.45;
 }
 
@@ -509,7 +539,7 @@ h1 {
 }
 
 .back a {
-  color: var(--ink);
+  color: var(--accent);
   font-size: 0.95rem;
 }
 
@@ -530,7 +560,7 @@ h1 {
   display: block;
   font-family: var(--mono);
   font-size: 0.72rem;
-  color: var(--ink);
+  color: var(--accent);
 }
 
 .pager strong {
@@ -562,61 +592,8 @@ h1 {
 }
 
 .work-link:hover {
-  background-color: #f4f4f4;
+  background-color: #fff6d0;
   background-image: none;
-}
-
-.project-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.75rem;
-  margin-top: 1.75rem;
-  list-style: none;
-}
-
-.project-card {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-}
-
-.project-card:hover {
-  text-decoration: none;
-}
-
-.project-card:hover .project-title {
-  text-decoration: underline;
-  text-decoration-color: var(--underline);
-}
-
-.project-art {
-  display: block;
-  width: 100%;
-  height: auto;
-  background: #fff;
-}
-
-.project-title {
-  display: block;
-  margin-top: 0.55rem;
-  max-width: 24rem;
-  color: #111;
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 1.4;
-}
-
-.project-detail-art {
-  width: min(16rem, 100%);
-  margin-top: 0.5rem;
-}
-
-@media (min-width: 700px) {
-  .project-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem 1.5rem;
-  }
 }
 
 .work-list li:last-child .work-link,
@@ -641,7 +618,7 @@ h1 {
 .work-index,
 .principle-index,
 .work-kicker {
-  color: var(--ink);
+  color: var(--accent);
   font-family: var(--mono);
   font-size: 0.75rem;
 }
@@ -671,7 +648,7 @@ h1 {
   margin-top: 0.85rem;
   font-family: var(--mono);
   font-size: 0.72rem;
-  color: var(--ink);
+  color: var(--accent);
 }
 
 .dispatch-fields dd {
@@ -772,7 +749,7 @@ h1 {
 }
 
 .placeholder {
-  color: var(--ink);
+  color: var(--accent);
   font-weight: 600;
 }
 
