@@ -42,6 +42,19 @@ export const site = {
     'Chennai, India. Authorized to work in India. Open to remote roles and to relocation.',
   /** Front-page headline. Swap this line without touching the layout. */
   hook: "Hi, I'm Shiv. I break problems down to first principles, then build the AI system that solves them.",
+  /**
+   * Home bio. First person, from the hook, the intro, and life.
+   * ElasticRun stays off this line, same as the previous short bio.
+   */
+  greeting:
+    "I'm a product manager who reasons from first principles. I work in Private Wealth at FundsIndia, in Chennai, and before that at Ketto and HSBC. On the side I run a t-shirt brand called Roll & Wear, play board games, and train.",
+  /** Compact life lines. Each one is already in site.life. */
+  offClock: [
+    'Roll & Wear, the t-shirt brand I co-founded, inspired by board games.',
+    'Oros and Ark Nova with my regular group.',
+    'Pole, a lot of Pilates, and trekking whenever I can.',
+  ],
+  signoff: 'thanks for stopping by',
   positioning:
     'A fintech and consumer-growth product manager who turns retention and monetization problems into shipped products.',
   intro:

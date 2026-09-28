@@ -13,10 +13,14 @@ interface Card {
   link?: { href: string; label: string; external?: boolean };
 }
 
+type Kind = 'work' | 'ai' | 'writing' | 'life';
+
 interface Props {
-  date?: string;
+  kind: Kind;
+  date?: { day: string; year: string };
   title: string;
   paragraphs?: Para[];
+  aside?: string;
   href?: string;
   external?: boolean;
   id?: string;
@@ -24,10 +28,40 @@ interface Props {
   more?: { href: string; label: string };
 }
 
-const { date, title, paragraphs = [], href, external = false, id, cards = [], more } = Astro.props;
+const kinds: Record<Kind, { glyph: string; label: string }> = {
+  work: { glyph: '◆', label: 'work' },
+  ai: { glyph: '✶', label: 'ai' },
+  writing: { glyph: '✎', label: 'writing' },
+  life: { glyph: '♡', label: 'life' },
+};
+
+const {
+  kind,
+  date,
+  title,
+  paragraphs = [],
+  aside,
+  href,
+  external = false,
+  id,
+  cards = [],
+  more,
+} = Astro.props;
+const meta = kinds[kind];
 ---
-<article class="note" id={id}>
-  {date && <p class="note-date">{date}</p>}
+<article class:list={['note', `note-${kind}`]} id={id}>
+  <p class="note-meta">
+    <span class:list={['pill', `pill-${kind}`]}>
+      <span class="glyph" aria-hidden="true">{meta.glyph}</span>
+      {meta.label}
+    </span>
+    {date && (
+      <span class="note-date">
+        <span class="date-day">{date.day}</span>
+        <span class="date-year">{date.year}</span>
+      </span>
+    )}
+  </p>
   <h2>
     {href ? (
       <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
@@ -43,6 +77,7 @@ const { date, title, paragraphs = [], href, external = false, id, cards = [], mo
       <Text text={paragraph.text} pending={paragraph.pending} />
     </p>
   ))}
+  {aside && <p class="aside">{aside}</p>}
   {cards.map((card) => (
     <section class="card">
       <h3>{card.heading}</h3>

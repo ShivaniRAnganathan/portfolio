@@ -1,11 +1,12 @@
 @import "./fonts.css";
 
 :root {
-  --bg: #faf9f7;
-  --ink: #1a1a1a;
-  --muted: #5e646e;
-  --line: #e4e0da;
-  --accent: #9b2226;
+  --bg: #fffaf4;
+  --ink: #1c1917;
+  --muted: #5c534c;
+  --line: #eadfd4;
+  --accent: #c2410c;
+  --hi: #ffe56a;
   --sans: "Source Sans 3", "Source Sans Fallback", "Segoe UI", sans-serif;
   --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
   --prose: 65ch;
@@ -51,11 +52,17 @@ ol {
 
 a {
   color: var(--accent);
-  text-underline-offset: 0.18em;
+  text-decoration: none;
+  background-image: linear-gradient(var(--hi), var(--hi));
+  background-repeat: no-repeat;
+  background-size: 100% 0.28em;
+  background-position: 0 92%;
 }
 
 a:hover {
-  color: #6e1b1e;
+  color: var(--ink);
+  background-size: 100% 0.72em;
+  background-position: 0 88%;
 }
 
 :focus {
@@ -68,7 +75,7 @@ a:hover {
 }
 
 ::selection {
-  background: #f3d6d6;
+  background: var(--hi);
   color: var(--ink);
 }
 
@@ -79,6 +86,7 @@ a:hover {
   transform: translateY(-120%);
   background: var(--bg);
   color: var(--ink);
+  background-image: none;
   padding: 0.5rem 0.75rem;
   z-index: 5;
 }
@@ -109,19 +117,81 @@ a:hover {
 
 .name a {
   color: var(--ink);
-  text-decoration: none;
+  background-image: none;
 }
 
 .name a:hover {
   color: var(--accent);
+  background-image: none;
+}
+
+.hello {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.mark {
+  width: 4.25rem;
+  height: 4.25rem;
+  flex: none;
+}
+
+.top:not(.is-home) .mark {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+
+.mark svg,
+.mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mark img {
+  object-fit: cover;
+  border: 1.5px solid var(--ink);
+  border-radius: 46% 54% 48% 52% / 42% 46% 54% 58%;
 }
 
 .bio {
-  margin-top: 0.85rem;
+  margin-top: 0.9rem;
   max-width: var(--prose);
   color: var(--ink);
   font-size: 1.0625rem;
-  line-height: 1.45;
+  line-height: 1.5;
+}
+
+.clock {
+  margin-top: 1rem;
+  max-width: var(--prose);
+  padding: 0.7rem 0.85rem 0.8rem;
+  background: #fffdf8;
+  border: 1.5px solid var(--ink);
+  border-radius: 2px 14px 10px 4px;
+  box-shadow: 4px 4px 0 var(--hi);
+}
+
+.clock-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+}
+
+.clock ul {
+  list-style: none;
+  margin-top: 0.35rem;
+}
+
+.clock li {
+  font-size: 0.98rem;
+  line-height: 1.4;
+}
+
+.clock li + li {
+  margin-top: 0.12rem;
 }
 
 .nav {
@@ -134,7 +204,6 @@ a:hover {
 .nav a {
   color: var(--accent);
   font-size: 0.98rem;
-  text-decoration: underline;
 }
 
 .nav a[aria-current="page"] {
@@ -185,11 +254,78 @@ a:hover {
   margin-top: 3.15rem;
 }
 
-.note-date {
+.note-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 0.12rem 0.48rem 0.16rem;
+  border-radius: 999px;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: lowercase;
+}
+
+.glyph {
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.pill-work {
+  background: #ffd7c2;
+  color: #9a3412;
+}
+
+.pill-ai {
+  background: #ddd6fe;
+  color: #5b21b6;
+}
+
+.pill-writing {
+  background: #fde68a;
+  color: #92400e;
+}
+
+.pill-life {
+  background: #bbf7d0;
+  color: #166534;
+}
+
+.note:hover .pill {
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.note-date {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 0 0.2em 0.08em;
+  background-image: linear-gradient(var(--hi), var(--hi));
+  background-repeat: no-repeat;
+  background-size: 100% 0.4em;
+  background-position: 0 100%;
   color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  line-height: 1.05;
+  transform: rotate(-2deg);
+}
+
+.aside {
+  max-width: var(--prose);
+  margin-top: 0.75rem;
+  padding: 0.15rem 0 0.15rem 0.7rem;
+  border-left: 3px solid var(--hi);
+  color: var(--ink);
+  font-size: 1.02rem;
+  line-height: 1.45;
 }
 
 .note h2,
@@ -452,7 +588,12 @@ h1 {
   padding: 0.95rem 0;
   border-top: 1px solid var(--line);
   color: inherit;
-  text-decoration: none;
+  background-image: none;
+}
+
+.work-link:hover {
+  background-color: #fff6d0;
+  background-image: none;
 }
 
 .work-list li:last-child .work-link,
@@ -545,6 +686,20 @@ h1 {
   padding-bottom: 2.5rem;
   color: var(--muted);
   font-size: 0.95rem;
+}
+
+.signoff {
+  color: var(--ink);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.updated {
+  margin-top: 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
 }
 
 .footer-line {

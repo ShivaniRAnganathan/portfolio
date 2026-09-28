@@ -14,11 +14,15 @@ type Card = {
   paragraphs: Para[];
   link?: { href: string; label: string; external?: boolean };
 };
+type Kind = 'work' | 'ai' | 'writing' | 'life';
+type NotebookDate = { day: string; year: string };
 type Item = {
   sort: string;
-  date?: string;
+  kind: Kind;
+  date?: NotebookDate;
   title: string;
   paragraphs: Para[];
+  aside?: string;
   href?: string;
   external?: boolean;
   id?: string;
@@ -30,6 +34,7 @@ const months: Record<string, string> = {
   jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
   jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12',
 };
+const monthName = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
 function writingDate(raw?: string) {
   if (!raw) return null;
@@ -38,15 +43,37 @@ function writingDate(raw?: string) {
   const mm = months[match[1].slice(0, 3).toLowerCase()];
   if (!mm) return null;
   const dd = match[2].padStart(2, '0');
-  return { sort: `${match[3]}-${mm}-${dd}`, date: `${mm}.${dd} ${match[3]}` };
+  return {
+    sort: `${match[3]}-${mm}-${dd}`,
+    date: { day: `${monthName[Number(mm) - 1]} ${Number(match[2])}`, year: match[3] },
+  };
 }
 
 /** Ship or launch dates taken from the case-study copy. No day is invented. */
-const caseWhen: Record<string, { sort: string; date: string }> = {
-  'redemption-tax-exit-load': { sort: '2025-10-01', date: '10 2025' },
-  'wealth-spectrum-one-view': { sort: '2025-05-21', date: '05.21 2025' },
-  'rm-dashboard': { sort: '2026-02-12', date: '02.12 2026' },
-  'voice-of-the-rm': { sort: '2026-08-12', date: '08.12 2026' },
+const caseWhen: Record<string, { sort: string; date: NotebookDate }> = {
+  'redemption-tax-exit-load': { sort: '2025-10-01', date: { day: 'oct', year: '2025' } },
+  'wealth-spectrum-one-view': { sort: '2025-05-21', date: { day: 'may 21', year: '2025' } },
+  'rm-dashboard': { sort: '2026-02-12', date: { day: 'feb 12', year: '2026' } },
+  'voice-of-the-rm': { sort: '2026-08-12', date: { day: 'aug 12', year: '2026' } },
+};
+
+/** One line already in the source. No new claims. */
+const asides: Record<string, string> = {
+  'redemption-tax-exit-load': "Most people leaving don't need to sell.",
+  'wealth-spectrum-one-view': 'For a wealth client, a wrong number costs more than a missing feature.',
+  'rm-dashboard': 'Time in the dashboard is only a proxy.',
+  'voice-of-the-rm': 'I started a monthly Private Wealth newsletter to close the loop.',
+  'ketto-bulk-donation': 'Every extra step between "I want to help" and "done" costs money.',
+  'ketto-recurring-donations': 'A donor can set a monthly amount once, instead of being asked again for every campaign.',
+  humidity: 'Now, I admire the people who stay kind when the weather is not.',
+  'fifteen-minutes': 'The stool still wobbled.',
+  'tongue-tied': 'I spoke less, but I meant more.',
+  'its-really-salty': 'Presence matters more than perfection.',
+  'the-snore': 'Because sound is slippery. It doesn’t stay.',
+  'finding-my-voice': 'I was an echo, not a voice.',
+  scenius: 'Move over, lone wolf product managers!',
+  'chapter-2': 'I pretended I didn’t know what crowdfunding was.',
+  'checklist-prds': 'The checklist PRD let us pivot much more quickly based on user feedback.',
 };
 
 function toolsIn(text: string) {
@@ -107,6 +134,7 @@ if (builder) {
   ].filter((card) => card.paragraphs.length > 0);
   items.push({
     sort: '9999-01-01',
+    kind: 'ai',
     title: data.title,
     paragraphs: problem,
     id: builder.id,
@@ -120,8 +148,10 @@ for (const entry of studies) {
   const stats = statParagraphs(entry.data.stats);
   items.push({
     sort: when?.sort ?? `0001-${String(100 - entry.data.order).padStart(2, '0')}`,
+    kind: 'work',
     date: when?.date,
     title: entry.data.headline,
+    aside: asides[entry.id],
     paragraphs: [{ text: entry.data.dek }],
     cards: [
       {
@@ -140,8 +170,10 @@ for (const entry of writing) {
   if (metric) paragraphs.push(metric);
   items.push({
     sort: when?.sort ?? `0002-${String(100 - entry.data.order).padStart(2, '0')}`,
+    kind: 'writing',
     date: when?.date,
     title: entry.data.title,
+    aside: asides[entry.id],
     href: entry.data.href,
     external: true,
     paragraphs,
@@ -153,7 +185,8 @@ for (const slot of site.life) {
   const started = slot.id === 'roll-and-wear';
   items.push({
     sort: started ? '2024-07-01' : `0003-${slot.id}`,
-    date: started ? '07 2024' : undefined,
+    kind: 'life',
+    date: started ? { day: 'jul', year: '2024' } : undefined,
     title: slot.title,
     paragraphs: slot.paragraphs.map((text) => ({ text })),
     href: url('/life'),
@@ -193,9 +226,11 @@ for (const item of items) {
       )}
       {items.map((item) => (
         <FeedNote
+          kind={item.kind}
           date={item.date}
           title={item.title}
           paragraphs={item.paragraphs}
+          aside={item.aside}
           href={item.href}
           external={item.external}
           id={item.id}
