@@ -1,0 +1,30 @@
+---
+import Text from './Text.astro';
+import { visibleCopy } from '../lib/copy';
+import { url } from '../lib/url';
+import type { Copy as CopyText } from '../data/site';
+
+interface Props {
+  copy: CopyText;
+  as?: 'p' | 'span';
+  drop?: boolean;
+}
+const { copy, as = 'p', drop = false } = Astro.props;
+const resolved = visibleCopy(copy);
+const Tag = as;
+const href = resolved && copy.href ? url(copy.href) : undefined;
+const external = href ? /^https?:/.test(href) : false;
+---
+{resolved && (
+  <Tag class={drop ? 'drop-cap' : undefined}>
+    <Text text={resolved.text} pending={resolved.pending} />
+  </Tag>
+)}
+{resolved && href && (
+  <p class="source-link">
+    <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+      Read the write-up
+      {external && <span class="vh"> (opens in a new tab)</span>}
+    </a>
+  </p>
+)}

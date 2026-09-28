@@ -1,0 +1,43 @@
+---
+import Text from './Text.astro';
+import { SHOW_PENDING_BADGES, USE_CONFIDENTIAL_FALLBACKS } from '../data/site';
+
+interface Stat {
+  value: string;
+  label: string;
+  note?: string;
+  fallback?: string;
+  pending?: boolean;
+}
+
+interface Props {
+  stats?: Stat[];
+  compact?: boolean;
+}
+
+const { stats = [], compact = false } = Astro.props;
+
+const shown = stats.map((stat) => {
+  const fallback = stat.fallback?.trim();
+  const usingFallback = USE_CONFIDENTIAL_FALLBACKS && Boolean(fallback);
+  return {
+    text: usingFallback ? fallback! : stat.value,
+    label: stat.label,
+    note: stat.note,
+    pending: !usingFallback && SHOW_PENDING_BADGES && Boolean(stat.pending),
+  };
+});
+---
+{shown.length > 0 && (
+  <ol class:list={['stat-strip', { compact }]}>
+    {shown.map((stat) => (
+      <li>
+        <span class="stat-value">
+          <Text text={stat.text} pending={stat.pending} />
+        </span>
+        <span class="stat-label">{stat.label}</span>
+        {stat.note && <span class="stat-note">{stat.note}</span>}
+      </li>
+    ))}
+  </ol>
+)}

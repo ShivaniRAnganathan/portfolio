@@ -1,0 +1,34 @@
+---
+import { SHOW_PENDING_BADGES } from '../data/site';
+import { cleanContent } from '../lib/content';
+
+interface Props {
+  text: string;
+  pending?: boolean;
+}
+
+const { text, pending = false } = Astro.props;
+const cleaned = cleanContent(text);
+const mark = SHOW_PENDING_BADGES && (pending || cleaned.pending);
+const figureSource =
+  String.raw`₹\s?\d[\d,.]*(?:\s*(?:lakh|crore))?|\d[\d,.]*\s*(?:to|–—-)\s*\d[\d,.]*%?|\d[\d,.]*%|\b\d[\d,.]*\b`;
+const isFigure = new RegExp(`^(?:${figureSource})$`);
+const isYear = /^(?:19|20)\d{2}$/;
+
+function chunksFor(value: string) {
+  if (!mark) return [value];
+  return value.split(new RegExp(`(${figureSource})`, 'g'));
+}
+---
+{chunksFor(cleaned.text).map((part) => {
+  if (part.match(/^\[[^\]]+ pending\]$/)) return <span class="placeholder">{part}</span>;
+  if (mark && isFigure.test(part) && !isYear.test(part)) {
+    return (
+      <span class="pending-figure" tabindex="0">
+        {part}
+        <span class="tip" role="tooltip">Not yet approved for publishing</span>
+      </span>
+    );
+  }
+  return part;
+})}

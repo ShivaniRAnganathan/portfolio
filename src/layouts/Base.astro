@@ -1,0 +1,43 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import { url } from '../lib/url';
+import playfair from '@fontsource/playfair-display/files/playfair-display-latin-700-normal.woff2';
+import newsreader from '@fontsource/newsreader/files/newsreader-latin-500-normal.woff2';
+import newsreaderBody from '@fontsource/newsreader/files/newsreader-latin-400-normal.woff2';
+import sourceSans from '@fontsource/source-sans-3/files/source-sans-3-latin-400-normal.woff2';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description = site.positioning } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.masthead} · ${site.name}`;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#f4efe3" />
+    <title>{fullTitle}</title>
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <link rel="preload" href={playfair} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={newsreader} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={newsreaderBody} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={sourceSans} as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <Header />
+    <main id="content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

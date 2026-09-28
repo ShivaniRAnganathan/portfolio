@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import Text from '../../components/Text.astro';
+import { cleanContent } from '../../lib/content';
+import { visibleCopy } from '../../lib/copy';
+import { getCollection } from 'astro:content';
+
+const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Writing" description="Public essays and write-ups.">
+  <div class="page">
+    <p class="kicker">The archive</p>
+    <h1 class="page-title">Writing</h1>
+    <p class="deck">Public links only. A dotted underline marks a result stated without a baseline or timeframe.</p>
+    <ul class="writing-list archive">
+      {writing.map((entry) => {
+        const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
+        return (
+          <li>
+            <a href={entry.data.href} target="_blank" rel="noopener noreferrer">
+              {entry.data.title}
+              <span class="vh"> (opens in a new tab)</span>
+            </a>
+            <p class="writing-meta">
+              {[entry.data.byline, entry.data.outlet, entry.data.date].filter(Boolean).join(' · ')}
+            </p>
+            <p class="writing-summary">{entry.data.summary}</p>
+            {entry.body?.trim() && (
+              <div class="writing-excerpt">
+                {entry.body.trim().split(/\n\n+/).map((paragraph) => {
+                  const cleaned = cleanContent(paragraph);
+                  if (!cleaned.text) return null;
+                  return (
+                    <p>
+                      <Text text={cleaned.text} pending={cleaned.pending} />
+                    </p>
+                  );
+                })}
+              </div>
+            )}
+            {metric && (
+              <p class="writing-summary">
+                  <Text text={metric.text} pending={metric.pending} />
+                </p>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</Base>

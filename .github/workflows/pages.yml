@@ -1,0 +1,53 @@
+# Manual only. This does not run on push, pull request, or schedule.
+# Nothing is published unless someone starts this workflow by hand.
+name: GitHub Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      site:
+        description: Canonical site origin, for example https://example.github.io
+        required: true
+        default: https://example.com
+      base:
+        description: Base path. Use / for a user site, or /repo-name/ for a project site.
+        required: true
+        default: /
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+        env:
+          SITE: ${{ inputs.site }}
+          BASE: ${{ inputs.base }}
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

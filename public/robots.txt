@@ -1,0 +1,3 @@
+# Draft site. Remove this disallow before a real launch.
+User-agent: *
+Disallow: /

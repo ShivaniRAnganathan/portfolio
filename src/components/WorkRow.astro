@@ -1,0 +1,48 @@
+---
+import Text from './Text.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  href: string;
+  index: string;
+  kicker: string;
+  heading?: string;
+  pending?: boolean;
+  parts?: { text: string; pending: boolean }[];
+  detail?: string;
+  extra?: string;
+  extraPending?: boolean;
+}
+
+const { href, index, kicker, heading = '', pending = false, parts, detail, extra, extraPending = false } = Astro.props;
+const external = /^https?:/.test(href);
+---
+<a
+  class="work-link"
+  href={external ? href : url(href)}
+  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+>
+  <span class="work-index">{index}</span>
+  <span>
+    <span class="work-kicker">{kicker}</span>
+    <span class="work-heading">
+      {parts ? parts.map((part) => (
+        <span class="heading-part">
+          <Text text={part.text} pending={part.pending} />
+        </span>
+      )) : (
+        <Text text={heading} pending={pending} />
+      )}
+      {external && <span aria-hidden="true"> ↗</span>}
+      {external && <span class="vh"> (opens in a new tab)</span>}
+    </span>
+    {detail && (
+      <span class="work-detail"><Text text={detail} /></span>
+    )}
+    {extra && (
+      <span class="work-extra">
+        <Text text={extra} pending={extraPending} />
+      </span>
+    )}
+  </span>
+</a>

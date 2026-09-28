@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import WorkRow from '../../components/WorkRow.astro';
+import { visibleCopy } from '../../lib/copy';
+import { getCollection } from 'astro:content';
+
+const studies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+const extras = (await getCollection('links')).sort((a, b) => a.data.order - b.data.order);
+const shippedLinks = extras.filter((entry) => entry.data.group === 'shipped');
+const proposals = extras.filter((entry) => entry.data.group === 'proposal');
+const index = (n: number) => String(n + 1).padStart(2, '0');
+---
+<Base title="Work" description="Shipped product work, plus proposals and take-home assignments labelled as such.">
+  <div class="page">
+    <section class="group" aria-labelledby="shipped-heading">
+      <p class="kicker">Case files</p>
+      <h1 id="shipped-heading" class="page-title">Shipped work</h1>
+      <p class="group-note">Case studies open with the outcome, then the reasoning. The last item is an internship write-up that lives on Notion.</p>
+      <ol class="work-list">
+        {studies.map((entry, i) => {
+          return (
+            <li>
+              <WorkRow
+                href={`/work/${entry.id}`}
+                index={index(i)}
+                kicker={entry.data.company}
+                heading={entry.data.headline}
+                detail={entry.data.dek}
+              />
+            </li>
+          );
+        })}
+        {shippedLinks.map((entry, i) => {
+          const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
+          const kicker = [entry.data.label, entry.data.when].filter(Boolean).join(' · ');
+          return (
+            <li>
+              <WorkRow
+                href={entry.data.href}
+                index={index(studies.length + i)}
+                kicker={kicker}
+                heading={entry.data.title}
+                detail={entry.data.summary}
+                extra={metric?.text}
+                extraPending={metric?.pending}
+              />
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+
+    <section class="group" aria-labelledby="proposal-heading">
+      <h2 id="proposal-heading" class="section-label">Proposals and take-home assignments</h2>
+      <p class="group-note">These are not shipped work. The two FundsIndia roadmaps were take-home assignments. The BRSR tool is a proposal.</p>
+      <ol class="work-list">
+        {proposals.map((entry, i) => {
+          const kicker = [entry.data.label, entry.data.when].filter(Boolean).join(' · ');
+          return (
+            <li>
+              <WorkRow
+                href={entry.data.href}
+                index={index(i)}
+                kicker={kicker}
+                heading={entry.data.title}
+                detail={entry.data.summary}
+              />
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  </div>
+</Base>

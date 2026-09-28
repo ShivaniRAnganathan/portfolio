@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import Text from '../components/Text.astro';
+import { site } from '../data/site';
+import { cleanContent } from '../lib/content';
+import { url } from '../lib/url';
+import { getCollection } from 'astro:content';
+
+const pieces = (await getCollection('pieces')).sort((a, b) => a.data.order - b.data.order);
+const slotIds = new Set(site.life.map((slot) => slot.id));
+const loosePieces = pieces.filter((piece) => !piece.data.slot || !slotIds.has(piece.data.slot));
+---
+<Base title="Life" description="Roll & Wear, board games, and movement.">
+  <div class="page">
+    <p class="kicker">Off the clock</p>
+    <h1 class="page-title">Life, outside the case files</h1>
+    <p class="deck">Roll & Wear, board games, and movement.</p>
+    <ul class="life-grid">
+      {site.life.map((slot) => {
+        const filed = pieces.filter((piece) => piece.data.slot === slot.id);
+        return (
+          <li>
+            <h2>{slot.title}</h2>
+            {slot.paragraphs.map((paragraph) => {
+              const cleaned = cleanContent(paragraph);
+              return (
+                <p>
+                  <Text text={cleaned.text} pending={cleaned.pending} />
+                </p>
+              );
+            })}
+            {filed.length > 0 && (
+              <ul class="piece-list">
+                {filed.map((piece) => (
+                  <li>
+                    <p class="piece-title">{piece.data.title}</p>
+                    {piece.data.date && <p class="writing-meta">{piece.data.date}</p>}
+                    <p>{piece.data.summary}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+    <section class="block" aria-labelledby="ai-life-heading">
+      <h2 id="ai-life-heading" class="section-label">How I build with AI</h2>
+      <p class="deck">I use a set of AI assistants to automate the recurring parts of my work and keep everything organised.</p>
+      <a class="teaser-link" href={url('/ai')}>AI Desk</a>
+    </section>
+    {loosePieces.length > 0 && (
+      <section class="block" aria-labelledby="pieces-heading">
+        <h2 id="pieces-heading" class="section-label">Pieces</h2>
+        <ul class="piece-list">
+          {loosePieces.map((piece) => (
+            <li>
+              <p class="piece-title">{piece.data.title}</p>
+              {piece.data.date && <p class="writing-meta">{piece.data.date}</p>}
+              <p>{piece.data.summary}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </div>
+</Base>

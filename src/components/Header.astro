@@ -1,0 +1,47 @@
+---
+import { site } from '../data/site';
+import { url } from '../lib/url';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+
+function current(href: string) {
+  const full = url(href).replace(/\/$/, '') || '/';
+  const here = path === base ? '/' : path;
+  if (href === '/') return here === '/' || here === base || here === '';
+  return here === full || here.startsWith(`${full}/`);
+}
+
+const links = [
+  { href: '/work', label: 'Work' },
+  { href: '/ai', label: 'AI Desk' },
+  { href: '/writing', label: 'Writing' },
+  { href: '/life', label: 'Life' },
+  { href: '/about', label: 'About' },
+  { href: site.resumePath, label: 'Resume' },
+];
+---
+<a class="skip" href="#content">Skip to content</a>
+<header class="masthead">
+  <div class="masthead-plate">
+    <div class="page">
+      <a class="masthead-name" href={url('/')}>{site.masthead}</a>
+      <div class="masthead-rule" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div class="dateline-band">
+    <div class="page dateline-row">
+      <p class="edition">Chennai edition · {site.updated}</p>
+      <p class="dateline">{site.name} · Product Manager · Chennai</p>
+    </div>
+  </div>
+  <div class="page">
+    <nav class="nav" aria-label="Primary">
+      {links.map((link) => (
+        <a href={url(link.href)} aria-current={current(link.href) ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
