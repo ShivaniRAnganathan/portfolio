@@ -1,7 +1,7 @@
 ---
 import Badge from './Badge.astro';
 import Text from './Text.astro';
-import { resolveCopy } from '../lib/copy';
+import { visibleCopy } from '../lib/copy';
 import { url } from '../lib/url';
 import type { Copy as CopyText } from '../data/site';
 
@@ -10,16 +10,16 @@ interface Props {
   as?: 'p' | 'span';
 }
 const { copy, as = 'p' } = Astro.props;
-const { text, pending } = resolveCopy(copy);
+const resolved = visibleCopy(copy);
 const Tag = as;
-const href = copy.href ? url(copy.href) : undefined;
+const href = resolved && copy.href ? url(copy.href) : undefined;
 const external = href ? /^https?:/.test(href) : false;
 ---
-<Tag>
-  <Text text={text} />
-  {pending && <Badge />}
-</Tag>
-{href && (
+{resolved && <Tag>
+  <Text text={resolved.text} />
+  {resolved.pending && <Badge />}
+</Tag>}
+{resolved && href && (
   <p class="source-link">
     <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
       Read the write-up

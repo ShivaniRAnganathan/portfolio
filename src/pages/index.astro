@@ -3,8 +3,8 @@ import Base from '../layouts/Base.astro';
 import Badge from '../components/Badge.astro';
 import Text from '../components/Text.astro';
 import WorkRow from '../components/WorkRow.astro';
-import { SHOW_PENDING_BADGES, site } from '../data/site';
-import { resolveCopy } from '../lib/copy';
+import { SHOW_PENDING_BADGES, SHOW_RESUME_ONLY_CLAIMS, site } from '../data/site';
+import { caseHeadline, visibleCopy } from '../lib/copy';
 import { url } from '../lib/url';
 import { getCollection } from 'astro:content';
 
@@ -15,31 +15,44 @@ const studies = (await getCollection('caseStudies'))
 const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
 
 const index = (n: number) => String(n + 1).padStart(2, '0');
+const heroMetrics = site.heroMetrics.filter((metric) => SHOW_RESUME_ONLY_CLAIMS || !metric.resumeOnly);
 ---
 <Base>
   <div class="page">
-    <section class="hero" aria-labelledby="positioning">
+    <section class:list={['hero', { 'has-metrics': heroMetrics.length > 0 }]} aria-labelledby="positioning">
       <p class="eyebrow">Product manager · Chennai</p>
       <h1 id="positioning">{site.positioning}</h1>
-      <p class="lede">{site.intro}</p>
-      <p class="where">{site.location}</p>
-      <ul class="metrics">
-        {site.heroMetrics.map((metric) => (
-          <li>
-            <p class="metric-value">{metric.value}</p>
-            <p class="metric-label">
-              {metric.label}
-              {metric.pending && SHOW_PENDING_BADGES && <Badge />}
-            </p>
-          </li>
-        ))}
-      </ul>
-      <p class="metric-note"><Text text={site.heroMetricsNote} /></p>
-      <ul class="actions">
-        <li><a href={url(site.resumePath)}>Resume</a></li>
-        <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span class="vh"> (opens in a new tab)</span></a></li>
-        <li><a href={`mailto:${site.email}`}>Email</a></li>
-      </ul>
+      <div class="hero-copy">
+        <p class="lede">{site.intro}</p>
+        <p class="where">{site.location}</p>
+        {SHOW_RESUME_ONLY_CLAIMS && (
+          <p class="credibility">
+            {site.homeRecognition}
+            {SHOW_PENDING_BADGES && <Badge />}
+          </p>
+        )}
+      </div>
+      <div class="hero-proof">
+        {heroMetrics.length > 0 && (
+          <ul class="metrics">
+            {heroMetrics.map((metric) => (
+              <li>
+                <p class="metric-value">{metric.value}</p>
+                <p class="metric-label">
+                  {metric.label}
+                  {metric.pending && SHOW_PENDING_BADGES && <Badge />}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+        {heroMetrics.length > 0 && <p class="metric-note"><Text text={site.heroMetricsNote} /></p>}
+        <ul class="actions">
+          <li><a href={url(site.resumePath)}>Resume</a></li>
+          <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span class="vh"> (opens in a new tab)</span></a></li>
+          <li><a href={`mailto:${site.email}`}>Email</a></li>
+        </ul>
+      </div>
     </section>
 
     <section class="block" aria-labelledby="work-heading">
@@ -47,9 +60,9 @@ const index = (n: number) => String(n + 1).padStart(2, '0');
         <h2 id="work-heading" class="section-label">Selected work</h2>
         <a href={url('/work')}>All work</a>
       </div>
-      <ol class="work-list">
+      <ol class="work-list feature-list">
         {studies.map((entry, i) => {
-          const outcome = resolveCopy(entry.data.outcome);
+          const outcome = caseHeadline(entry.data);
           return (
             <li>
               <WorkRow
@@ -86,7 +99,7 @@ const index = (n: number) => String(n + 1).padStart(2, '0');
       </div>
       <ul class="writing-list">
         {writing.map((entry) => {
-          const metric = entry.data.metric ? resolveCopy(entry.data.metric) : undefined;
+          const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
           return (
             <li>
               <a href={entry.data.href} target="_blank" rel="noopener noreferrer">

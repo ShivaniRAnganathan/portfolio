@@ -11,7 +11,7 @@
   --accent-deep: #5c211a;
   --sans: "Source Sans 3", "Source Sans Fallback", "Segoe UI", sans-serif;
   --serif: "Newsreader", "Newsreader Fallback", Georgia, serif;
-  --page: 56rem;
+  --page: 74rem;
   --prose: 38rem;
   --space: 0.5rem;
   color-scheme: light;
@@ -175,7 +175,7 @@ h1,
   line-height: 1.08;
   letter-spacing: -0.025em;
   text-wrap: balance;
-  max-width: 16em;
+  max-width: 18em;
 }
 
 .page-title {
@@ -218,6 +218,14 @@ h1,
   max-width: var(--prose);
   color: var(--ink);
   font-weight: 600;
+}
+
+.credibility {
+  margin-top: 0.85rem;
+  max-width: 36rem;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  text-wrap: pretty;
 }
 
 .metrics {
@@ -735,8 +743,8 @@ h1 .badge,
 
 @media (min-width: 900px) {
   .principles li {
-    grid-template-columns: 2rem 16rem minmax(0, 1fr);
-    column-gap: 1.5rem;
+    grid-template-columns: 2rem minmax(14rem, 22rem) minmax(0, 1fr);
+    column-gap: 2rem;
     align-items: baseline;
   }
 
@@ -747,6 +755,74 @@ h1 .badge,
   .principle-example {
     grid-column: 3;
     margin: 0;
+  }
+}
+
+@media (min-width: 1000px) {
+  .hero.has-metrics {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.8fr);
+    column-gap: 3.5rem;
+    align-items: start;
+  }
+
+  .hero.has-metrics .eyebrow,
+  .hero.has-metrics h1 {
+    grid-column: 1 / -1;
+  }
+
+  .hero h1 {
+    max-width: none;
+    font-size: clamp(2.8rem, 4.5vw, 4.25rem);
+  }
+
+  .hero.has-metrics .hero-copy {
+    padding-top: 0.35rem;
+  }
+
+  .hero.has-metrics .hero-proof {
+    margin-top: 0.35rem;
+    padding-left: 2.25rem;
+    border-left: 1px solid var(--line);
+  }
+
+  .hero.has-metrics .hero-proof .metrics {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .feature-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+
+  .feature-list > li {
+    min-width: 0;
+  }
+
+  .feature-list .work-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-top: none;
+    padding: 1.35rem 1.4rem 1.6rem 0;
+  }
+
+  .feature-list > li + li .work-link {
+    border-left: 1px solid var(--line);
+    padding-left: 1.4rem;
+  }
+
+  .feature-list li:last-child .work-link {
+    border-bottom: none;
+    padding-right: 0;
+  }
+
+  .feature-list .work-heading,
+  .feature-list .work-detail {
+    max-width: none;
   }
 }
 

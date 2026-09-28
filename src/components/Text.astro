@@ -3,11 +3,8 @@ interface Props {
   text: string;
 }
 const { text } = Astro.props;
-const parts = text.split("[Copy pending]");
+const parts = text.split(/(\[[^\]]+ pending\])/g);
 ---
-{parts.map((part, index) => (
-  <>
-    {part}
-    {index < parts.length - 1 && <span class="placeholder">[Copy pending]</span>}
-  </>
+{parts.map((part) => (
+  part.match(/^\[[^\]]+ pending\]$/) ? <span class="placeholder">{part}</span> : part
 ))}

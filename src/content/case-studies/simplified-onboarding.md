@@ -4,7 +4,7 @@ company: FundsIndia Private Wealth
 role: Product owner
 timeline: Feb – Aug 2026
 featured: false
-order: 4
+order: 6
 outcome:
   primary: PMS and AIF-only clients can see their portfolio without a mutual-fund account.
 dek: A light login for clients who come to Private Wealth only for alternates.

@@ -4,7 +4,7 @@ company: FundsIndia Private Wealth
 role: Product owner and vendor lead
 timeline: May 2025 – Sep 2026
 featured: true
-order: 1
+order: 3
 outcome:
   primary: Daily use of the consolidated view rose 47%.
   fallback: Daily usage of the consolidated view rose by nearly half after the app launch.

@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Badge from '../../components/Badge.astro';
-import { resolveCopy } from '../../lib/copy';
+import { visibleCopy } from '../../lib/copy';
 import { getCollection } from 'astro:content';
 
 const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
@@ -12,7 +12,7 @@ const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b
     <p class="group-note">Public links only. Where a write-up states a result without a baseline or timeframe, that line is marked unconfirmed.</p>
     <ul class="writing-list">
       {writing.map((entry) => {
-        const metric = entry.data.metric ? resolveCopy(entry.data.metric) : undefined;
+        const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
         return (
           <li>
             <a href={entry.data.href} target="_blank" rel="noopener noreferrer">

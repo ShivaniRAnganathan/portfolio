@@ -1,8 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
+import Badge from '../components/Badge.astro';
 import Text from '../components/Text.astro';
 import { site } from '../data/site';
+import { visibleCopy } from '../lib/copy';
 import { url } from '../lib/url';
+
+const recognition = site.recognition
+  .map((item) => visibleCopy(item))
+  .filter((item) => item !== null);
 ---
 <Base title="About" description={site.intro}>
   <div class="page">
@@ -17,7 +23,7 @@ import { url } from '../lib/url';
         {site.experience.map((job) => (
           <li>
             <h3>{job.company}</h3>
-            <p class="role">{job.role}</p>
+            <p class="role"><Text text={`${job.role} · ${job.dates}`} /></p>
             <p class="detail"><Text text={job.detail} /></p>
           </li>
         ))}
@@ -30,11 +36,27 @@ import { url } from '../lib/url';
         {site.education.map((school) => (
           <li>
             <h3>{school.credential}</h3>
-            <p>{school.school} · {school.year}</p>
+            <p><Text text={`${school.school} · ${school.year}`} /></p>
           </li>
         ))}
       </ul>
     </section>
+
+    {recognition.length > 0 && (
+      <section class="block" aria-labelledby="recognition-heading">
+        <h2 id="recognition-heading" class="section-label">Recognition</h2>
+        <ul class="cv">
+          {recognition.map((item) => (
+            <li>
+              <p>
+                <Text text={item.text} />
+                {item.pending && <Badge />}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
 
     <section class="block" aria-labelledby="about-contact">
       <h2 id="about-contact" class="section-label">Contact</h2>

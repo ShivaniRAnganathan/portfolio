@@ -1,8 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Badge from '../../components/Badge.astro';
 import Copy from '../../components/Copy.astro';
 import Text from '../../components/Text.astro';
-import { resolveCopy } from '../../lib/copy';
+import { caseHeadline, visibleCopy } from '../../lib/copy';
 import { url } from '../../lib/url';
 import { getCollection } from 'astro:content';
 
@@ -21,7 +22,8 @@ if (!entry) {
 
 const prev = index > 0 ? studies[index - 1] : undefined;
 const next = index < studies.length - 1 ? studies[index + 1] : undefined;
-const outcome = resolveCopy(entry.data.outcome);
+const outcome = caseHeadline(entry.data);
+const scale = visibleCopy(entry.data.scale);
 const description = `${entry.data.company}. ${entry.data.title}.`;
 ---
 <Base title={entry.data.title} description={description}>
@@ -43,37 +45,47 @@ const description = `${entry.data.company}. ${entry.data.title}.`;
           </div>
           <div>
             <dt>Role</dt>
-            <dd>{entry.data.role}</dd>
+            <dd><Text text={entry.data.role} /></dd>
           </div>
           <div>
             <dt>Timeline</dt>
             <dd><Text text={entry.data.timeline} /></dd>
           </div>
-          <div class="span">
-            <dt>Scale</dt>
-            <dd><Copy copy={entry.data.scale} /></dd>
-          </div>
+          {scale && (
+            <div class="span">
+              <dt>Scale</dt>
+              <dd>
+                <Text text={scale.text} />
+                {scale.pending && <Badge />}
+              </dd>
+            </div>
+          )}
         </dl>
       </div>
     </header>
 
-    {entry.data.sections.map((section) => (
-      <section class="case-section">
-        <h2>{section.heading}</h2>
-        <div class="prose">
-          {section.paragraphs?.map((paragraph) => <Copy copy={paragraph} />)}
-          {section.items && section.items.length > 0 && (
-            <ul>
-              {section.items.map((item) => (
-                <li>
-                  <Copy copy={item} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </section>
-    ))}
+    {entry.data.sections.map((section) => {
+      const paragraphs = (section.paragraphs ?? []).filter((paragraph) => visibleCopy(paragraph));
+      const items = (section.items ?? []).filter((item) => visibleCopy(item));
+      if (paragraphs.length === 0 && items.length === 0) return null;
+      return (
+        <section class="case-section">
+          <h2>{section.heading}</h2>
+          <div class="prose">
+            {paragraphs.map((paragraph) => <Copy copy={paragraph} />)}
+            {items.length > 0 && (
+              <ul>
+                {items.map((item) => (
+                  <li>
+                    <Copy copy={item} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
+      );
+    })}
 
     <nav class="pager" aria-label="Other case studies">
       {prev ? (

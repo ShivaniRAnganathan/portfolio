@@ -1,8 +1,8 @@
 ---
 title: Bulk donation at Ketto
 company: Ketto
-role: Product Manager, growth and monetization
-timeline: "[Copy pending]"
+role: "[Title pending]"
+timeline: "[Dates pending]"
 featured: true
 order: 2
 outcome:

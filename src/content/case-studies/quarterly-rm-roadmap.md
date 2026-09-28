@@ -3,8 +3,8 @@ title: A quarterly roadmap relationship managers can check
 company: FundsIndia Private Wealth
 role: Product owner
 timeline: Feb – Sep 2026
-featured: true
-order: 3
+featured: false
+order: 5
 outcome:
   primary: 19 of 45 relationship-manager requests made the quarter. Six shipped in July.
   fallback: About 40% of relationship-manager feedback made the quarter.

@@ -6,6 +6,7 @@ const copy = z.object({
   primary: z.string(),
   fallback: z.string().optional(),
   pending: z.boolean().optional(),
+  resumeOnly: z.boolean().optional(),
   href: z.string().optional(),
 });
 
@@ -25,6 +26,7 @@ const caseStudies = defineCollection({
     featured: z.boolean(),
     order: z.number(),
     outcome: copy,
+    resumeOutcome: copy.optional(),
     dek: z.string(),
     scale: copy,
     sections: z.array(section),

@@ -10,15 +10,24 @@
  *   each flagged claim (see confidentiality-flags). Vendor name,
  *   engagement counts and adoption figures swap together.
  *   Fallback text is the publishable line, so it does not carry a badge.
+ *
+ * SHOW_RESUME_ONLY_CLAIMS
+ *   Resume lines that no other source supports are marked resumeOnly.
+ *   true (preview): they render with an Unconfirmed badge.
+ *   false: they are removed. Sections that would be empty are omitted.
  */
 
 export const SHOW_PENDING_BADGES = true;
 export const USE_CONFIDENTIAL_FALLBACKS = false;
+export const SHOW_RESUME_ONLY_CLAIMS = true;
 
 export type Copy = {
   primary: string;
   fallback?: string;
   pending?: boolean;
+  /** Only on the resume. Hidden entirely when SHOW_RESUME_ONLY_CLAIMS is false. */
+  resumeOnly?: boolean;
+  href?: string;
 };
 
 export const site = {
@@ -31,12 +40,38 @@ export const site = {
   positioning:
     'A fintech and consumer-growth product manager who turns retention and monetization problems into shipped products.',
   intro:
-    "I'm Shivani, a product manager in Private Wealth at FundsIndia in Chennai, with 4+ years in fintech and high-scale consumer products across FundsIndia, Ketto (growth and monetization), HSBC and ElasticRun. I start with the people closest to the problem, turn what they tell me into a roadmap they can check, and ship. I'm looking for a remote product manager role where I own a product from the first user conversation to the numbers after launch.",
+    "I'm Shivani, a product manager in Private Wealth at FundsIndia in Chennai, with 4+ years in fintech and high-scale consumer products across FundsIndia, Ketto, HSBC and ElasticRun. I start with the people closest to the problem, turn what they tell me into a roadmap they can check, and ship. I'm looking for a remote product manager role where I own a product from the first user conversation to the numbers after launch.",
   heroMetrics: [
-    { value: '37%', label: 'GMV growth', pending: true },
-    { value: '−18%', label: 'Churn', pending: true },
-    { value: '210M+', label: 'Visits', pending: true },
+    { value: '37%', label: 'GMV growth', pending: true, resumeOnly: true },
+    { value: '−18%', label: 'Churn', pending: true, resumeOnly: true },
+    { value: '210M+', label: 'Visits', pending: true, resumeOnly: true },
   ],
+  homeRecognition:
+    "CEO's Pick at Ketto (2024) and FundsIndia (2025). Women in Product chapter at FundsIndia. Reforge.",
+  recognition: [
+    {
+      primary:
+        "CEO's Pick at Ketto (2024) and at FundsIndia (2025), for product ownership and results.",
+      pending: true,
+      resumeOnly: true,
+    },
+    {
+      primary: 'Founded the Women in Product chapter at FundsIndia.',
+      pending: true,
+      resumeOnly: true,
+    },
+    {
+      primary:
+        'Reforge, Product Innovation (New Product Development and Experimentation). Professional Scrum Product Owner (PSPO). UX Design (Coursera).',
+      pending: true,
+      resumeOnly: true,
+    },
+    {
+      primary: 'I use Claude Code for AI-assisted prototyping.',
+      pending: true,
+      resumeOnly: true,
+    },
+  ] satisfies Copy[],
   heroMetricsNote:
     'Company, timeframe and baseline for these three figures: [Copy pending]',
   howIWork: [
@@ -65,28 +100,31 @@ export const site = {
     {
       company: 'FundsIndia',
       role: 'Product Manager, Private Wealth',
+      dates: 'Dec 2024 – Present',
       detail: 'Current role. Products for relationship managers and their clients.',
     },
     {
       company: 'Ketto',
-      role: 'Product Manager, Growth and Monetization',
-      detail:
-        'Gross merchandise value: bulk donation, donation amounts and tipping.',
+      role: '[Title pending]',
+      dates: '[Dates pending]',
+      detail: 'Bulk donation, donation amounts, tipping and recurring donations.',
     },
     {
       company: 'HSBC',
-      role: 'Business Analyst',
+      role: '[Title pending]',
+      dates: '[Dates pending]',
       detail: '[Copy pending]',
     },
     {
       company: 'ElasticRun',
-      role: 'Intern',
-      detail: 'Sales enablement, Jun–Oct 2021.',
+      role: 'Product Management Intern',
+      dates: '[Dates pending]',
+      detail: 'Sales enablement.',
     },
   ],
   education: [
-    { credential: 'MBA', school: 'BITS Pilani', year: '2022' },
-    { credential: 'B.S. Computer Science', school: 'Anurag University', year: '2020' },
+    { credential: 'MBA', school: 'BITS Pilani', year: '[Dates pending]' },
+    { credential: 'B.S. Computer Science', school: 'Anurag University', year: '[Dates pending]' },
   ],
   resumeNote: 'The PDF linked here is a placeholder. Replace it before sharing.',
   updated: 'September 2026',
