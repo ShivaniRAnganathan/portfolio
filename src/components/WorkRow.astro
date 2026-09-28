@@ -1,5 +1,4 @@
 ---
-import Badge from './Badge.astro';
 import Text from './Text.astro';
 import { url } from '../lib/url';
 
@@ -29,14 +28,10 @@ const external = /^https?:/.test(href);
     <span class="work-heading">
       {parts ? parts.map((part) => (
         <span class="heading-part">
-          <Text text={part.text} />
-          {part.pending && <Badge />}
+          <Text text={part.text} pending={part.pending} />
         </span>
       )) : (
-        <>
-          <Text text={heading} />
-          {pending && <Badge />}
-        </>
+        <Text text={heading} pending={pending} />
       )}
       {external && <span aria-hidden="true"> ↗</span>}
       {external && <span class="vh"> (opens in a new tab)</span>}
@@ -46,8 +41,7 @@ const external = /^https?:/.test(href);
     )}
     {extra && (
       <span class="work-extra">
-        <Text text={extra} />
-        {extraPending && <Badge />}
+        <Text text={extra} pending={extraPending} />
       </span>
     )}
   </span>

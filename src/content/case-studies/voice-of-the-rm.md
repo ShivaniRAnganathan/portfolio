@@ -1,5 +1,6 @@
 ---
 title: Voice of the RM
+headline: "About 60% of relationship managers opened the first newsletter"
 company: FundsIndia
 role: Product owner for the Private Wealth roadmap
 team:
@@ -7,8 +8,6 @@ team:
   approved: true
 timeline:
   primary: "Focus groups on 5 February 2026. Roadmap on 17 March 2026. A feedback session on 18 March 2026. First newsletter on 12 August 2026."
-  fallback: "Focus groups, then the roadmap and a feedback session, then a first newsletter."
-  pending: true
 featured: false
 order: 4
 outcome:
@@ -18,6 +17,13 @@ outcome:
   - primary: "About 60% of recipients opened the first newsletter."
     approved: true
 dek: Relationship-manager feedback ranked into a quarterly roadmap, with a newsletter so they can see what happened.
+stats:
+  - value: "60%"
+    label: "Opened the first newsletter"
+  - value: "600"
+    label: "Relationship managers"
+  - value: "45%"
+    label: "Daily use of onboarding status"
 scale:
   - primary: "600 relationship managers."
     approved: true
@@ -37,22 +43,16 @@ sections:
       - primary: "Non-resident tax declarations were still on paper."
       - primary: "SIPs couldn't be paused or changed."
       - primary: "There was no structured way to rank these pain points, and relationship managers couldn't see what happened to their feedback."
-        pending: true
   - heading: Insight
     items:
       - primary: "Relationship managers are both users and distribution. What they can't do, clients never see."
-        pending: true
       - primary: "People only keep giving feedback if they see it acted on. The loop needed a visible output, not just a backlog."
-        pending: true
       - primary: "Problems cluster by lifecycle stage. Grouping by stage turns item-by-item debates into visible tradeoffs."
   - heading: Options and tradeoffs
     items:
       - primary: "Work down the list by the loudest request. Quick, but it favours whoever complains most and hides the tradeoffs."
-        pending: true
       - primary: "A theme-based quarterly roadmap. This is what we shipped. Four themes: Onboarding, Core Investment Journeys, Reports and Servicing, and Enabling and Learning. The cost is that most items wait, so the queue had to be shown openly."
       - primary: "Onboarding first, with an AIF or PMS-only login as priority 0, because it blocked revenue outright while other items only slowed it down."
-        fallback: "Onboarding first, with an AIF or PMS-only login as the top priority, because it blocked revenue outright while other items only slowed it down."
-        pending: true
       - primary: "Not done: promising everything. Only 19 of 45 items made the quarter."
         fallback: "Not done: promising everything. Only a subset of the feedback made the quarter."
         pending: true
@@ -61,8 +61,6 @@ sections:
       - primary: "I followed up on the focus groups and took ownership of re-examining the SIP lock rule with compliance and tech."
       - primary: "I built the quarterly Private Wealth roadmap, with competitor onboarding benchmarks and targets."
       - primary: "I ran a relationship-manager feedback session on 18 March 2026 to test the priorities."
-        fallback: "I ran a relationship-manager feedback session to test the priorities."
-        pending: true
       - primary: "I started a monthly Private Wealth newsletter to close the loop. I designed the format. Product Ops and Marketing produced it."
   - heading: Outcome
     items:
@@ -85,7 +83,6 @@ sections:
   - heading: What I learned
     items:
       - primary: "Opens without clicks mean awareness, not action. Later editions should link each item to where relationship managers use it."
-        pending: true
       - primary: "Report outcomes each quarter, such as onboarding time and query volume, not just items shipped."
       - primary: "Add a simple impact score to each feedback item, so relationship managers can see why something was or wasn't picked."
 ---

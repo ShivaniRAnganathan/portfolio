@@ -1,9 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
-import Badge from '../components/Badge.astro';
-import WorkRow from '../components/WorkRow.astro';
-import { SHOW_PENDING_BADGES, site } from '../data/site';
-import { caseParts, visibleCopy } from '../lib/copy';
+import StatStrip from '../components/StatStrip.astro';
+import Text from '../components/Text.astro';
+import { site, SHOW_PENDING_BADGES, USE_CONFIDENTIAL_FALLBACKS } from '../data/site';
+import { countsAsPendingFigure, visibleCopy } from '../lib/copy';
 import { url } from '../lib/url';
 import { getCollection } from 'astro:content';
 
@@ -11,90 +11,97 @@ const studies = (await getCollection('caseStudies'))
   .filter((entry) => entry.data.featured)
   .sort((a, b) => a.data.order - b.data.order);
 
+const [lead, ...secondary] = studies;
 const dispatches = (await getCollection('ai')).sort((a, b) => a.data.order - b.data.order);
 const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
 
-const index = (n: number) => String(n + 1).padStart(2, '0');
+let pendingFigures = 0;
+const tally = (text: string, pending: boolean) => {
+  if (countsAsPendingFigure(text, pending)) pendingFigures += 1;
+};
+for (const entry of studies) {
+  for (const stat of entry.data.stats ?? []) {
+    const fallback = stat.fallback?.trim();
+    const usingFallback = USE_CONFIDENTIAL_FALLBACKS && Boolean(fallback);
+    tally(usingFallback ? fallback! : stat.value, !usingFallback && SHOW_PENDING_BADGES && Boolean(stat.pending));
+  }
+}
+for (const entry of writing) {
+  const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
+  if (metric) tally(metric.text, metric.pending);
+}
 ---
 <Base description={site.hook}>
   <div class="page front">
-    <section class="lead" aria-labelledby="hook">
-      <h1 id="hook">{site.hook}</h1>
-      <nav class="edition-strip" aria-label="In this edition">
-        <p class="kicker">In this edition</p>
-        <ol>
-          <li><a href="#case-files">Case files</a></li>
-          <li><a href="#ai-desk">AI Desk</a></li>
-        </ol>
-      </nav>
-    </section>
+    {pendingFigures >= 3 && (
+      <p class="editors-note">Editor's note. Dotted underlines mark figures not yet approved for publishing.</p>
+    )}
+    <h1 class="hook" id="hook">{site.hook}</h1>
 
-    <section class="block" id="case-files" aria-labelledby="work-heading">
-      <div class="section-head">
-        <h2 id="work-heading" class="section-label">Case files</h2>
-        <a href={url('/work')}>All work</a>
-      </div>
-      <ol class="work-list feature-list">
-        {studies.map((entry, i) => {
-          return (
-            <li>
-              <WorkRow
-                href={`/work/${entry.id}`}
-                index={index(i)}
-                kicker={entry.data.company}
-                parts={caseParts(entry.data)}
-                detail={entry.data.title}
-              />
-            </li>
-          );
-        })}
-      </ol>
-    </section>
-
-    <div class="front-pair">
-      <section class="block" id="ai-desk" aria-labelledby="ai-heading">
-        <div class="section-head">
-          <h2 id="ai-heading" class="section-label">AI Desk</h2>
-          <a href={url('/ai')}>All dispatches</a>
-        </div>
-        <ul class="ai-teaser">
-          {dispatches.map((entry) => {
-            const data = entry.data;
-            const lines = [data.system, data.problem, data.outcome, data.stillDecide, data.principles].flatMap((value) =>
-              !value ? [] : Array.isArray(value) ? value : [value],
-            );
-            const teaser = lines[0];
-            return (
-              <li>
-                <a href={url(`/ai#${entry.id}`)}>{data.title}</a>
-                {teaser ? (
-                  <p>
-                    {teaser.text}
-                    {teaser.pending && SHOW_PENDING_BADGES && <Badge />}
-                  </p>
-                ) : (
-                  <p class="filed">Filed soon.</p>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-
-      <section class="block" id="off-clock" aria-labelledby="life-heading">
-        <div class="section-head">
-          <h2 id="life-heading" class="section-label">Off the clock</h2>
-          <a href={url('/life')}>Life</a>
-        </div>
-        <ul class="teaser-slots">
-          {site.life.map((slot) => (
-            <li>
-              <span class="work-kicker">{slot.title}</span>
-              <p>{slot.paragraphs[0]}</p>
-            </li>
+    <div class="front-board">
+      <div class="front-main">
+        {lead && (
+          <article class="lead-story">
+            <p class="kicker">Lead story · {lead.data.company}</p>
+            <h2><a href={url(`/work/${lead.id}`)}>{lead.data.headline}</a></h2>
+            <p class="deck">{lead.data.dek}</p>
+            <StatStrip stats={lead.data.stats} />
+          </article>
+        )}
+        <div class="secondary-stories">
+          {secondary.map((entry) => (
+            <article>
+              <p class="kicker">{entry.data.company}</p>
+              <h2><a href={url(`/work/${entry.id}`)}>{entry.data.headline}</a></h2>
+              <p class="deck">{entry.data.dek}</p>
+              <StatStrip stats={entry.data.stats} compact />
+            </article>
           ))}
-        </ul>
-      </section>
+        </div>
+      </div>
+
+      <aside class="front-rail">
+        <section class="rail-block" id="ai-desk" aria-labelledby="ai-heading">
+          <div class="section-head">
+            <h2 id="ai-heading" class="section-label">AI Desk</h2>
+            <a href={url('/ai')}>All dispatches</a>
+          </div>
+          <ul class="ai-teaser">
+            {dispatches.map((entry) => {
+              const data = entry.data;
+              const lines = [data.system, data.problem, data.outcome, data.stillDecide, data.principles].flatMap((value) =>
+                !value ? [] : Array.isArray(value) ? value : [value],
+              );
+              const teaser = lines[0];
+              return (
+                <li>
+                  <a href={url(`/ai#${entry.id}`)}>{data.title}</a>
+                  {teaser ? (
+                    <p><Text text={teaser.text} pending={Boolean(teaser.pending)} /></p>
+                  ) : (
+                    <p class="filed">Filed soon.</p>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section class="rail-block" id="off-clock" aria-labelledby="life-heading">
+          <div class="section-head">
+            <h2 id="life-heading" class="section-label">Off the clock</h2>
+            <a href={url('/life')}>Life</a>
+          </div>
+          <ul class="teaser-slots">
+            {site.life.map((slot) => (
+              <li>
+                <span class="work-kicker">{slot.title}</span>
+                <p>{slot.paragraphs[0]}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </aside>
     </div>
 
     <section class="block" id="writing" aria-labelledby="writing-heading">
@@ -115,8 +122,7 @@ const index = (n: number) => String(n + 1).padStart(2, '0');
               <p class="writing-summary">{entry.data.summary}</p>
               {metric && (
                 <p class="writing-summary">
-                  {metric.text}
-                  {metric.pending && <Badge />}
+                  <Text text={metric.text} pending={metric.pending} />
                 </p>
               )}
             </li>

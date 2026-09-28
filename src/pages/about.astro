@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Badge from '../components/Badge.astro';
 import Text from '../components/Text.astro';
 import { site } from '../data/site';
 import { visibleCopy } from '../lib/copy';
@@ -62,8 +61,7 @@ const recognition = site.recognition
           {recognition.map((item) => (
             <li>
               <p>
-                <Text text={item.text} />
-                {item.pending && <Badge />}
+                <Text text={item.text} pending={item.pending} />
               </p>
             </li>
           ))}

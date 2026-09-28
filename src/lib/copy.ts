@@ -44,6 +44,14 @@ export function caseParts(data: { outcome: OutcomeValue; resumeOutcome?: Copy })
   });
 }
 
+const yearFigure = /\b(?:19|20)\d{2}\b/g;
+
+/** A pending line that still contains a performance figure, ignoring calendar years. */
+export function countsAsPendingFigure(text: string, pending: boolean): boolean {
+  if (!pending) return false;
+  return /\d/.test(text.replace(yearFigure, ' '));
+}
+
 export function caseHeadline(data: { outcome: OutcomeValue; resumeOutcome?: Copy }): ResolvedCopy {
   const parts = caseParts(data);
   if (parts.length === 0) {

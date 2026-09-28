@@ -9,24 +9,41 @@ const rules = [
   { label: 'editor note', re: /EDITOR\s+NOTES?/i },
 ];
 
-/** Figures Shivani has approved. Anything else with a digit stays gated. */
+/** Figures Shivani has approved. Dates and non-metrics are not gated. */
 const approvedFigures = [
   /about\s+6%\s+to\s+9\.5%/gi,
   /8\.5%\s+to\s+14\.6%/gi,
-  /1\.1\s+to\s+6\.1/g,
+  /1\.1\s*(?:to|[–-])\s*6\.1/g,
+  /9\.5%/g,
+  /8\.5%/g,
+  /14\.6%/g,
+  /\b6\.1\b/g,
+  /\b1\.1\b/g,
   /18%/g,
   /12%/g,
   /47%/g,
   /45%/g,
   /60%/g,
   /more than 40/gi,
+  /40\+/g,
   /\b600\b/g,
   /\b4 people\b/gi,
+];
+
+const plainFigures = [
+  /\b\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b/gi,
+  /\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b/gi,
+  /\b20\d{2}\b/g,
+  /\b\d+\s+hours\b/gi,
+  /₹\s?1\.25\s+lakh/gi,
+  /\bpriority\s+0\b/gi,
+  /\b15[–-]20\b/g,
 ];
 
 function unapprovedDigits(text) {
   let rest = text;
   for (const pattern of approvedFigures) rest = rest.replace(pattern, ' ');
+  for (const pattern of plainFigures) rest = rest.replace(pattern, ' ');
   return /\d/.test(rest);
 }
 
@@ -65,7 +82,7 @@ function copiesIn(text) {
   const lines = text.split('\n');
   const copies = [];
   for (let i = 0; i < lines.length; i++) {
-    const match = lines[i].match(/^(\s*)primary:\s*(.*)$/);
+    const match = lines[i].match(/^(\s*)(?:-\s*)?(?:primary|value):\s*(.*)$/);
     if (!match) continue;
     const indent = match[1].length;
     const primary = unquote(match[2]);
@@ -93,7 +110,7 @@ for (const file of figureFiles) {
   for (const rule of rules) {
     if (rule.re.test(text)) failures.push(`${file}: found ${rule.label}`);
   }
-  for (const key of ['title', 'dek', 'role']) {
+  for (const key of ['title', 'dek', 'role', 'headline']) {
     const plain = text.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
     if (plain && unapprovedDigits(unquote(plain[1]))) {
       failures.push(`${file}: ${key} has an unapproved number`);

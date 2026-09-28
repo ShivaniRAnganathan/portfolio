@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import Badge from '../components/Badge.astro';
-import { SHOW_PENDING_BADGES, site } from '../data/site';
+import Text from '../components/Text.astro';
+import { site } from '../data/site';
 import { cleanContent } from '../lib/content';
 import { url } from '../lib/url';
 import { getCollection } from 'astro:content';
@@ -25,8 +25,7 @@ const loosePieces = pieces.filter((piece) => !piece.data.slot || !slotIds.has(pi
               const cleaned = cleanContent(paragraph);
               return (
                 <p>
-                  {cleaned.text}
-                  {cleaned.pending && SHOW_PENDING_BADGES && <Badge />}
+                  <Text text={cleaned.text} pending={cleaned.pending} />
                 </p>
               );
             })}

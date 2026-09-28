@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import WorkRow from '../../components/WorkRow.astro';
-import { caseParts, visibleCopy } from '../../lib/copy';
+import { visibleCopy } from '../../lib/copy';
 import { getCollection } from 'astro:content';
 
 const studies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
@@ -24,8 +24,8 @@ const index = (n: number) => String(n + 1).padStart(2, '0');
                 href={`/work/${entry.id}`}
                 index={index(i)}
                 kicker={entry.data.company}
-                parts={caseParts(entry.data)}
-                detail={entry.data.title}
+                heading={entry.data.headline}
+                detail={entry.data.dek}
               />
             </li>
           );

@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Badge from '../components/Badge.astro';
-import { SHOW_PENDING_BADGES } from '../data/site';
+import Text from '../components/Text.astro';
 import { cleanContent } from '../lib/content';
 import { getCollection } from 'astro:content';
 
@@ -57,8 +56,7 @@ const fields = [
                       <dd>
                         {lines.map((line) => (
                           <p>
-                            {line.text}
-                            {line.pending && SHOW_PENDING_BADGES && <Badge />}
+                            <Text text={line.text} pending={line.pending} />
                           </p>
                         ))}
                       </dd>

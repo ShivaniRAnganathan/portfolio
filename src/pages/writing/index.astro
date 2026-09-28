@@ -1,7 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import Badge from '../../components/Badge.astro';
-import { SHOW_PENDING_BADGES } from '../../data/site';
+import Text from '../../components/Text.astro';
 import { cleanContent } from '../../lib/content';
 import { visibleCopy } from '../../lib/copy';
 import { getCollection } from 'astro:content';
@@ -12,7 +11,7 @@ const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b
   <div class="page">
     <p class="kicker">The archive</p>
     <h1 class="page-title">Writing</h1>
-    <p class="deck">Public links only. Where a write-up states a result without a baseline or timeframe, that line is marked unconfirmed.</p>
+    <p class="deck">Public links only. A dotted underline marks a result stated without a baseline or timeframe.</p>
     <ul class="writing-list archive">
       {writing.map((entry) => {
         const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
@@ -33,8 +32,7 @@ const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b
                   if (!cleaned.text) return null;
                   return (
                     <p>
-                      {cleaned.text}
-                      {cleaned.pending && SHOW_PENDING_BADGES && <Badge />}
+                      <Text text={cleaned.text} pending={cleaned.pending} />
                     </p>
                   );
                 })}
@@ -42,9 +40,8 @@ const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b
             )}
             {metric && (
               <p class="writing-summary">
-                {metric.text}
-                {metric.pending && <Badge />}
-              </p>
+                  <Text text={metric.text} pending={metric.pending} />
+                </p>
             )}
           </li>
         );

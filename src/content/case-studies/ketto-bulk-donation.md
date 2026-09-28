@@ -1,5 +1,6 @@
 ---
 title: Bulk donation at Ketto
+headline: "One checkout let donors support several causes at once"
 company: Ketto
 role: "[Title pending]"
 timeline: "[Dates pending]"
@@ -7,8 +8,22 @@ featured: true
 order: 5
 outcome:
   primary: About ₹50 crore in additional revenue, from one checkout for several causes.
+  fallback: Additional revenue from one checkout for several causes. The amount is not published here.
   pending: true
 dek: Donors could support several healthcare causes in a single transaction.
+stats:
+  - value: "₹50 crore"
+    label: "Additional revenue"
+    fallback: "Amount unpublished"
+    pending: true
+  - value: "35%"
+    label: "Higher average donation"
+    fallback: "Average donation rose"
+    pending: true
+  - value: "20%"
+    label: "More causes per session"
+    fallback: "More causes per session"
+    pending: true
 scale:
   primary: "[Copy pending]"
 sections:

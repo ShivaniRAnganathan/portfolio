@@ -1,9 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
-import Badge from '../../components/Badge.astro';
 import Copy from '../../components/Copy.astro';
+import StatStrip from '../../components/StatStrip.astro';
 import Text from '../../components/Text.astro';
-import { caseParts, visibleCopy, type ResolvedCopy } from '../../lib/copy';
+import { countsAsPendingFigure, visibleCopy, type ResolvedCopy } from '../../lib/copy';
+import { SHOW_PENDING_BADGES, USE_CONFIDENTIAL_FALLBACKS } from '../../data/site';
 import { url } from '../../lib/url';
 import type { Copy as CopyText } from '../../data/site';
 import { getCollection } from 'astro:content';
@@ -34,7 +35,6 @@ if (!entry) {
 
 const prev = index > 0 ? studies[index - 1] : undefined;
 const next = index < studies.length - 1 ? studies[index + 1] : undefined;
-const outcome = caseParts(entry.data);
 const facts = [
   { label: 'Role', value: entry.data.role, wide: false },
   { label: 'Team', value: entry.data.team, wide: false },
@@ -45,23 +45,50 @@ const facts = [
   const parts = resolveFact(fact.value);
   return parts.length > 0 ? [{ ...fact, parts }] : [];
 });
-const description = `${entry.data.company}. ${entry.data.title}.`;
+
+let pendingFigures = 0;
+const tally = (text: string, pending: boolean) => {
+  if (countsAsPendingFigure(text, pending)) pendingFigures += 1;
+};
+for (const fact of facts) {
+  for (const part of fact.parts) tally(part.text, part.pending);
+}
+for (const section of entry.data.sections) {
+  for (const paragraph of section.paragraphs ?? []) {
+    const visible = visibleCopy(paragraph);
+    if (visible) tally(visible.text, visible.pending);
+  }
+  for (const item of section.items ?? []) {
+    const visible = visibleCopy(item);
+    if (visible) tally(visible.text, visible.pending);
+  }
+}
+for (const stat of entry.data.stats ?? []) {
+  const fallback = stat.fallback?.trim();
+  const usingFallback = USE_CONFIDENTIAL_FALLBACKS && Boolean(fallback);
+  tally(usingFallback ? fallback! : stat.value, !usingFallback && SHOW_PENDING_BADGES && Boolean(stat.pending));
+}
+
+const description = `${entry.data.company}. ${entry.data.headline}`;
+let dropped = false;
+let passedOpening = false;
+
+function opensWithLetter(copy: CopyText) {
+  const visible = visibleCopy(copy);
+  return Boolean(visible && /^[A-Za-z]/.test(visible.text));
+}
 ---
-<Base title={entry.data.title} description={description}>
+<Base title={entry.data.headline} description={description}>
   <article class="page">
     <p class="back"><a href={url('/work')}>Work</a></p>
+    {pendingFigures >= 3 && (
+      <p class="editors-note">Editor's note. Dotted underlines mark figures not yet approved for publishing.</p>
+    )}
     <header class="opening">
       <p class="kicker">Case file · {entry.data.company}</p>
-      <h1>
-        {outcome.map((part) => (
-          <span class="outcome-part">
-            <Text text={part.text} />
-            {part.pending && <span class="badge">Unconfirmed</span>}
-          </span>
-        ))}
-      </h1>
-      <p class="case-name">{entry.data.title}</p>
+      <h1>{entry.data.headline}</h1>
       <p class="lede">{entry.data.dek}</p>
+      <StatStrip stats={entry.data.stats} />
       <div class="summary">
         <p class="fact-kicker">The facts</p>
         <dl>
@@ -71,8 +98,7 @@ const description = `${entry.data.company}. ${entry.data.title}.`;
               <dd>
                 {fact.parts.map((part) => (
                   <span class="fact-part">
-                    <Text text={part.text} />
-                    {part.pending && <Badge />}
+                    <Text text={part.text} pending={part.pending} />
                   </span>
                 ))}
               </dd>
@@ -86,18 +112,28 @@ const description = `${entry.data.company}. ${entry.data.title}.`;
       const paragraphs = (section.paragraphs ?? []).filter((paragraph) => visibleCopy(paragraph));
       const items = (section.items ?? []).filter((item) => visibleCopy(item));
       if (paragraphs.length === 0 && items.length === 0) return null;
+      const inOpening = !passedOpening;
+      passedOpening = true;
       return (
         <section class="case-section">
           <h2>{section.heading}</h2>
           <div class="prose">
-            {paragraphs.map((paragraph) => <Copy copy={paragraph} />)}
+            {paragraphs.map((paragraph) => {
+              const drop = inOpening && !dropped && opensWithLetter(paragraph);
+              if (drop) dropped = true;
+              return <Copy copy={paragraph} drop={drop} />;
+            })}
             {items.length > 0 && (
               <ul>
-                {items.map((item) => (
-                  <li>
-                    <Copy copy={item} />
-                  </li>
-                ))}
+                {items.map((item) => {
+                  const drop = inOpening && !dropped && opensWithLetter(item);
+                  if (drop) dropped = true;
+                  return (
+                    <li>
+                      <Copy copy={item} drop={drop} />
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>
@@ -109,13 +145,13 @@ const description = `${entry.data.company}. ${entry.data.title}.`;
       {prev ? (
         <a href={url(`/work/${prev.id}`)}>
           <span>Previous</span>
-          <strong>{prev.data.title}</strong>
+          <strong>{prev.data.headline}</strong>
         </a>
       ) : <span></span>}
       {next && (
         <a class="next" href={url(`/work/${next.id}`)}>
           <span>Next</span>
-          <strong>{next.data.title}</strong>
+          <strong>{next.data.headline}</strong>
         </a>
       )}
     </nav>

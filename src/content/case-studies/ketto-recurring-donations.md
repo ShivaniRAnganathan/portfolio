@@ -1,5 +1,6 @@
 ---
 title: Recurring donations at Ketto
+headline: "A monthly gift, set once, instead of a new payment each time"
 company: Ketto
 role: "[Title pending]"
 timeline: "[Dates pending]"

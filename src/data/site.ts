@@ -3,7 +3,7 @@
  *
  * SHOW_PENDING_BADGES
  *   Set to false after Shivani confirms the unverified figures.
- *   That hides every "Unconfirmed" badge on the site at once.
+ *   That hides the dotted underline on figures not yet approved.
  *
  * USE_CONFIDENTIAL_FALLBACKS
  *   Set to true to publish the safer FundsIndia wording stored beside
@@ -13,7 +13,7 @@
  *
  * SHOW_RESUME_ONLY_CLAIMS
  *   Resume lines that no other source supports are marked resumeOnly.
- *   true (preview): they render with an Unconfirmed badge.
+ *   true (preview): they render, and any unapproved figure is underlined.
  *   false: they are removed. Sections that would be empty are omitted.
  */
 

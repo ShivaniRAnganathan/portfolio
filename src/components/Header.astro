@@ -23,11 +23,19 @@ const links = [
 ---
 <a class="skip" href="#content">Skip to content</a>
 <header class="masthead">
+  <div class="masthead-plate">
+    <div class="page">
+      <a class="masthead-name" href={url('/')}>{site.masthead}</a>
+      <div class="masthead-rule" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div class="dateline-band">
+    <div class="page dateline-row">
+      <p class="edition">Chennai edition · {site.updated}</p>
+      <p class="dateline">{site.name} · Product Manager · Chennai</p>
+    </div>
+  </div>
   <div class="page">
-    <p class="edition">Chennai edition · {site.updated}</p>
-    <a class="masthead-name" href={url('/')}>{site.masthead}</a>
-    <p class="dateline">{site.name} · Product Manager · Chennai</p>
-    <div class="masthead-rule" aria-hidden="true"></div>
     <nav class="nav" aria-label="Primary">
       {links.map((link) => (
         <a href={url(link.href)} aria-current={current(link.href) ? 'page' : undefined}>

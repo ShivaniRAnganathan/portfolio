@@ -14,6 +14,14 @@ const copy = z.object({
 
 const fact = z.union([z.string(), copy, z.array(copy)]);
 
+const stat = z.object({
+  value: z.string(),
+  label: z.string(),
+  note: z.string().optional(),
+  fallback: z.string().optional(),
+  pending: z.boolean().optional(),
+});
+
 const section = z.object({
   heading: z.string(),
   paragraphs: z.array(copy).optional(),
@@ -24,7 +32,10 @@ const caseStudies = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/case-studies' }),
   schema: z.object({
     title: z.string(),
+    /** One outcome-first line, about 8–14 words. This is the H1. */
+    headline: z.string(),
     company: z.string(),
+    stats: z.array(stat).max(3).optional(),
     /** Plain string, copy, or a list when approved and unapproved figures must render apart. */
     role: fact,
     team: fact.optional(),
