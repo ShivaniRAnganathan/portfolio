@@ -54,6 +54,8 @@ sections:
   - heading: Result
     paragraphs:
       - primary: These figures come from my own write-up. They have no stated baseline or timeframe. The write-up uses both "GMV" and "revenue" for the ₹50 crore figure. Sample size and the measurement window are not stated.
+        fallback: These figures come from my own write-up. They have no stated baseline or timeframe. The write-up uses both "GMV" and "revenue" for that amount. Sample size and the measurement window are not stated.
+        pending: true
     items:
       - primary: A/B test, 20% more causes supported per session.
         pending: true

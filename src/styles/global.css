@@ -1,15 +1,15 @@
 @import "./fonts.css";
 
 :root {
-  --bg: #fffaf4;
-  --ink: #1c1917;
-  --muted: #5c534c;
-  --line: #eadfd4;
-  --accent: #c2410c;
-  --hi: #ffe56a;
+  --bg: #ffffff;
+  --ink: #111111;
+  --muted: #686c76;
+  --line: #e6e6e6;
+  --underline: #969ba6;
   --sans: "Source Sans 3", "Source Sans Fallback", "Segoe UI", sans-serif;
   --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
-  --prose: 65ch;
+  --prose: 28.25rem;
+  --column: 35.5rem;
   color-scheme: light;
 }
 
@@ -28,8 +28,8 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 1.0625rem;
-  line-height: 1.55;
+  font-size: 13px;
+  line-height: 1.6;
   font-variant-numeric: tabular-nums;
   text-rendering: optimizeLegibility;
 }
@@ -51,18 +51,15 @@ ol {
 }
 
 a {
-  color: var(--accent);
-  text-decoration: none;
-  background-image: linear-gradient(var(--hi), var(--hi));
-  background-repeat: no-repeat;
-  background-size: 100% 0.28em;
-  background-position: 0 92%;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+  text-underline-offset: 0.15em;
 }
 
 a:hover {
-  color: var(--ink);
-  background-size: 100% 0.72em;
-  background-position: 0 88%;
+  color: #000;
+  text-decoration-color: #111;
 }
 
 :focus {
@@ -70,12 +67,12 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
 
 ::selection {
-  background: var(--hi);
+  background: #ececec;
   color: var(--ink);
 }
 
@@ -86,7 +83,7 @@ a:hover {
   transform: translateY(-120%);
   background: var(--bg);
   color: var(--ink);
-  background-image: none;
+  text-decoration: none;
   padding: 0.5rem 0.75rem;
   z-index: 5;
 }
@@ -95,34 +92,37 @@ a:hover {
   transform: translateY(0.75rem);
 }
 
-.page {
-  width: min(40rem, 100%);
+.page,
+.top {
+  width: min(var(--column), 100%);
   margin-inline: auto;
   padding-inline: 1.25rem;
 }
 
+.page-wide {
+  --column: 50.5rem;
+}
+
 .top {
-  width: min(40rem, 100%);
-  margin-inline: auto;
-  padding: 2.25rem 1.25rem 0;
+  padding-top: 2.25rem;
 }
 
 .name {
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
   text-transform: lowercase;
 }
 
 .name a {
   color: var(--ink);
-  background-image: none;
+  text-decoration: none;
 }
 
 .name a:hover {
-  color: var(--accent);
-  background-image: none;
+  color: #000;
+  text-decoration: none;
 }
 
 .hello {
@@ -152,20 +152,15 @@ a:hover {
 
 .mark img {
   object-fit: cover;
-  border: 1px solid var(--ink);
-  box-shadow: 3px 3px 0 var(--hi);
-}
-
-.is-home .mark img {
-  box-shadow: 6px 6px 0 var(--hi);
+  border: 1px solid #111;
 }
 
 .bio {
   margin-top: 0.9rem;
   max-width: var(--prose);
   color: var(--ink);
-  font-size: 1.0625rem;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .tracks {
@@ -181,7 +176,7 @@ a:hover {
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: lowercase;
-  color: var(--accent);
+  color: var(--muted);
 }
 
 .track ul {
@@ -206,8 +201,8 @@ a:hover {
 }
 
 .nav a {
-  color: var(--accent);
-  font-size: 0.98rem;
+  color: var(--ink);
+  font-size: 13px;
 }
 
 .nav a[aria-current="page"] {
@@ -237,9 +232,9 @@ a:hover {
 
 .link-list a {
   color: var(--ink);
-  font-size: 1.0625rem;
+  font-size: 13px;
   line-height: 1.4;
-  text-decoration-color: var(--accent);
+  text-decoration-color: var(--underline);
 }
 
 .notes {
@@ -250,88 +245,65 @@ a:hover {
   margin-top: 3.15rem;
 }
 
-.note-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-}
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.28rem;
-  padding: 0.12rem 0.48rem 0.16rem;
-  border-radius: 999px;
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.04em;
-  line-height: 1.2;
-  text-transform: lowercase;
-}
-
-.glyph {
-  font-size: 0.72rem;
-  line-height: 1;
-}
-
-.pill-work {
-  background: #ffd7c2;
-  color: #9a3412;
-}
-
-.pill-ai {
-  background: #ddd6fe;
-  color: #5b21b6;
-}
-
-.pill-writing {
-  background: #fde68a;
-  color: #92400e;
-}
-
-.pill-life {
-  background: #bbf7d0;
-  color: #166534;
-}
-
-.note:hover .pill {
-  box-shadow: 2px 2px 0 var(--ink);
-}
-
 .note-date {
-  display: inline-flex;
-  flex-direction: column;
-  padding: 0 0.2em 0.08em;
-  background-image: linear-gradient(var(--hi), var(--hi));
-  background-repeat: no-repeat;
-  background-size: 100% 0.4em;
-  background-position: 0 100%;
-  color: var(--accent);
+  display: flex;
+  gap: 0.35rem;
+  margin: 0 0 0.35rem;
+  color: var(--muted);
   font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.03em;
-  line-height: 1.05;
-  transform: rotate(-2deg);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+.note-date span {
+  display: inline;
 }
 
 .aside {
   max-width: var(--prose);
   margin-top: 0.75rem;
-  padding: 0.15rem 0 0.15rem 0.7rem;
-  border-left: 3px solid var(--hi);
   color: var(--ink);
-  font-size: 1.02rem;
-  line-height: 1.45;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
-.note h2,
+@media (min-width: 900px) {
+  .note {
+    display: grid;
+    grid-template-columns: 4.25rem minmax(0, 1fr);
+    column-gap: 1.75rem;
+    margin-left: -6rem;
+  }
+
+  .note-date {
+    display: block;
+    margin: 0.45rem 0 0;
+    text-align: right;
+  }
+
+  .note-date span {
+    display: block;
+  }
+}
+
+.note h2 {
+  margin-top: 0;
+  max-width: none;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
 .page-title {
   margin-top: 0.3rem;
   max-width: var(--prose);
-  font-size: 1.4rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
 }
 
 .note h2 a {
@@ -340,10 +312,12 @@ a:hover {
 }
 
 .note h2 a:hover {
-  color: var(--accent);
+  color: #000;
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
 }
 
-.note > p,
+.note-body > p,
 .card p,
 .lede,
 .deck,
@@ -354,8 +328,8 @@ a:hover {
 .writing-summary {
   max-width: var(--prose);
   margin-top: 0.7rem;
-  font-size: 1.0625rem;
-  line-height: 1.55;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .card {
@@ -387,15 +361,15 @@ a:hover {
 }
 
 .card .more,
-.note > .more {
+.note-body > .more {
   margin-top: 0.85rem;
 }
 
 h1 {
-  max-width: var(--prose);
-  font-size: clamp(1.7rem, 3vw, 2rem);
-  font-weight: 600;
-  letter-spacing: -0.025em;
+  max-width: none;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
   line-height: 1.15;
 }
 
@@ -431,7 +405,7 @@ h1 {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--ink);
 }
 
 .prose p + p,
@@ -459,7 +433,7 @@ h1 {
   top: 0.72em;
   width: 0.4rem;
   height: 1px;
-  background: var(--accent);
+  background: var(--ink);
 }
 
 .summary {
@@ -484,11 +458,11 @@ h1 {
   font-size: 0.72rem;
   letter-spacing: 0.04em;
   text-transform: lowercase;
-  color: var(--accent);
+  color: var(--ink);
 }
 
 .summary dd {
-  font-size: 1.0625rem;
+  font-size: 13px;
   line-height: 1.45;
 }
 
@@ -535,7 +509,7 @@ h1 {
 }
 
 .back a {
-  color: var(--accent);
+  color: var(--ink);
   font-size: 0.95rem;
 }
 
@@ -556,7 +530,7 @@ h1 {
   display: block;
   font-family: var(--mono);
   font-size: 0.72rem;
-  color: var(--accent);
+  color: var(--ink);
 }
 
 .pager strong {
@@ -588,8 +562,61 @@ h1 {
 }
 
 .work-link:hover {
-  background-color: #fff6d0;
+  background-color: #f4f4f4;
   background-image: none;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+  margin-top: 1.75rem;
+  list-style: none;
+}
+
+.project-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.project-card:hover {
+  text-decoration: none;
+}
+
+.project-card:hover .project-title {
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+}
+
+.project-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+
+.project-title {
+  display: block;
+  margin-top: 0.55rem;
+  max-width: 24rem;
+  color: #111;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.4;
+}
+
+.project-detail-art {
+  width: min(16rem, 100%);
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 700px) {
+  .project-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 1.5rem;
+  }
 }
 
 .work-list li:last-child .work-link,
@@ -614,7 +641,7 @@ h1 {
 .work-index,
 .principle-index,
 .work-kicker {
-  color: var(--accent);
+  color: var(--ink);
   font-family: var(--mono);
   font-size: 0.75rem;
 }
@@ -644,7 +671,7 @@ h1 {
   margin-top: 0.85rem;
   font-family: var(--mono);
   font-size: 0.72rem;
-  color: var(--accent);
+  color: var(--ink);
 }
 
 .dispatch-fields dd {
@@ -745,7 +772,7 @@ h1 {
 }
 
 .placeholder {
-  color: var(--accent);
+  color: var(--ink);
   font-weight: 600;
 }
 

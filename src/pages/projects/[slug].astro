@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectArt from '../../components/ProjectArt.astro';
+import { projects } from '../../data/projects';
+import { url } from '../../lib/url';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { slug: project.slug } }));
+}
+
+const { slug } = Astro.params;
+const project = projects.find((item) => item.slug === slug);
+if (!project) throw new Error(`Missing project: ${slug}`);
+---
+<Base title={project.title} description={project.summary}>
+  <article class="page">
+    <p class="back"><a href={url('/projects')}>← projects</a></p>
+    <ProjectArt slug={project.slug} />
+    <h1 class="page-title">{project.title}</h1>
+    <p class="writing-meta">{project.status}</p>
+    <p class="lede">{project.summary}</p>
+    <p class="writing-meta">GitHub link coming soon</p>
+  </article>
+</Base>
