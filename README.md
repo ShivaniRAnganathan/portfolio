@@ -14,7 +14,7 @@ The built pages send `noindex`, and `public/robots.txt` disallows all crawlers. 
 | Life slots (names only until real copy arrives) | `src/data/site.ts` (`life`) |
 | Personal pieces | `src/content/pieces/*.md` |
 | Internship card, take-homes, proposal | `src/content/links/*.md` |
-| Resume PDF | `public/resume.pdf` (placeholder today) |
+| Resume PDF | `public/resume.pdf` |
 
 Layout lives under `src/layouts`, `src/components`, `src/pages`, and `src/styles`. You should not need to touch those to change words.
 

@@ -127,7 +127,6 @@ export const site = {
     { credential: 'MBA', school: 'BITS Pilani', year: '[Dates pending]' },
     { credential: 'B.S. Computer Science', school: 'Anurag University', year: '[Dates pending]' },
   ],
-  resumeNote: 'The PDF linked here is a placeholder. Replace it before sharing.',
   updated: 'September 2026',
   /** Scaffolding only. Do not add facts here until Shivani writes them. */
   life: [
