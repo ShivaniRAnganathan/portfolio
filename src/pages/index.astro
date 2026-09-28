@@ -1,8 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import FeedNote from '../components/FeedNote.astro';
-import { site, SHOW_PENDING_BADGES, USE_CONFIDENTIAL_FALLBACKS } from '../data/site';
-import { countsAsPendingFigure, visibleCopy } from '../lib/copy';
+import { site } from '../data/site';
+import { hasUnapprovedFigure, visibleCopy } from '../lib/copy';
 import { cleanContent } from '../lib/content';
 import { url } from '../lib/url';
 import { getCollection } from 'astro:content';
@@ -89,14 +89,16 @@ function toolsIn(text: string) {
 }
 
 function statParagraphs(stats: { value: string; label: string; note?: string; fallback?: string; pending?: boolean }[] | undefined): Para[] {
-  return (stats ?? []).map((stat) => {
-    const fallback = stat.fallback?.trim();
-    const usingFallback = USE_CONFIDENTIAL_FALLBACKS && Boolean(fallback);
-    const label = stat.label.charAt(0).toLowerCase() + stat.label.slice(1);
-    const text = usingFallback ? `${fallback}.` : `${stat.value} ${label}.`;
-    const pending = !usingFallback && SHOW_PENDING_BADGES && Boolean(stat.pending);
+  return (stats ?? []).flatMap((stat) => {
     const note = stat.note ? ` ${stat.note}` : '';
-    return { text: `${text}${note}`, pending };
+    if (stat.pending) {
+      const fallback = stat.fallback?.trim();
+      if (!fallback || hasUnapprovedFigure(fallback)) return [];
+      const sentence = /[.!?]$/.test(fallback) ? fallback : `${fallback}.`;
+      return [{ text: `${sentence}${note}` }];
+    }
+    const label = stat.label.charAt(0).toLowerCase() + stat.label.slice(1);
+    return [{ text: `${stat.value} ${label}.${note}` }];
   });
 }
 
@@ -107,7 +109,8 @@ function aiLines(value?: AiNote | AiNote[]): Para[] {
   return list.flatMap((line) => {
     const cleaned = cleanContent(line.text);
     if (!cleaned.text) return [];
-    return [{ text: cleaned.text, pending: Boolean(line.pending) || cleaned.pending }];
+    if ((line.pending || cleaned.pending) && hasUnapprovedFigure(cleaned.text)) return [];
+    return [{ text: cleaned.text }];
   });
 }
 
@@ -195,17 +198,6 @@ for (const slot of site.life) {
 }
 
 items.sort((a, b) => (a.sort < b.sort ? 1 : a.sort > b.sort ? -1 : 0));
-
-let pendingFigures = 0;
-const tally = (text: string, pending?: boolean) => {
-  if (countsAsPendingFigure(text, Boolean(pending))) pendingFigures += 1;
-};
-for (const item of items) {
-  for (const paragraph of item.paragraphs) tally(paragraph.text, paragraph.pending);
-  for (const card of item.cards) {
-    for (const paragraph of card.paragraphs) tally(paragraph.text, paragraph.pending);
-  }
-}
 ---
 <Base description={site.hook}>
   <div class="page">
@@ -221,9 +213,6 @@ for (const item of items) {
     </section>
 
     <section class="notes" id="notes" aria-label="Notes">
-      {pendingFigures >= 3 && (
-        <p class="editors-note">Editor's note. Dotted underlines mark figures not yet approved for publishing.</p>
-      )}
       {items.map((item) => (
         <FeedNote
           kind={item.kind}

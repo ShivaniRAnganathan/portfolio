@@ -2,8 +2,8 @@
  * Site-wide flags and short copy.
  *
  * SHOW_PENDING_BADGES
- *   Set to false after Shivani confirms the unverified figures.
- *   That hides the dotted underline on figures not yet approved.
+ *   false: no dotted underline. Unapproved figures are omitted, or
+ *   replaced by their number-free fallback, in visibleCopy.
  *
  * USE_CONFIDENTIAL_FALLBACKS
  *   Set to true to publish the safer FundsIndia wording stored beside
@@ -17,7 +17,7 @@
  *   false: they are removed. Sections that would be empty are omitted.
  */
 
-export const SHOW_PENDING_BADGES = true;
+export const SHOW_PENDING_BADGES = false;
 export const USE_CONFIDENTIAL_FALLBACKS = false;
 export const SHOW_RESUME_ONLY_CLAIMS = true;
 

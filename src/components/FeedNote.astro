@@ -50,17 +50,18 @@ const {
 const meta = kinds[kind];
 ---
 <article class:list={['note', `note-${kind}`]} id={id}>
+  {date && (
+    <p class="note-date">
+      <span class="date-day">{date.day}</span>
+      <span class="date-year">{date.year}</span>
+    </p>
+  )}
+  <div class="note-body">
   <p class="note-meta">
     <span class:list={['pill', `pill-${kind}`]}>
       <span class="glyph" aria-hidden="true">{meta.glyph}</span>
       {meta.label}
     </span>
-    {date && (
-      <span class="note-date">
-        <span class="date-day">{date.day}</span>
-        <span class="date-year">{date.year}</span>
-      </span>
-    )}
   </p>
   <h2>
     {href ? (
@@ -102,4 +103,5 @@ const meta = kinds[kind];
       <a href={more.href}>{more.label}</a>
     </p>
   )}
+  </div>
 </article>

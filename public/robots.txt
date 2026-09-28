@@ -1,3 +1,4 @@
-# Draft site. Remove this disallow before a real launch.
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://shivaniranganathan.github.io/portfolio/sitemap-index.xml
