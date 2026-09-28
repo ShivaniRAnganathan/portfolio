@@ -1,143 +1,208 @@
 ---
 import Base from '../layouts/Base.astro';
-import StatStrip from '../components/StatStrip.astro';
-import Text from '../components/Text.astro';
+import FeedNote from '../components/FeedNote.astro';
 import { site, SHOW_PENDING_BADGES, USE_CONFIDENTIAL_FALLBACKS } from '../data/site';
 import { countsAsPendingFigure, visibleCopy } from '../lib/copy';
+import { cleanContent } from '../lib/content';
 import { url } from '../lib/url';
 import { getCollection } from 'astro:content';
 
-const studies = (await getCollection('caseStudies'))
-  .filter((entry) => entry.data.featured)
-  .sort((a, b) => a.data.order - b.data.order);
-
-const [lead, ...secondary] = studies;
-const dispatches = (await getCollection('ai')).sort((a, b) => a.data.order - b.data.order);
-const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
-
-let pendingFigures = 0;
-const tally = (text: string, pending: boolean) => {
-  if (countsAsPendingFigure(text, pending)) pendingFigures += 1;
+type Para = { text: string; pending?: boolean };
+type Card = {
+  heading: string;
+  tools?: string;
+  paragraphs: Para[];
+  link?: { href: string; label: string; external?: boolean };
 };
-for (const entry of studies) {
-  for (const stat of entry.data.stats ?? []) {
+type Item = {
+  sort: string;
+  date?: string;
+  title: string;
+  paragraphs: Para[];
+  href?: string;
+  external?: boolean;
+  id?: string;
+  cards: Card[];
+  more?: { href: string; label: string };
+};
+
+const months: Record<string, string> = {
+  jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
+  jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12',
+};
+
+function writingDate(raw?: string) {
+  if (!raw) return null;
+  const match = raw.match(/^([A-Za-z]+)\s+(\d{1,2}),\s+(\d{4})$/);
+  if (!match) return null;
+  const mm = months[match[1].slice(0, 3).toLowerCase()];
+  if (!mm) return null;
+  const dd = match[2].padStart(2, '0');
+  return { sort: `${match[3]}-${mm}-${dd}`, date: `${mm}.${dd} ${match[3]}` };
+}
+
+/** Ship or launch dates taken from the case-study copy. No day is invented. */
+const caseWhen: Record<string, { sort: string; date: string }> = {
+  'redemption-tax-exit-load': { sort: '2025-10-01', date: '10 2025' },
+  'wealth-spectrum-one-view': { sort: '2025-05-21', date: '05.21 2025' },
+  'rm-dashboard': { sort: '2026-02-12', date: '02.12 2026' },
+  'voice-of-the-rm': { sort: '2026-08-12', date: '08.12 2026' },
+};
+
+function toolsIn(text: string) {
+  const catalog: [string, RegExp][] = [
+    ['email', /\bemail\b/i],
+    ['calendar', /\bcalendar\b/i],
+    ['Notion', /Notion/],
+    ['GitHub', /GitHub/],
+    ['Claude', /Claude/],
+  ];
+  const found = catalog.flatMap(([name, pattern]) => (pattern.test(text) ? [name] : []));
+  return found.length > 0 ? found.join(' + ') : undefined;
+}
+
+function statParagraphs(stats: { value: string; label: string; note?: string; fallback?: string; pending?: boolean }[] | undefined): Para[] {
+  return (stats ?? []).map((stat) => {
     const fallback = stat.fallback?.trim();
     const usingFallback = USE_CONFIDENTIAL_FALLBACKS && Boolean(fallback);
-    tally(usingFallback ? fallback! : stat.value, !usingFallback && SHOW_PENDING_BADGES && Boolean(stat.pending));
-  }
+    const label = stat.label.charAt(0).toLowerCase() + stat.label.slice(1);
+    const text = usingFallback ? `${fallback}.` : `${stat.value} ${label}.`;
+    const pending = !usingFallback && SHOW_PENDING_BADGES && Boolean(stat.pending);
+    const note = stat.note ? ` ${stat.note}` : '';
+    return { text: `${text}${note}`, pending };
+  });
 }
+
+type AiNote = { text: string; pending?: boolean };
+function aiLines(value?: AiNote | AiNote[]): Para[] {
+  if (!value) return [];
+  const list = Array.isArray(value) ? value : [value];
+  return list.flatMap((line) => {
+    const cleaned = cleanContent(line.text);
+    if (!cleaned.text) return [];
+    return [{ text: cleaned.text, pending: Boolean(line.pending) || cleaned.pending }];
+  });
+}
+
+const studies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+const featured = studies.filter((entry) => entry.data.featured);
+const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
+const ai = (await getCollection('ai')).sort((a, b) => a.data.order - b.data.order);
+const builder = ai.find((entry) => entry.id === 'how-i-build');
+
+const items: Item[] = [];
+
+if (builder) {
+  const data = builder.data;
+  const problem = aiLines(data.problem);
+  const principles = aiLines(data.principles);
+  const system = aiLines(data.system);
+  const outcome = aiLines(data.outcome);
+  const next = aiLines(data.next);
+  const cards: Card[] = [
+    { heading: 'How I broke it down', paragraphs: principles },
+    { heading: 'The system', tools: toolsIn(system.map((line) => line.text).join(' ')), paragraphs: system },
+    { heading: 'Outcome', paragraphs: outcome },
+    { heading: "What's next", paragraphs: next },
+  ].filter((card) => card.paragraphs.length > 0);
+  items.push({
+    sort: '9999-01-01',
+    title: data.title,
+    paragraphs: problem,
+    id: builder.id,
+    cards,
+    more: { href: url('/ai'), label: 'All dispatches' },
+  });
+}
+
+for (const entry of studies) {
+  const when = caseWhen[entry.id];
+  const stats = statParagraphs(entry.data.stats);
+  items.push({
+    sort: when?.sort ?? `0001-${String(100 - entry.data.order).padStart(2, '0')}`,
+    date: when?.date,
+    title: entry.data.headline,
+    paragraphs: [{ text: entry.data.dek }],
+    cards: [
+      {
+        heading: entry.data.title,
+        paragraphs: stats,
+        link: { href: url(`/work/${entry.id}`), label: 'Read the case study' },
+      },
+    ],
+  });
+}
+
 for (const entry of writing) {
+  const when = writingDate(entry.data.date);
   const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
-  if (metric) tally(metric.text, metric.pending);
+  const paragraphs: Para[] = [{ text: entry.data.summary }];
+  if (metric) paragraphs.push(metric);
+  items.push({
+    sort: when?.sort ?? `0002-${String(100 - entry.data.order).padStart(2, '0')}`,
+    date: when?.date,
+    title: entry.data.title,
+    href: entry.data.href,
+    external: true,
+    paragraphs,
+    cards: [],
+  });
+}
+
+for (const slot of site.life) {
+  const started = slot.id === 'roll-and-wear';
+  items.push({
+    sort: started ? '2024-07-01' : `0003-${slot.id}`,
+    date: started ? '07 2024' : undefined,
+    title: slot.title,
+    paragraphs: slot.paragraphs.map((text) => ({ text })),
+    href: url('/life'),
+    cards: [],
+  });
+}
+
+items.sort((a, b) => (a.sort < b.sort ? 1 : a.sort > b.sort ? -1 : 0));
+
+let pendingFigures = 0;
+const tally = (text: string, pending?: boolean) => {
+  if (countsAsPendingFigure(text, Boolean(pending))) pendingFigures += 1;
+};
+for (const item of items) {
+  for (const paragraph of item.paragraphs) tally(paragraph.text, paragraph.pending);
+  for (const card of item.cards) {
+    for (const paragraph of card.paragraphs) tally(paragraph.text, paragraph.pending);
+  }
 }
 ---
 <Base description={site.hook}>
-  <div class="page front">
-    {pendingFigures >= 3 && (
-      <p class="editors-note">Editor's note. Dotted underlines mark figures not yet approved for publishing.</p>
-    )}
-    <h1 class="hook" id="hook">{site.hook}</h1>
-
-    <div class="front-board">
-      <div class="front-main">
-        {lead && (
-          <article class="lead-story">
-            <p class="kicker">Lead story · {lead.data.company}</p>
-            <h2><a href={url(`/work/${lead.id}`)}>{lead.data.headline}</a></h2>
-            <p class="deck">{lead.data.dek}</p>
-            <StatStrip stats={lead.data.stats} />
-          </article>
-        )}
-        <div class="secondary-stories">
-          {secondary.map((entry) => (
-            <article>
-              <p class="kicker">{entry.data.company}</p>
-              <h2><a href={url(`/work/${entry.id}`)}>{entry.data.headline}</a></h2>
-              <p class="deck">{entry.data.dek}</p>
-              <StatStrip stats={entry.data.stats} compact />
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <aside class="front-rail">
-        <section class="rail-block" id="ai-desk" aria-labelledby="ai-heading">
-          <div class="section-head">
-            <h2 id="ai-heading" class="section-label">AI Desk</h2>
-            <a href={url('/ai')}>All dispatches</a>
-          </div>
-          <ul class="ai-teaser">
-            {dispatches.map((entry) => {
-              const data = entry.data;
-              const lines = [data.system, data.problem, data.outcome, data.stillDecide, data.principles].flatMap((value) =>
-                !value ? [] : Array.isArray(value) ? value : [value],
-              );
-              const teaser = lines[0];
-              return (
-                <li>
-                  <a href={url(`/ai#${entry.id}`)}>{data.title}</a>
-                  {teaser ? (
-                    <p><Text text={teaser.text} pending={Boolean(teaser.pending)} /></p>
-                  ) : (
-                    <p class="filed">Filed soon.</p>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-
-        <section class="rail-block" id="off-clock" aria-labelledby="life-heading">
-          <div class="section-head">
-            <h2 id="life-heading" class="section-label">Off the clock</h2>
-            <a href={url('/life')}>Life</a>
-          </div>
-          <ul class="teaser-slots">
-            {site.life.map((slot) => (
-              <li>
-                <span class="work-kicker">{slot.title}</span>
-                <p>{slot.paragraphs[0]}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </aside>
-    </div>
-
-    <section class="block" id="writing" aria-labelledby="writing-heading">
-      <div class="section-head">
-        <h2 id="writing-heading" class="section-label">Writing</h2>
-        <a href={url('/writing')}>Archive</a>
-      </div>
-      <ul class="writing-list archive">
-        {writing.map((entry) => {
-          const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
-          return (
-            <li>
-              <a href={entry.data.href} target="_blank" rel="noopener noreferrer">
-                {entry.data.title}
-                <span class="vh"> (opens in a new tab)</span>
-              </a>
-              <p class="writing-meta">{[entry.data.byline, entry.data.outlet, entry.data.date].filter(Boolean).join(' · ')}</p>
-              <p class="writing-summary">{entry.data.summary}</p>
-              {metric && (
-                <p class="writing-summary">
-                  <Text text={metric.text} pending={metric.pending} />
-                </p>
-              )}
-            </li>
-          );
-        })}
+  <div class="page">
+    <section class="selected" aria-labelledby="selected-heading">
+      <h2 id="selected-heading">Selected work</h2>
+      <ul>
+        {featured.map((entry) => (
+          <li>
+            <a href={url(`/work/${entry.id}`)}>{entry.data.headline}</a>
+          </li>
+        ))}
       </ul>
     </section>
 
-    <section class="classifieds" aria-labelledby="contact-heading">
-      <h2 id="contact-heading" class="section-label">Classifieds / Contact</h2>
-      <ul class="contact-list">
-        <li><a href={url(site.resumePath)}>Resume</a></li>
-        <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span class="vh"> (opens in a new tab)</span></a></li>
-        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-      </ul>
+    <section class="notes" id="notes" aria-label="Notes">
+      {pendingFigures >= 3 && (
+        <p class="editors-note">Editor's note. Dotted underlines mark figures not yet approved for publishing.</p>
+      )}
+      {items.map((item) => (
+        <FeedNote
+          date={item.date}
+          title={item.title}
+          paragraphs={item.paragraphs}
+          href={item.href}
+          external={item.external}
+          id={item.id}
+          cards={item.cards}
+          more={item.more}
+        />
+      ))}
     </section>
   </div>
 </Base>

@@ -70,13 +70,6 @@ for (const stat of entry.data.stats ?? []) {
 }
 
 const description = `${entry.data.company}. ${entry.data.headline}`;
-let dropped = false;
-let passedOpening = false;
-
-function opensWithLetter(copy: CopyText) {
-  const visible = visibleCopy(copy);
-  return Boolean(visible && /^[A-Za-z]/.test(visible.text));
-}
 ---
 <Base title={entry.data.headline} description={description}>
   <article class="page">
@@ -85,7 +78,7 @@ function opensWithLetter(copy: CopyText) {
       <p class="editors-note">Editor's note. Dotted underlines mark figures not yet approved for publishing.</p>
     )}
     <header class="opening">
-      <p class="kicker">Case file · {entry.data.company}</p>
+      <p class="kicker">{entry.data.company}</p>
       <h1>{entry.data.headline}</h1>
       <p class="lede">{entry.data.dek}</p>
       <StatStrip stats={entry.data.stats} />
@@ -112,28 +105,18 @@ function opensWithLetter(copy: CopyText) {
       const paragraphs = (section.paragraphs ?? []).filter((paragraph) => visibleCopy(paragraph));
       const items = (section.items ?? []).filter((item) => visibleCopy(item));
       if (paragraphs.length === 0 && items.length === 0) return null;
-      const inOpening = !passedOpening;
-      passedOpening = true;
       return (
         <section class="case-section">
           <h2>{section.heading}</h2>
           <div class="prose">
-            {paragraphs.map((paragraph) => {
-              const drop = inOpening && !dropped && opensWithLetter(paragraph);
-              if (drop) dropped = true;
-              return <Copy copy={paragraph} drop={drop} />;
-            })}
+            {paragraphs.map((paragraph) => <Copy copy={paragraph} />)}
             {items.length > 0 && (
               <ul>
-                {items.map((item) => {
-                  const drop = inOpening && !dropped && opensWithLetter(item);
-                  if (drop) dropped = true;
-                  return (
-                    <li>
-                      <Copy copy={item} drop={drop} />
-                    </li>
-                  );
-                })}
+                {items.map((item) => (
+                  <li>
+                    <Copy copy={item} />
+                  </li>
+                ))}
               </ul>
             )}
           </div>

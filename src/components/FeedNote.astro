@@ -1,0 +1,70 @@
+---
+import Text from './Text.astro';
+
+interface Para {
+  text: string;
+  pending?: boolean;
+}
+
+interface Card {
+  heading: string;
+  tools?: string;
+  paragraphs: Para[];
+  link?: { href: string; label: string; external?: boolean };
+}
+
+interface Props {
+  date?: string;
+  title: string;
+  paragraphs?: Para[];
+  href?: string;
+  external?: boolean;
+  id?: string;
+  cards?: Card[];
+  more?: { href: string; label: string };
+}
+
+const { date, title, paragraphs = [], href, external = false, id, cards = [], more } = Astro.props;
+---
+<article class="note" id={id}>
+  {date && <p class="note-date">{date}</p>}
+  <h2>
+    {href ? (
+      <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+        {title}
+        {external && <span class="vh"> (opens in a new tab)</span>}
+      </a>
+    ) : (
+      title
+    )}
+  </h2>
+  {paragraphs.map((paragraph) => (
+    <p>
+      <Text text={paragraph.text} pending={paragraph.pending} />
+    </p>
+  ))}
+  {cards.map((card) => (
+    <section class="card">
+      <h3>{card.heading}</h3>
+      {card.tools && <p class="tools">{card.tools}</p>}
+      {card.paragraphs.map((paragraph) => (
+        <p>
+          <Text text={paragraph.text} pending={paragraph.pending} />
+        </p>
+      ))}
+      {card.link && (
+        <p class="more">
+          <a href={card.link.href} {...(card.link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+            {card.link.label}
+            {card.link.external && <span class="vh"> (opens in a new tab)</span>}
+          </a>
+        </p>
+      )}
+    </section>
+  ))}
+  {more && (
+    <p class="more">
+      <a href={more.href}>{more.label}</a>
+    </p>
+  )}
+</article>

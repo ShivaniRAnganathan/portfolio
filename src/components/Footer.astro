@@ -4,16 +4,8 @@ import { url } from '../lib/url';
 ---
 <footer class="site-footer page">
   <p class="footer-line">
-    <span class="footer-nameplate">{site.masthead}</span>
-    <span>{site.name}</span>
-    <span>{site.location}</span>
-  </p>
-  <p class="footer-line">
-    <a href={`mailto:${site.email}`}>{site.email}</a>
-    <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
-      LinkedIn<span class="vh"> (opens in a new tab)</span>
-    </a>
-    <a href={url(site.resumePath)}>Resume</a>
+    <a href={url('/about')}>About</a>
+    <a href={url('/ai')}>AI desk</a>
     <span>Updated {site.updated}</span>
   </p>
 </footer>

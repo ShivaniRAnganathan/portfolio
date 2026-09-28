@@ -4,44 +4,47 @@ import { url } from '../lib/url';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+const here = path === base ? '/' : path;
+const home = here === '/' || here === '';
 
 function current(href: string) {
   const full = url(href).replace(/\/$/, '') || '/';
-  const here = path === base ? '/' : path;
-  if (href === '/') return here === '/' || here === base || here === '';
+  if (href === '/') return home;
   return here === full || here.startsWith(`${full}/`);
 }
 
 const links = [
-  { href: '/work', label: 'Work' },
-  { href: '/ai', label: 'AI Desk' },
-  { href: '/writing', label: 'Writing' },
-  { href: '/life', label: 'Life' },
-  { href: '/about', label: 'About' },
-  { href: site.resumePath, label: 'Resume' },
+  { href: '/work', label: 'work' },
+  { href: '/#notes', label: 'notes' },
+  { href: '/writing', label: 'writing' },
+  { href: '/life', label: 'life' },
+  { href: site.resumePath, label: 'resume' },
+  { href: site.linkedin, label: 'linkedin', external: true },
+  { href: `mailto:${site.email}`, label: 'email' },
 ];
 ---
 <a class="skip" href="#content">Skip to content</a>
-<header class="masthead">
-  <div class="masthead-plate">
-    <div class="page">
-      <a class="masthead-name" href={url('/')}>{site.masthead}</a>
-      <div class="masthead-rule" aria-hidden="true"></div>
-    </div>
-  </div>
-  <div class="dateline-band">
-    <div class="page dateline-row">
-      <p class="edition">Chennai edition · {site.updated}</p>
-      <p class="dateline">{site.name} · Product Manager · Chennai</p>
-    </div>
-  </div>
-  <div class="page">
-    <nav class="nav" aria-label="Primary">
-      {links.map((link) => (
-        <a href={url(link.href)} aria-current={current(link.href) ? 'page' : undefined}>
-          {link.label}
-        </a>
-      ))}
-    </nav>
-  </div>
+<header class="top">
+  {home ? (
+    <h1 class="name"><a href={url('/')}>{site.masthead}</a></h1>
+  ) : (
+    <p class="name"><a href={url('/')}>{site.masthead}</a></p>
+  )}
+  {home && (
+    <p class="bio">
+      product manager at fundsindia private wealth. previously ketto and hsbc. chennai. founder of roll &amp; wear.
+    </p>
+  )}
+  <nav class="nav" aria-label="Primary">
+    {links.map((link) => (
+      <a
+        href={url(link.href)}
+        aria-current={!link.external && !link.href.startsWith('/#') && current(link.href) ? 'page' : undefined}
+        {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      >
+        {link.label}
+        {link.external && <span class="vh"> (opens in a new tab)</span>}
+      </a>
+    ))}
+  </nav>
 </header>
