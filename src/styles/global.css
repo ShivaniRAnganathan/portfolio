@@ -132,14 +132,15 @@ a:hover {
 }
 
 .mark {
-  width: 4.25rem;
-  height: 4.25rem;
+  width: 2.6rem;
+  height: 2.6rem;
   flex: none;
 }
 
-.top:not(.is-home) .mark {
-  width: 2.6rem;
-  height: 2.6rem;
+.is-home .mark {
+  width: 11.5rem;
+  height: 11.5rem;
+  margin-top: 1rem;
 }
 
 .mark svg,
@@ -151,8 +152,12 @@ a:hover {
 
 .mark img {
   object-fit: cover;
-  border: 1.5px solid var(--ink);
-  border-radius: 46% 54% 48% 52% / 42% 46% 54% 58%;
+  border: 1px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--hi);
+}
+
+.is-home .mark img {
+  box-shadow: 6px 6px 0 var(--hi);
 }
 
 .bio {
@@ -163,35 +168,34 @@ a:hover {
   line-height: 1.5;
 }
 
-.clock {
-  margin-top: 1rem;
+.tracks {
+  margin-top: 1.15rem;
+  display: grid;
+  gap: 0.85rem;
   max-width: var(--prose);
-  padding: 0.7rem 0.85rem 0.8rem;
-  background: #fffdf8;
-  border: 1.5px solid var(--ink);
-  border-radius: 2px 14px 10px 4px;
-  box-shadow: 4px 4px 0 var(--hi);
 }
 
-.clock-label {
+.track-label {
   font-family: var(--mono);
   font-size: 0.72rem;
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: lowercase;
+  color: var(--accent);
 }
 
-.clock ul {
+.track ul {
   list-style: none;
-  margin-top: 0.35rem;
+  margin-top: 0.18rem;
 }
 
-.clock li {
-  font-size: 0.98rem;
+.track li {
+  font-size: 1.02rem;
   line-height: 1.4;
 }
 
-.clock li + li {
-  margin-top: 0.12rem;
+.track li + li {
+  margin-top: 0.16rem;
 }
 
 .nav {
@@ -210,11 +214,6 @@ a:hover {
   color: var(--ink);
 }
 
-.selected {
-  margin-top: 1.85rem;
-}
-
-.selected h2,
 .kicker,
 .eyebrow,
 .section-label,
@@ -227,18 +226,15 @@ a:hover {
   color: var(--muted);
 }
 
-.selected ul,
 .link-list {
   list-style: none;
   margin-top: 0.55rem;
 }
 
-.selected li + li,
 .link-list li + li {
   margin-top: 0.35rem;
 }
 
-.selected a,
 .link-list a {
   color: var(--ink);
   font-size: 1.0625rem;
@@ -247,7 +243,7 @@ a:hover {
 }
 
 .notes {
-  margin-top: 3.25rem;
+  margin-top: 2.25rem;
 }
 
 .note + .note {

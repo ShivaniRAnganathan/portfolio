@@ -1,16 +1,29 @@
 ---
 import { existsSync } from 'node:fs';
+import path from 'node:path';
 import { url } from '../lib/url';
 
 /**
- * Hand-drawn monogram. If public/me.jpg is added later, it fills this frame.
- * Do not generate a portrait.
+ * Portrait frame. public/me.jpg is Shivani's public LinkedIn photo.
+ * The face is shown as photographed. The drawn monogram is only the fallback,
+ * and the favicon.
  */
-const hasPhoto = existsSync(new URL('../../public/me.jpg', import.meta.url));
+interface Props {
+  priority?: boolean;
+}
+const { priority = false } = Astro.props;
+const hasPhoto = existsSync(path.join(process.cwd(), 'public', 'me.jpg'));
 ---
 <div class="mark">
   {hasPhoto ? (
-    <img src={url('/me.jpg')} alt="Shivani Ranganathan" width="88" height="88" />
+    <img
+      src={url('/me.jpg')}
+      alt="Shivani Ranganathan"
+      width="400"
+      height="400"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+    />
   ) : (
     <svg viewBox="0 0 88 88" aria-hidden="true">
       <path

@@ -112,7 +112,6 @@ function aiLines(value?: AiNote | AiNote[]): Para[] {
 }
 
 const studies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
-const featured = studies.filter((entry) => entry.data.featured);
 const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
 const ai = (await getCollection('ai')).sort((a, b) => a.data.order - b.data.order);
 const builder = ai.find((entry) => entry.id === 'how-i-build');
@@ -209,17 +208,6 @@ for (const item of items) {
 ---
 <Base description={site.hook}>
   <div class="page">
-    <section class="selected" aria-labelledby="selected-heading">
-      <h2 id="selected-heading">Selected work</h2>
-      <ul>
-        {featured.map((entry) => (
-          <li>
-            <a href={url(`/work/${entry.id}`)}>{entry.data.headline}</a>
-          </li>
-        ))}
-      </ul>
-    </section>
-
     <section class="notes" id="notes" aria-label="Notes">
       {pendingFigures >= 3 && (
         <p class="editors-note">Editor's note. Dotted underlines mark figures not yet approved for publishing.</p>

@@ -43,16 +43,45 @@ export const site = {
   /** Front-page headline. Swap this line without touching the layout. */
   hook: "Hi, I'm Shiv. I break problems down to first principles, then build the AI system that solves them.",
   /**
-   * Home bio. First person, from the hook, the intro, and life.
-   * ElasticRun stays off this line, same as the previous short bio.
+   * Home bio. Identity only. The jobs and the life sit in `direction`,
+   * so this line does not repeat them. ElasticRun stays off it.
    */
-  greeting:
-    "I'm a product manager who reasons from first principles. I work in Private Wealth at FundsIndia, in Chennai, and before that at Ketto and HSBC. On the side I run a t-shirt brand called Roll & Wear, play board games, and train.",
-  /** Compact life lines. Each one is already in site.life. */
-  offClock: [
-    'Roll & Wear, the t-shirt brand I co-founded, inspired by board games.',
-    'Oros and Ark Nova with my regular group.',
-    'Pole, a lot of Pilates, and trekking whenever I can.',
+  greeting: "I'm a product manager in Chennai who reasons from first principles.",
+  /**
+   * Three short groups under the bio. Every line is already in the repo.
+   * A line can be one link, or a few links in a single sentence.
+   */
+  direction: [
+    {
+      label: 'building',
+      items: [
+        [{ href: '/life#roll-and-wear', text: 'Roll & Wear, the t-shirt brand I co-founded, inspired by board games.' }],
+        [{ href: '/#how-i-build', text: 'How I build with AI, to automate the recurring parts of my work.' }],
+      ],
+    },
+    {
+      label: 'working',
+      items: [
+        [{ href: '/work', text: 'Product at FundsIndia Private Wealth.' }],
+        [
+          { href: '/work/redemption-tax-exit-load/', text: 'Showing tax and exit load before a redemption' },
+          { text: ', ' },
+          { href: '/work/wealth-spectrum-one-view/', text: 'one view of every Private Wealth portfolio' },
+          { text: ', and ' },
+          { href: '/work/ketto-bulk-donation/', text: 'bulk donation at Ketto' },
+          { text: '.' },
+        ],
+        [{ href: '/about#experience-heading', text: 'Previously Ketto and HSBC.' }],
+      ],
+    },
+    {
+      label: 'doing',
+      items: [
+        [{ href: '/writing', text: 'Writing on Medium.' }],
+        [{ href: '/life#gaming', text: 'Oros and Ark Nova with my regular group.' }],
+        [{ href: '/life#movement', text: 'Pole, a lot of Pilates, and trekking whenever I can.' }],
+      ],
+    },
   ],
   signoff: 'thanks for stopping by',
   positioning:
