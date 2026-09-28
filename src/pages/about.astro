@@ -17,6 +17,19 @@ const recognition = site.recognition
     <p class="lede">{site.intro}</p>
     <p class="where">{site.location}</p>
 
+    <section class="block" aria-labelledby="how-heading">
+      <h2 id="how-heading" class="section-label">How I work</h2>
+      <ol class="principles">
+        {site.howIWork.map((item, i) => (
+          <li>
+            <span class="principle-index">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="principle">{item.principle}</h3>
+            <p class="principle-example">{item.example}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
     <section class="block" aria-labelledby="experience-heading">
       <h2 id="experience-heading" class="section-label">Experience</h2>
       <ol class="cv">

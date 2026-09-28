@@ -750,8 +750,14 @@ h1 .badge,
     margin-top: 0.3rem;
   }
 
+  .nav {
+    gap: 0.05rem 0.65rem;
+  }
+
   .nav a {
     padding-block: 0.28rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
   }
 
   .hero .kicker {
@@ -917,6 +923,112 @@ h1 .badge,
   }
 }
 
+.lead h1 {
+  max-width: 16em;
+  margin-top: 1.15rem;
+}
+
+.edition-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1.5rem;
+  margin-top: 1.15rem;
+  padding: 0.55rem 0 0.65rem;
+  border-top: 1px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+}
+
+.edition-strip .kicker {
+  margin: 0;
+}
+
+.edition-strip ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.35rem;
+  list-style: none;
+}
+
+.edition-strip a {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+}
+
+.edition-strip a:hover {
+  color: var(--accent-deep);
+}
+
+.front-pair {
+  margin-top: clamp(2.5rem, 6vw, 3.75rem);
+}
+
+.front-pair > .block {
+  margin-top: 0;
+}
+
+.front-pair > .block + .block {
+  margin-top: clamp(2.5rem, 6vw, 3.75rem);
+}
+
+.ai-teaser,
+.dispatch-list {
+  list-style: none;
+  margin-top: 0.35rem;
+}
+
+.ai-teaser li,
+.dispatch-list > li {
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.ai-teaser li:last-child,
+.dispatch-list > li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.ai-teaser a,
+.dispatch-list h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.ai-teaser a:hover {
+  color: var(--accent-deep);
+}
+
+.dispatch-fields {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 0.85rem;
+  max-width: var(--prose);
+}
+
+.dispatch-fields dt {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.dispatch-fields dd {
+  margin-top: 0.2rem;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
 .deck {
   margin-top: 0.7rem;
   max-width: 40rem;
@@ -1077,6 +1189,19 @@ h1 .badge,
 
   .front-side .writing-list a {
     font-size: 1.15rem;
+  }
+
+  .front-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(16rem, 0.85fr);
+    column-gap: 2.25rem;
+    align-items: start;
+  }
+
+  .front-pair > .block + .block {
+    margin-top: 0;
+    padding-left: 2rem;
+    border-left: 1px solid var(--ink);
   }
 }
 

@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const dispatches = (await getCollection('ai')).sort((a, b) => a.data.order - b.data.order);
+
+function filed(data: {
+  problem?: string;
+  principles?: string;
+  system?: string;
+  stillDecide?: string;
+  outcome?: string;
+}) {
+  return !(data.problem || data.principles || data.system || data.stillDecide || data.outcome);
+}
+---
+<Base title="AI Desk" description="AI Desk. Dispatches are filed soon.">
+  <div class="page">
+    <p class="kicker">AI Desk</p>
+    <h1 class="page-title">Dispatches</h1>
+    <p class="deck">Each dispatch will have the problem, a first-principles breakdown, the system, what I still decide, and the outcome.</p>
+    <ol class="dispatch-list">
+      {dispatches.map((entry) => {
+        const data = entry.data;
+        const waiting = filed(data);
+        return (
+          <li id={entry.id}>
+            <h2>{data.title}</h2>
+            {(data.date || data.autonomy) && (
+              <p class="writing-meta">
+                {[data.date, data.autonomy].filter(Boolean).join(' · ')}
+              </p>
+            )}
+            {waiting ? (
+              <p class="filed">Filed soon.</p>
+            ) : (
+              <dl class="dispatch-fields">
+                {data.problem && (
+                  <div>
+                    <dt>Problem</dt>
+                    <dd>{data.problem}</dd>
+                  </div>
+                )}
+                {data.principles && (
+                  <div>
+                    <dt>First principles</dt>
+                    <dd>{data.principles}</dd>
+                  </div>
+                )}
+                {data.system && (
+                  <div>
+                    <dt>The system</dt>
+                    <dd>{data.system}</dd>
+                  </div>
+                )}
+                {data.stillDecide && (
+                  <div>
+                    <dt>What I still decide</dt>
+                    <dd>{data.stillDecide}</dd>
+                  </div>
+                )}
+                {data.outcome && (
+                  <div>
+                    <dt>Outcome</dt>
+                    <dd>{data.outcome}</dd>
+                  </div>
+                )}
+              </dl>
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</Base>

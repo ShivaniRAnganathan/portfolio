@@ -8,8 +8,9 @@ The built pages send `noindex`, and `public/robots.txt` disallows all crawlers. 
 
 | What | Where |
 | --- | --- |
-| Positioning, intro, hero metrics, how I work, experience, education, contact | `src/data/site.ts` |
+| Front-page headline (`hook`), intro, experience, education, contact | `src/data/site.ts` |
 | Case studies | `src/content/case-studies/*.md` |
+| AI Desk dispatches | `src/content/ai/*.md` |
 | Writing links | `src/content/writing/*.md` |
 | Life slots (names only until real copy arrives) | `src/data/site.ts` (`life`) |
 | Personal pieces | `src/content/pieces/*.md` |
@@ -26,7 +27,7 @@ In `src/data/site.ts`:
 - `USE_CONFIDENTIAL_FALLBACKS` — `true` swaps FundsIndia figures, and the Wealth Spectrum name, for the safer wording stored as `fallback` next to each claim. Fallback lines are not badged.
 - `SHOW_RESUME_ONLY_CLAIMS` — `true` shows resume-only lines (hero metrics, the 18% / 12% / 15% redemption claims, the Ketto app and 37% / 210M+ claims, and the recognition lines) with an Unconfirmed badge. `false` removes those lines. Empty sections are omitted, and the hero metric row hides.
 
-Hero metrics are resume-only. They have no fallback sentence of their own.
+Hero metrics stay in `src/data/site.ts` and are resume-only. The front page does not render that row. The same switch still shows or hides resume-only lines inside case studies and on About.
 
 ## Develop
 
@@ -47,9 +48,10 @@ Hosting is not wired up. For a later deploy, set:
 
 ## Pages
 
-- `/` home
+- `/` home. Headline is `hook` in `src/data/site.ts`.
 - `/work` shipped work, then proposals and take-homes
 - `/work/<slug>` one case study
+- `/ai` — AI Desk. A dispatch has optional `date`, `autonomy` (`Assist`, `Delegate`, or `End-to-end`), `problem`, `principles`, `system`, `stillDecide`, and `outcome`. Until those fields are filled, the page shows the title and “Filed soon.”
 - `/writing`
 - `/life` — Off the clock. Slots for Roll & Wear, board gaming, and fitness. New pieces are markdown files in `src/content/pieces/` with `title`, `summary`, optional `slot` (such as `roll-and-wear`, `gaming`, or `fitness`), optional `date`, and `order`.
 - `/about`

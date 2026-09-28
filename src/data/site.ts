@@ -38,6 +38,8 @@ export const site = {
   resumePath: '/resume.pdf',
   location:
     'Chennai, India. Authorized to work in India. Open to remote roles and to relocation.',
+  /** Front-page headline. Swap this line without touching the layout. */
+  hook: "Hi, I'm Shiv. I break problems down to first principles, then build the AI system that solves them.",
   positioning:
     'A fintech and consumer-growth product manager who turns retention and monetization problems into shipped products.',
   intro:
@@ -138,7 +140,7 @@ export const site = {
     },
     {
       id: 'gaming',
-      title: 'Board gaming',
+      title: 'Board games',
       line: 'Filed soon.',
       filed: '',
     },

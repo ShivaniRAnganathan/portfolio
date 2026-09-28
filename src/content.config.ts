@@ -60,6 +60,21 @@ const links = defineCollection({
   }),
 });
 
+const ai = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/ai' }),
+  schema: z.object({
+    title: z.string(),
+    order: z.number().default(0),
+    date: z.string().optional(),
+    autonomy: z.enum(['Assist', 'Delegate', 'End-to-end']).optional(),
+    problem: z.string().optional(),
+    principles: z.string().optional(),
+    system: z.string().optional(),
+    stillDecide: z.string().optional(),
+    outcome: z.string().optional(),
+  }),
+});
+
 const pieces = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/pieces' }),
   schema: z.object({
@@ -72,4 +87,4 @@ const pieces = defineCollection({
   }),
 });
 
-export const collections = { caseStudies, writing, links, pieces };
+export const collections = { caseStudies, writing, links, ai, pieces };
