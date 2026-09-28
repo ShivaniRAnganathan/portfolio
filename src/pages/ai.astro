@@ -1,28 +1,35 @@
 ---
 import Base from '../layouts/Base.astro';
+import Badge from '../components/Badge.astro';
+import { SHOW_PENDING_BADGES } from '../data/site';
 import { getCollection } from 'astro:content';
+
+type Note = { text: string; pending?: boolean };
+
+function notes(value?: Note | Note[]): Note[] {
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
 
 const dispatches = (await getCollection('ai')).sort((a, b) => a.data.order - b.data.order);
 
-function filed(data: {
-  problem?: string;
-  principles?: string;
-  system?: string;
-  stillDecide?: string;
-  outcome?: string;
-}) {
-  return !(data.problem || data.principles || data.system || data.stillDecide || data.outcome);
-}
+const fields = [
+  ['problem', 'Problem'],
+  ['principles', 'First principles'],
+  ['system', 'The system'],
+  ['stillDecide', 'What I still decide'],
+  ['outcome', 'Outcome'],
+] as const;
 ---
-<Base title="AI Desk" description="AI Desk. Dispatches are filed soon.">
+<Base title="AI Desk" description="How I build with AI, and the dispatches behind it.">
   <div class="page">
     <p class="kicker">AI Desk</p>
     <h1 class="page-title">Dispatches</h1>
-    <p class="deck">Each dispatch will have the problem, a first-principles breakdown, the system, what I still decide, and the outcome.</p>
+    <p class="deck">Each dispatch has the problem, a first-principles breakdown, the system, what I still decide, and the outcome.</p>
     <ol class="dispatch-list">
       {dispatches.map((entry) => {
         const data = entry.data;
-        const waiting = filed(data);
+        const filled = fields.some(([key]) => notes(data[key]).length > 0);
         return (
           <li id={entry.id}>
             <h2>{data.title}</h2>
@@ -31,41 +38,28 @@ function filed(data: {
                 {[data.date, data.autonomy].filter(Boolean).join(' · ')}
               </p>
             )}
-            {waiting ? (
-              <p class="filed">Filed soon.</p>
-            ) : (
+            {filled ? (
               <dl class="dispatch-fields">
-                {data.problem && (
-                  <div>
-                    <dt>Problem</dt>
-                    <dd>{data.problem}</dd>
-                  </div>
-                )}
-                {data.principles && (
-                  <div>
-                    <dt>First principles</dt>
-                    <dd>{data.principles}</dd>
-                  </div>
-                )}
-                {data.system && (
-                  <div>
-                    <dt>The system</dt>
-                    <dd>{data.system}</dd>
-                  </div>
-                )}
-                {data.stillDecide && (
-                  <div>
-                    <dt>What I still decide</dt>
-                    <dd>{data.stillDecide}</dd>
-                  </div>
-                )}
-                {data.outcome && (
-                  <div>
-                    <dt>Outcome</dt>
-                    <dd>{data.outcome}</dd>
-                  </div>
-                )}
+                {fields.map(([key, label]) => {
+                  const lines = notes(data[key]);
+                  if (lines.length === 0) return null;
+                  return (
+                    <div>
+                      <dt>{label}</dt>
+                      <dd>
+                        {lines.map((line) => (
+                          <p>
+                            {line.text}
+                            {line.pending && SHOW_PENDING_BADGES && <Badge />}
+                          </p>
+                        ))}
+                      </dd>
+                    </div>
+                  );
+                })}
               </dl>
+            ) : (
+              <p class="filed">Filed soon.</p>
             )}
           </li>
         );

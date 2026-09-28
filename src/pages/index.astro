@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Badge from '../components/Badge.astro';
 import WorkRow from '../components/WorkRow.astro';
-import { site } from '../data/site';
+import { SHOW_PENDING_BADGES, site } from '../data/site';
 import { caseHeadline, visibleCopy } from '../lib/copy';
 import { url } from '../lib/url';
 import { getCollection } from 'astro:content';
@@ -63,11 +63,21 @@ const [brand, ...otherLife] = site.life;
         <ul class="ai-teaser">
           {dispatches.map((entry) => {
             const data = entry.data;
-            const waiting = !(data.problem || data.principles || data.system || data.stillDecide || data.outcome);
+            const lines = [data.system, data.problem, data.outcome, data.stillDecide, data.principles].flatMap((value) =>
+              !value ? [] : Array.isArray(value) ? value : [value],
+            );
+            const teaser = lines[0];
             return (
               <li>
                 <a href={url(`/ai#${entry.id}`)}>{data.title}</a>
-                {waiting ? <p class="filed">Filed soon.</p> : data.problem && <p>{data.problem}</p>}
+                {teaser ? (
+                  <p>
+                    {teaser.text}
+                    {teaser.pending && SHOW_PENDING_BADGES && <Badge />}
+                  </p>
+                ) : (
+                  <p class="filed">Filed soon.</p>
+                )}
               </li>
             );
           })}
@@ -103,7 +113,7 @@ const [brand, ...otherLife] = site.life;
                 {entry.data.title}
                 <span class="vh"> (opens in a new tab)</span>
               </a>
-              <p class="writing-meta">{entry.data.outlet}{entry.data.date ? ` · ${entry.data.date}` : ''}</p>
+              <p class="writing-meta">{[entry.data.byline, entry.data.outlet, entry.data.date].filter(Boolean).join(' · ')}</p>
               <p class="writing-summary">{entry.data.summary}</p>
               {metric && (
                 <p class="writing-summary">

@@ -135,8 +135,8 @@ export const site = {
     {
       id: 'roll-and-wear',
       title: 'Roll & Wear',
-      line: 'Roll & Wear, a t-shirt brand I run.',
-      filed: 'Filed soon.',
+      line: 'Founder of Roll & Wear, where I design gaming t-shirts.',
+      filed: '',
     },
     {
       id: 'gaming',

@@ -38,6 +38,7 @@ const writing = defineCollection({
   schema: z.object({
     title: z.string(),
     outlet: z.string(),
+    byline: z.string().optional(),
     date: z.string().optional(),
     summary: z.string(),
     metric: copy.optional(),
@@ -60,6 +61,12 @@ const links = defineCollection({
   }),
 });
 
+const note = z.object({
+  text: z.string(),
+  pending: z.boolean().optional(),
+});
+const notes = z.union([note, z.array(note)]);
+
 const ai = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/ai' }),
   schema: z.object({
@@ -67,11 +74,11 @@ const ai = defineCollection({
     order: z.number().default(0),
     date: z.string().optional(),
     autonomy: z.enum(['Assist', 'Delegate', 'End-to-end']).optional(),
-    problem: z.string().optional(),
-    principles: z.string().optional(),
-    system: z.string().optional(),
-    stillDecide: z.string().optional(),
-    outcome: z.string().optional(),
+    problem: notes.optional(),
+    principles: notes.optional(),
+    system: notes.optional(),
+    stillDecide: notes.optional(),
+    outcome: notes.optional(),
   }),
 });
 

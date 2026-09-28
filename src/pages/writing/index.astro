@@ -21,9 +21,16 @@ const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b
               <span class="vh"> (opens in a new tab)</span>
             </a>
             <p class="writing-meta">
-              {entry.data.outlet}{entry.data.date ? ` · ${entry.data.date}` : ''}
+              {[entry.data.byline, entry.data.outlet, entry.data.date].filter(Boolean).join(' · ')}
             </p>
             <p class="writing-summary">{entry.data.summary}</p>
+            {entry.body?.trim() && (
+              <div class="writing-excerpt">
+                {entry.body.trim().split(/\n\n+/).map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </div>
+            )}
             {metric && (
               <p class="writing-summary">
                 {metric.text}

@@ -11,7 +11,7 @@ The built pages send `noindex`, and `public/robots.txt` disallows all crawlers. 
 | Front-page headline (`hook`), intro, experience, education, contact | `src/data/site.ts` |
 | Case studies | `src/content/case-studies/*.md` |
 | AI Desk dispatches | `src/content/ai/*.md` |
-| Writing links | `src/content/writing/*.md` |
+| Writing | `src/content/writing/*.md` (Medium posts use her original title, plus `byline`, `date`, `summary` as the deck, and the excerpt as the markdown body) |
 | Life slots (names only until real copy arrives) | `src/data/site.ts` (`life`) |
 | Personal pieces | `src/content/pieces/*.md` |
 | Internship card, take-homes, proposal | `src/content/links/*.md` |
