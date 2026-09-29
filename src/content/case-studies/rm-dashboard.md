@@ -11,13 +11,12 @@ timeline:
 featured: false
 order: 3
 outcome:
-  primary: "Time in the dashboard rose from 1.1 to 6.1 minutes a session. More than 40 valuation reports were downloaded a day. Onboarding status reached 45% daily use."
+  primary: "Sessions rose from 1.1 to 6.1 minutes. More than 40 valuation reports were downloaded a day. Onboarding status reached 45% daily use."
   approved: true
 dek: Reports, alerts and a client's onboarding status, in the dashboard relationship managers already use.
 stats:
-  - value: "6.1"
-    label: "Minutes a session, from 1.1"
-    note: "The write-up doesn't say which dates that covers."
+  - value: "Sessions"
+    label: "rose from 1.1 to 6.1 minutes"
   - value: "40+"
     label: "Valuation reports a day"
   - value: "45%"
@@ -60,7 +59,7 @@ sections:
       - primary: "I signed off the Sales Enablement Toolkit beta. Holdings broken out by asset, product and holding pattern, plus alerts, quick actions, and target versus performance."
   - heading: Outcome
     items:
-      - primary: "Dashboard engagement rose from 1.1 to 6.1 minutes per session."
+      - primary: "Sessions rose from 1.1 to 6.1 minutes."
         approved: true
       - primary: "More than 40 valuation reports were downloaded every day since release."
         approved: true

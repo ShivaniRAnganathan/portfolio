@@ -20,7 +20,7 @@ stats:
   - value: "18%"
     label: "Fewer premature exits"
   - value: "12%"
-    label: "Higher long-term retention"
+    label: "Higher long-term retention value"
 scale:
   primary: "Every FundsIndia investor who starts a mutual fund redemption, on web, Android and iOS."
 sections:

@@ -20,12 +20,4 @@ sections:
     paragraphs:
       - primary: "Users: about 86 NGO partners on Ketto. What I owned: the whole white-label application: building it, and deciding the flow and every page."
         approved: true
-  - heading: Problem
-    paragraphs:
-      - primary: "About 86 NGO partners needed a white-label solution."
-        approved: true
-  - heading: What I owned
-    paragraphs:
-      - primary: "The whole application. I built it, and I decided the flow and every page."
-        approved: true
 ---

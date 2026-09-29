@@ -5,6 +5,7 @@ import { site } from '../data/site';
 import { visibleCopy } from '../lib/copy';
 import { url } from '../lib/url';
 
+const preview = process.env.PREVIEW === '1';
 const recognition = site.recognition
   .map((item) => visibleCopy(item))
   .filter((item) => item !== null);
@@ -85,7 +86,7 @@ function known(value: string) {
       <ul class="contact-list">
         <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
         <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span class="vh"> (opens in a new tab)</span></a></li>
-        <li><a href={url(site.resumePath)}>Resume</a></li>
+        {!preview && <li><a href={url(site.resumePath)}>Resume</a></li>}
       </ul>
     </section>
   </div>

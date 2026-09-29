@@ -45,7 +45,7 @@ sections:
       - primary: The live app offers one-time or monthly donations with Ketto Social Impact Plan.
       - primary: Whether that plan is the recurring-donation work I led is not confirmed.
         pending: true
-      - primary: A mobile app from zero to one, owning pricing, the experience and donation mechanics.
+      - primary: A mobile app from zero to one, owning the experience and donation mechanics.
         pending: true
         resumeOnly: true
       - primary: A growth experimentation pod. Rapid A/B tests across landing pages, donation flows and checkout.
