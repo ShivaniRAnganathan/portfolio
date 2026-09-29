@@ -42,7 +42,9 @@ const facts = [
   { label: 'Outcome', value: entry.data.outcome, wide: true },
 ].flatMap((fact) => {
   const parts = resolveFact(fact.value);
-  return parts.length > 0 ? [{ ...fact, parts }] : [];
+  if (parts.length === 0) return [];
+  const sameAsDek = fact.label === 'Outcome' && parts.map((part) => part.text).join(' ') === entry.data.dek;
+  return sameAsDek ? [] : [{ ...fact, parts }];
 });
 
 const description = `${entry.data.company}. ${entry.data.headline}`;

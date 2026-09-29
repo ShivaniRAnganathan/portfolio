@@ -59,8 +59,6 @@ sections:
       - primary: "I signed off the Sales Enablement Toolkit beta. Holdings broken out by asset, product and holding pattern, plus alerts, quick actions, and target versus performance."
   - heading: Outcome
     items:
-      - primary: "Sessions rose from 1.1 to 6.1 minutes."
-        approved: true
       - primary: "More than 40 valuation reports were downloaded every day since release."
         approved: true
       - primary: "Onboarding status reached 45% daily use among relationship managers."

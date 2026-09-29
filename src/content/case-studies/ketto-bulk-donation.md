@@ -70,7 +70,7 @@ sections:
         fallback: Average donation size rose.
         pending: true
       - primary: About ₹50 crore in additional revenue attributed to the feature.
-        fallback: Additional revenue was attributed to the feature. The amount is not published here.
+        fallback: Additional revenue was attributed to the feature.
         pending: true
   - heading: Related Ketto work
     items:

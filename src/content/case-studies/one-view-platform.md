@@ -78,11 +78,6 @@ sections:
         pending: true
       - primary: "More than 40 valuation reports were downloaded a day after reports were added to the relationship-manager dashboard."
         approved: true
-      - primary: "Weekly portfolio mailer open rates rose from 8.5% to 14.6%."
-        approved: true
-      - primary: "Saturday daily users rose about 20%."
-        fallback: "Saturday daily users rose as well."
-        pending: true
       - primary: "Leadership noted very good feedback from relationship managers on Private Wealth."
       - primary: "What's still unclear. The chart has an adoption line that stays flat along the bottom, and the chart doesn't define it. Usage also moves around a lot after the peak. I would want a steady reading, not the launch spike, before calling this adopted."
   - heading: What I learned

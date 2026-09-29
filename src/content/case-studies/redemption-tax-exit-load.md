@@ -11,9 +11,9 @@ timeline:
 featured: true
 order: 1
 outcome:
-  primary: "I redesigned the redemption journey so clients saw the tax, the exit load and a loan option before they confirmed. Retention value rose 12%, and loan exploration at redemption went from about 6% to 9.5%."
+  primary: "I redesigned the redemption journey so clients saw the tax, the exit load and a loan option before they confirmed. Long-term retention value rose 12%, and loan exploration at redemption went from about 6% to 9.5%."
   approved: true
-dek: I redesigned the redemption journey so clients saw the tax, the exit load and a loan option before they confirmed. Retention value rose 12%, and loan exploration at redemption went from about 6% to 9.5%.
+dek: I redesigned the redemption journey so clients saw the tax, the exit load and a loan option before they confirmed. Long-term retention value rose 12%, and loan exploration at redemption went from about 6% to 9.5%.
 stats:
   - value: "9.5%"
     label: "Loan exploration, from about 6%"

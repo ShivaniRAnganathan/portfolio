@@ -71,8 +71,6 @@ sections:
       - primary: "19 of 45 feedback items made the quarter. 6 shipped in July and 13 were queued for August and September."
         fallback: "A subset of the feedback made the quarter. Some of those items shipped, and the rest were queued for the following months."
         pending: true
-      - primary: "About 60% of recipients opened the first newsletter."
-        approved: true
       - primary: "It was delivered to 663 people, with 395 unique opens. Clicks were low: 7 unique clicks, about 1%."
         fallback: "It reached the relationship-manager list. Almost nobody clicked."
         pending: true
