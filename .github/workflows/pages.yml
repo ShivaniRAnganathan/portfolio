@@ -1,5 +1,5 @@
-# Deploys the preview branch. This file lives on main so the github-pages
-# environment can publish it. The site code stays on the preview branch.
+# Deploys the live preview branch at /portfolio/ and the positioning-pass
+# branch at /portfolio/preview/. Live pages are built only from the live ref.
 name: GitHub Pages
 
 on:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: Branch or commit to build
+        description: Branch or commit to build for the live site
         required: false
         default: cursor/notebook-feed-8ef6
 
@@ -29,26 +29,58 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
+      - name: Checkout live site
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref || 'cursor/notebook-feed-8ef6' }}
+          path: live
+
+      - name: Checkout preview
+        uses: actions/checkout@v4
+        with:
+          ref: preview/positioning-pass
+          path: preview
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - name: Install
-        run: npm ci
-      - name: Build
-        run: npm run build
+          cache-dependency-path: |
+            live/package-lock.json
+            preview/package-lock.json
+
+      - name: Install and build live
+        working-directory: live
+        run: npm ci && npm run build
         env:
           SITE: https://shivaniranganathan.github.io
           BASE: /portfolio/
+
+      - name: Install and build preview
+        working-directory: preview
+        run: npm ci && npm run build
+        env:
+          SITE: https://shivaniranganathan.github.io
+          BASE: /portfolio/preview/
+          PREVIEW: '1'
+
+      - name: Combine
+        run: |
+          test ! -e live/dist/preview
+          mkdir -p live/dist/preview
+          cp -a preview/dist/. live/dist/preview/
+          rm -f live/dist/preview/sitemap-index.xml live/dist/preview/sitemap-0.xml
+          if grep -R -n -I '/portfolio/preview/' live/dist --exclude-dir=preview; then
+            echo 'Live build links to the preview' >&2
+            exit 1
+          fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: live/dist
+
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
