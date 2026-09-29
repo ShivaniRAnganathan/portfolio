@@ -1,6 +1,6 @@
 ---
 title: Showing tax and exit load before a redemption
-headline: "Premature exits fell 18% once the tax showed before the click"
+headline: "Long-term retention value rose 12% once the tax showed before the click"
 company: FundsIndia
 role: Product Manager, owner of the redemption journey on the FundsIndia app and web
 team:
@@ -11,14 +11,12 @@ timeline:
 featured: true
 order: 1
 outcome:
-  primary: "Loan exploration at redemption rose from about 6% to 9.5%. Premature exits fell 18%, and long-term retention value rose 12%."
+  primary: "I redesigned the redemption journey so clients saw the tax, the exit load and a loan option before they confirmed. Retention value rose 12%, and loan exploration at redemption went from about 6% to 9.5%."
   approved: true
-dek: Investors see the tax and the exit load before the money leaves, and can borrow against the fund instead of selling it.
+dek: I redesigned the redemption journey so clients saw the tax, the exit load and a loan option before they confirmed. Retention value rose 12%, and loan exploration at redemption went from about 6% to 9.5%.
 stats:
   - value: "9.5%"
     label: "Loan exploration, from about 6%"
-  - value: "18%"
-    label: "Fewer premature exits"
   - value: "12%"
     label: "Higher long-term retention value"
 scale:
@@ -55,9 +53,7 @@ sections:
     items:
       - primary: "Loan exploration at redemption rose from about 6% to 9.5%, driven by the loan nudges in the redemption flow."
         approved: true
-      - primary: "Premature exits fell 18%."
-        approved: true
-      - primary: "Long-term retention value rose 12%."
+      - primary: "12% higher long-term retention value."
         approved: true
       - primary: "Completion fell by design. Fewer investors went through with a redemption once they saw the true cost, while their early intent stayed the same. Of those who stopped after seeing the charges, many went on to look at the loan option or at other schemes rather than leaving the app."
       - primary: "What didn't work. More users explored the loan, but direct loan take-up at the redemption step didn't grow with it. The loan screen was acting more as a friction point than a conversion driver. It created a pause before redeeming, but it didn't turn undecided users into borrowers."
