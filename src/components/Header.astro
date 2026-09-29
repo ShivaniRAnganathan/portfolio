@@ -14,14 +14,13 @@ function current(href: string) {
   return here === full || here.startsWith(`${full}/`);
 }
 
-const preview = process.env.PREVIEW === '1';
 const links = [
   { href: '/work', label: 'work' },
   { href: '/#notes', label: 'notes' },
   { href: '/writing', label: 'writing' },
   { href: '/ai', label: 'ai desk' },
   { href: '/life', label: 'life' },
-  ...(preview ? [] : [{ href: site.resumePath, label: 'resume' }]),
+  { href: site.resumePath, label: 'resume' },
   { href: site.linkedin, label: 'linkedin', external: true },
   { href: `mailto:${site.email}`, label: 'email' },
 ];
