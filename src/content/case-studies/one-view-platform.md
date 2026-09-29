@@ -6,7 +6,7 @@ role: Product owner and vendor lead
 team:
   - primary: "4 people."
     approved: true
-  - primary: "Working with the Wealth Spectrum vendor, FundsIndia engineering, Operations, and relationship managers."
+  - primary: "Working with the one-view platform vendor, FundsIndia engineering, Operations, and relationship managers."
     fallback: "Working with a third-party wealth platform, FundsIndia engineering, Operations, and relationship managers."
 timeline:
   primary: "Live for all Private Wealth clients on 21 May 2025. A card in the app around January 2026. The web dashboard for all Private Wealth users on 30 June 2026."
@@ -47,19 +47,19 @@ sections:
         pending: true
   - heading: Options and tradeoffs
     items:
-      - primary: "Build consolidation in-house, or use a vendor platform. We used Wealth Spectrum for consolidation, with FundsIndia's client and relationship-manager surfaces on top. That was faster to cover every product type, at the cost of depending on a vendor."
+      - primary: "Build consolidation in-house, or use a vendor platform. We used the one-view platform for consolidation, with FundsIndia's client and relationship-manager surfaces on top. That was faster to cover every product type, at the cost of depending on a vendor."
         fallback: "Build consolidation in-house, or use a vendor platform. We used a third-party wealth platform for consolidation, with FundsIndia's client and relationship-manager surfaces on top. That was faster to cover every product type, at the cost of depending on a vendor."
       - primary: "Launch fast, or validate first. I held go-live until a cross-product data check came back clean."
-      - primary: "Everything at once, or staged. Staged: Wealth Spectrum for all Private Wealth clients, then the app card, then the web dashboard."
+      - primary: "Everything at once, or staged. Staged: the one-view platform for all Private Wealth clients, then the app card, then the web dashboard."
         fallback: "Everything at once, or staged. Staged: the wealth platform for all Private Wealth clients, then the app card, then the web dashboard."
       - primary: "Wait for clients to log in, or bring the portfolio to them. Both. The app card for clients who open the app, and a weekly portfolio mailer for those who don't."
   - heading: What I did
     items:
       - primary: "I ran a data consistency check across 15–20 client portfolios spanning PMS, AIF, mutual funds and equities before launch."
-      - primary: "There were no mismatches between the FundsIndia portal and Wealth Spectrum."
+      - primary: "There were no mismatches between the FundsIndia portal and the one-view platform."
         fallback: "There were no mismatches between the FundsIndia portal and the wealth platform."
       - primary: "I announced go-live to all Private Wealth clients and planned a walkthrough for relationship managers."
-      - primary: "I approved the Wealth Spectrum client dashboard for all Private Wealth clients."
+      - primary: "I approved the one-view platform's client dashboard for all Private Wealth clients."
         fallback: "I approved the client dashboard, on top of the third-party wealth platform, for all Private Wealth clients."
       - primary: "It was approved on 22 June 2026. Engineering enabled it on the web on 30 June 2026."
       - primary: "I tracked adoption after the app card launch."
