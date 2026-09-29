@@ -14,6 +14,10 @@ scale:
   fallback: In May 2025 Ketto reported its contributor and fundraiser totals. That is company scale, not a result of this project.
   pending: true
 sections:
+  - heading: Scope
+    paragraphs:
+      - primary: "Users: donors on Ketto. What I owned: I led the mobile app launch from 0 to 1, and wrote the recurring donations requirement as a checklist PRD. Together, the app and recurring donations launches drove 37% GMV growth."
+        approved: true
   - heading: Context
     paragraphs:
       - primary: Ketto is an Indian crowdfunding platform founded in 2012 by Varun Sheth, Zaheer Adenwala and Kunal Kapoor.

@@ -22,6 +22,8 @@ const approvedFigures = [
   /18%/g,
   /12%/g,
   /47%/g,
+  /15%/g,
+  /Team: 4\b/g,
   /45%/g,
   /60%/g,
   /more than 40/gi,

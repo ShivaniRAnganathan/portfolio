@@ -27,6 +27,10 @@ stats:
 scale:
   primary: "[Copy pending]"
 sections:
+  - heading: Scope
+    paragraphs:
+      - primary: "Users: donors on Ketto, a crowdfunding platform for healthcare causes. What I owned: the research, the requirement and the tracking dashboards for a multi-cause checkout, working with design and engineering."
+        approved: true
   - heading: Context
     paragraphs:
       - primary: Ketto is a crowdfunding platform focused on healthcare causes. My brief was to grow gross merchandise value.

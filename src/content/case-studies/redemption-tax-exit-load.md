@@ -24,6 +24,10 @@ stats:
 scale:
   primary: "Every FundsIndia investor who starts a mutual fund redemption, on web, Android and iOS."
 sections:
+  - heading: Scope
+    paragraphs:
+      - primary: "Users: every FundsIndia investor who starts a mutual fund redemption, on web, Android and iOS. Team: 4, working with design, engineering and QA. What I owned: the redemption journey, from the churn model and the tax and exit load breakdown to the in-flow loan option, UAT sign-off and the impact analysis. UX and experimentation on this journey lifted feature adoption by 15%."
+        approved: true
   - heading: Problem
     paragraphs:
       - primary: "Investors who clicked Redeem only saw the capital gains tax and exit load after the money had left. Some of those redemptions were premature. The investor would have paid less by waiting, or could have borrowed against the fund instead of selling it."

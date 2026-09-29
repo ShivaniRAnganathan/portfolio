@@ -163,6 +163,14 @@ a:hover {
   line-height: 1.5;
 }
 
+.bio-location {
+  margin-top: 0.65rem;
+  max-width: var(--prose);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
 .clock {
   margin-top: 1rem;
   max-width: var(--prose);

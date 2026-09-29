@@ -39,7 +39,7 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/shivaniranganathan0/',
   resumePath: '/resume.pdf',
   location:
-    'Chennai, India. Authorized to work in India. Open to remote roles and to relocation.',
+    "I'm based in Chennai and open to roles in Bangalore, on-site or hybrid, and to remote roles in India.",
   /** Front-page headline. Swap this line without touching the layout. */
   hook: "Hi, I'm Shiv. I break problems down to first principles, then build the AI system that solves them.",
   /**
@@ -58,7 +58,7 @@ export const site = {
   positioning:
     'A fintech and consumer-growth product manager who turns retention and monetization problems into shipped products.',
   intro:
-    "I'm Shivani, a product manager in Private Wealth at FundsIndia in Chennai, with 4+ years in fintech and high-scale consumer products across FundsIndia, Ketto, HSBC and ElasticRun. I start with the people closest to the problem, turn what they tell me into a roadmap they can check, and ship. I'm looking for a remote product manager role where I own a product from the first user conversation to the numbers after launch.",
+    "I'm Shivani, a product manager in Private Wealth at FundsIndia in Chennai, with 4+ years in fintech and high-scale consumer products across FundsIndia, Ketto, HSBC and ElasticRun. I start with the people closest to the problem, turn what they tell me into a roadmap they can check, and ship. I'm looking for a product manager role where I own a product from the first user conversation to the numbers after launch.",
   heroMetrics: [
     { value: '37%', label: 'GMV growth', pending: true, resumeOnly: true },
     { value: '−18%', label: 'Premature exits' },

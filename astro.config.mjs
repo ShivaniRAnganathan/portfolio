@@ -9,7 +9,7 @@ const base = process.env.BASE || '/';
 export default defineConfig({
   site,
   base,
-  integrations: [sitemap()],
+  integrations: process.env.PREVIEW === '1' ? [] : [sitemap()],
   output: 'static',
   trailingSlash: 'ignore',
   build: {

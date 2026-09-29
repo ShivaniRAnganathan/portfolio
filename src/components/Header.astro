@@ -38,6 +38,7 @@ const links = [
     </div>
   </div>
   {home && <p class="bio">{site.greeting}</p>}
+  {home && <p class="bio-location">{site.location}</p>}
   {home && (
     <aside class="clock" aria-label="Off the clock">
       <p class="clock-label"><a href={url('/life')}>off the clock</a></p>

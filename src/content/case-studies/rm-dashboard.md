@@ -26,6 +26,10 @@ scale:
   primary: "600 relationship managers."
   approved: true
 sections:
+  - heading: Scope
+    paragraphs:
+      - primary: "Users: 600 relationship managers in Private Wealth. Team: 4, working with design, engineering, QA and the MIS and Equity Research data teams. What I owned: the RM dashboard work: the reports page, client alerts, onboarding status and the Sales Enablement Toolkit beta."
+        approved: true
   - heading: Problem
     items:
       - primary: "600 relationship managers depended on Operations for valuation reports and statements."

@@ -36,6 +36,10 @@ scale:
   fallback: "All Private Wealth clients. Daily users were a small group before the app card, then climbed to a much larger peak. Those levels are read from a chart."
   pending: true
 sections:
+  - heading: Scope
+    paragraphs:
+      - primary: "Users: all Private Wealth clients and their relationship managers. Team: 4, working with engineering and Operations. What I owned: the rollout of a one-view platform for clients and RMs, as product owner, from the pre-launch data check and staged launch to the weekly portfolio mailer redesign."
+        approved: true
   - heading: Problem
     paragraphs:
       - primary: "Private Wealth clients hold PMS, AIF, mutual funds, equities and more. Clients and their relationship managers had to piece the picture together product by product, and asked Operations for reports."
