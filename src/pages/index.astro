@@ -1,7 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import FeedNote from '../components/FeedNote.astro';
+import CrewPerson from '../components/CrewPerson.astro';
 import { site } from '../data/site';
+import '../styles/crew.css';
 import { hasUnapprovedFigure, visibleCopy } from '../lib/copy';
 import { cleanContent } from '../lib/content';
 import { url } from '../lib/url';
@@ -179,6 +181,9 @@ items.sort((a, b) => (a.sort < b.sort ? 1 : a.sort > b.sort ? -1 : 0));
   <div class="page">
     {builder && aiPremise && (
       <section class="ai-feature" aria-labelledby="ai-feature-heading">
+        <div class="crew-slot crew-slot-shiv">
+          <CrewPerson who="shiv" />
+        </div>
         <p class="note-meta">
           <span class="pill pill-ai"><span class="glyph" aria-hidden="true">✶</span>ai</span>
         </p>
@@ -188,7 +193,23 @@ items.sort((a, b) => (a.sort < b.sort ? 1 : a.sort > b.sort ? -1 : 0));
         <p class="more"><a href={url('/ai')}>read more</a></p>
       </section>
     )}
+    <div class="workshop" id="workshop">
+      <p class="workshop-kicker">a workshop note</p>
+      <div class="workshop-row">
+        <p class="workshop-line">
+          call it
+          <span class="workshop-box">
+            <span class="workshop-word workshop-word-broken">perfect</span>
+            <span class="workshop-word workshop-word-fixed" hidden>shipped</span>
+          </span>
+        </p>
+        <CrewPerson who="designer" />
+      </div>
+    </div>
     <section class="selected" aria-labelledby="selected-heading">
+      <div class="crew-slot crew-slot-builder">
+        <CrewPerson who="builder" />
+      </div>
       <h2 id="selected-heading">Selected work</h2>
       <ul>
         {featured.map((entry) => (
@@ -200,6 +221,9 @@ items.sort((a, b) => (a.sort < b.sort ? 1 : a.sort > b.sort ? -1 : 0));
     </section>
 
     <section class="notes" id="notes" aria-label="Notes">
+      <div class="crew-slot crew-slot-intern">
+        <CrewPerson who="intern" />
+      </div>
       {items.map((item) => (
         <FeedNote
           kind={item.kind}
@@ -216,4 +240,5 @@ items.sort((a, b) => (a.sort < b.sort ? 1 : a.sort > b.sort ? -1 : 0));
       ))}
     </section>
   </div>
+  <script is:inline src={url('/crew.js')} defer></script>
 </Base>
