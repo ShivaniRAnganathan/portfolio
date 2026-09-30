@@ -699,6 +699,82 @@ h1 {
   margin-top: 0.3rem;
 }
 
+.desk-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desk-card {
+  min-width: 0;
+  padding: 0 0 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.desk-mark {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0.85rem 0 0.75rem;
+  background: #fffaf4;
+  border: 1px solid var(--ink);
+}
+
+.desk-grid h2 {
+  margin-top: 0.6rem;
+  max-width: none;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.desk-status {
+  margin-top: 0.45rem;
+}
+
+.desk-desc {
+  margin-top: 0.45rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.12rem 0.48rem 0.14rem;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.status-progress {
+  background: #ffd7c2;
+  color: #9a3412;
+}
+
+.status-planned {
+  background: var(--line);
+  color: var(--muted);
+}
+
+.desk-grid + .dispatch-list {
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .desk-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 1.5rem;
+  }
+}
+
 .dispatch-fields {
   margin-top: 0.75rem;
 }

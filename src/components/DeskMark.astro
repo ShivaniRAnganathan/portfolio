@@ -1,0 +1,44 @@
+---
+interface Props {
+  letter: string;
+  motif: 'grid' | 'dots' | 'bars';
+}
+
+const { letter, motif } = Astro.props;
+
+const glyphs: Record<string, string[]> = {
+  H: ['#...#', '#...#', '#...#', '#####', '#...#', '#...#', '#...#'],
+  C: ['.###.', '#...#', '#....', '#....', '#....', '#...#', '.###.'],
+};
+
+const rows = glyphs[letter] ?? glyphs.H;
+const width = 96;
+const height = 64;
+const cell = 6;
+const originX = Math.round((width - rows[0].length * cell) / 2);
+const originY = Math.round((height - rows.length * cell) / 2);
+
+const marks: { x: number; y: number }[] = [];
+for (let y = 2; y < height; y += 4) {
+  for (let x = 2; x < width; x += 4) {
+    const edge = x < 14 || y < 10 || x > width - 16 || y > height - 12;
+    if (!edge) continue;
+    const on =
+      motif === 'dots' ? (x + y) % 8 === 2 : motif === 'bars' ? y % 8 === 2 : (x / 4 + y / 4) % 2 === 0;
+    if (on) marks.push({ x, y });
+  }
+}
+---
+<svg class="desk-mark" viewBox={`0 0 ${width} ${height}`} shape-rendering="crispEdges" aria-hidden="true">
+  <rect width={width} height={height} fill="#fffaf4" />
+  {marks.map((mark) => (
+    <rect x={mark.x} y={mark.y} width="2" height="2" fill="#1c1917" />
+  ))}
+  {rows.map((row, y) =>
+    [...row].map((bit, x) =>
+      bit === '#' ? (
+        <rect x={originX + x * cell} y={originY + y * cell} width={cell} height={cell} fill="#1c1917" />
+      ) : null,
+    ),
+  )}
+</svg>

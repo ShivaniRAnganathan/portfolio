@@ -1,9 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
+import DeskMark from '../components/DeskMark.astro';
+import StatusPill from '../components/StatusPill.astro';
 import Text from '../components/Text.astro';
 import { cleanContent } from '../lib/content';
 import { hasUnapprovedFigure } from '../lib/copy';
 import { getCollection } from 'astro:content';
+
+type DeskStatus = 'Planned' | 'In progress';
+type DeskCard = {
+  title: string;
+  status: DeskStatus;
+  letter: string;
+  motif: 'grid' | 'dots' | 'bars';
+  description?: string;
+};
 
 type Note = { text: string; pending?: boolean };
 
@@ -23,7 +34,11 @@ const dispatches = (await getCollection('ai'))
   .filter((entry) => entry.id !== 'how-i-build' && entry.id !== 'automating-recurring-tasks')
   .sort((a, b) => a.data.order - b.data.order);
 
-const tiles = ['Hingemonium', 'Coffee table book', 'Carnatic music identifier'];
+const tiles: DeskCard[] = [
+  { title: 'Hingemonium', status: 'In progress', letter: 'H', motif: 'grid' },
+  { title: 'Coffee table book', status: 'In progress', letter: 'C', motif: 'bars' },
+  { title: 'Carnatic music identifier', status: 'In progress', letter: 'C', motif: 'dots' },
+];
 
 const fields = [
   ['problem', 'Problem'],
@@ -38,13 +53,17 @@ const fields = [
   <div class="page">
     <p class="kicker">AI Desk</p>
     <h1 class="page-title">Dispatches</h1>
-    <ol class="dispatch-list">
-      {tiles.map((title) => (
-        <li>
-          <h2>{title}</h2>
-          <p class="filed">In progress.</p>
+    <ul class="desk-grid">
+      {tiles.map((card) => (
+        <li class="desk-card">
+          <DeskMark letter={card.letter} motif={card.motif} />
+          <h2>{card.title}</h2>
+          <p class="desk-status"><StatusPill status={card.status} /></p>
+          {card.description ? <p class="desk-desc">{card.description}</p> : null}
         </li>
       ))}
+    </ul>
+    <ol class="dispatch-list">
       {dispatches.map((entry) => {
         const data = entry.data;
         const filled = fields.some(([key]) => notes(data[key]).length > 0);
