@@ -1,143 +1,209 @@
 ---
 import Base from '../layouts/Base.astro';
-import StatStrip from '../components/StatStrip.astro';
-import Text from '../components/Text.astro';
-import { site, SHOW_PENDING_BADGES, USE_CONFIDENTIAL_FALLBACKS } from '../data/site';
-import { countsAsPendingFigure, visibleCopy } from '../lib/copy';
+import FeedNote from '../components/FeedNote.astro';
+import CrewPerson from '../components/CrewPerson.astro';
+import { site } from '../data/site';
+import '../styles/crew.css';
+import { visibleCopy } from '../lib/copy';
 import { url } from '../lib/url';
 import { getCollection } from 'astro:content';
 
-const studies = (await getCollection('caseStudies'))
-  .filter((entry) => entry.data.featured)
-  .sort((a, b) => a.data.order - b.data.order);
+type Para = { text: string; pending?: boolean };
+type Card = {
+  heading: string;
+  tools?: string;
+  paragraphs: Para[];
+  link?: { href: string; label: string; external?: boolean };
+};
+type Kind = 'work' | 'ai' | 'writing' | 'life';
+type NotebookDate = { day: string; year: string };
+type Item = {
+  sort: string;
+  kind: Kind;
+  date?: NotebookDate;
+  title: string;
+  paragraphs: Para[];
+  aside?: string;
+  href?: string;
+  external?: boolean;
+  id?: string;
+  cards: Card[];
+  more?: { href: string; label: string };
+};
 
-const [lead, ...secondary] = studies;
-const dispatches = (await getCollection('ai')).sort((a, b) => a.data.order - b.data.order);
+const months: Record<string, string> = {
+  jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
+  jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12',
+};
+const monthName = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+function writingDate(raw?: string) {
+  if (!raw) return null;
+  const match = raw.match(/^([A-Za-z]+)\s+(\d{1,2}),\s+(\d{4})$/);
+  if (!match) return null;
+  const mm = months[match[1].slice(0, 3).toLowerCase()];
+  if (!mm) return null;
+  const dd = match[2].padStart(2, '0');
+  return {
+    sort: `${match[3]}-${mm}-${dd}`,
+    date: { day: `${monthName[Number(mm) - 1]} ${Number(match[2])}`, year: match[3] },
+  };
+}
+
+/** Ship or launch dates taken from the case-study copy. No day is invented. */
+const caseWhen: Record<string, { sort: string; date: NotebookDate }> = {
+  'redemption-tax-exit-load': { sort: '2025-10-01', date: { day: 'oct', year: '2025' } },
+  'one-view-platform': { sort: '2025-05-21', date: { day: 'may 21', year: '2025' } },
+  'rm-dashboard': { sort: '2026-02-12', date: { day: 'feb 12', year: '2026' } },
+  'voice-of-the-rm': { sort: '2026-08-12', date: { day: 'aug 12', year: '2026' } },
+};
+
+/** One line already in the source. No new claims. */
+const asides: Record<string, string> = {
+  'redemption-tax-exit-load': "Most people leaving don't need to sell.",
+  'one-view-platform': 'For a wealth client, a wrong number costs more than a missing feature.',
+  'rm-dashboard': 'Time in the dashboard is only a proxy.',
+  'voice-of-the-rm': 'I started a monthly Private Wealth newsletter to close the loop.',
+  'ketto-bulk-donation': 'Every extra step between "I want to help" and "done" costs money.',
+  'ketto-recurring-donations': 'A donor can set a monthly amount once, instead of being asked again for every campaign.',
+  humidity: 'Now, I admire the people who stay kind when the weather is not.',
+  'fifteen-minutes': 'The stool still wobbled.',
+  'tongue-tied': 'I spoke less, but I meant more.',
+  'its-really-salty': 'Presence matters more than perfection.',
+  'the-snore': 'Because sound is slippery. It doesn’t stay.',
+  'finding-my-voice': 'I was an echo, not a voice.',
+  scenius: 'Move over, lone wolf product managers!',
+  'chapter-2': 'I pretended I didn’t know what crowdfunding was.',
+  'checklist-prds': 'The checklist PRD let us pivot much more quickly based on user feedback.',
+};
+
+function statParagraphs(stats: { value: string; label: string; note?: string; fallback?: string; pending?: boolean }[] | undefined): Para[] {
+  return (stats ?? []).flatMap((stat) => {
+    if (stat.pending) return [];
+    const note = stat.note ? ` ${stat.note}` : '';
+    const label = stat.label.charAt(0).toLowerCase() + stat.label.slice(1);
+    return [{ text: `${stat.value} ${label}.${note}` }];
+  });
+}
+
+const studies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+const featured = studies.filter((entry) => entry.data.featured);
 const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b.data.order);
 
-let pendingFigures = 0;
-const tally = (text: string, pending: boolean) => {
-  if (countsAsPendingFigure(text, pending)) pendingFigures += 1;
-};
+const items: Item[] = [];
+
 for (const entry of studies) {
-  for (const stat of entry.data.stats ?? []) {
-    const fallback = stat.fallback?.trim();
-    const usingFallback = USE_CONFIDENTIAL_FALLBACKS && Boolean(fallback);
-    tally(usingFallback ? fallback! : stat.value, !usingFallback && SHOW_PENDING_BADGES && Boolean(stat.pending));
-  }
+  const when = caseWhen[entry.id];
+  const stats = statParagraphs(entry.data.stats);
+  items.push({
+    sort: when?.sort ?? `0001-${String(100 - entry.data.order).padStart(2, '0')}`,
+    kind: 'work',
+    date: when?.date,
+    title: entry.data.headline,
+    aside: asides[entry.id],
+    paragraphs: [{ text: entry.data.dek }],
+    cards: [
+      {
+        heading: entry.data.title,
+        paragraphs: stats,
+        link: { href: url(`/work/${entry.id}`), label: 'Read the case study' },
+      },
+    ],
+  });
 }
+
 for (const entry of writing) {
+  const when = writingDate(entry.data.date);
   const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
-  if (metric) tally(metric.text, metric.pending);
+  const paragraphs: Para[] = [{ text: entry.data.summary }];
+  if (metric) paragraphs.push(metric);
+  items.push({
+    sort: when?.sort ?? `0002-${String(100 - entry.data.order).padStart(2, '0')}`,
+    kind: 'writing',
+    date: when?.date,
+    title: entry.data.title,
+    aside: asides[entry.id],
+    href: entry.data.href,
+    external: true,
+    paragraphs,
+    cards: [],
+  });
 }
+
+for (const slot of site.life) {
+  const started = slot.id === 'roll-and-wear';
+  items.push({
+    sort: started ? '2024-07-01' : `0003-${slot.id}`,
+    kind: 'life',
+    date: started ? { day: 'jul', year: '2024' } : undefined,
+    title: slot.title,
+    paragraphs: slot.paragraphs.map((text) => ({ text })),
+    href: url('/life'),
+    cards: [],
+  });
+}
+
+items.sort((a, b) => (a.sort < b.sort ? 1 : a.sort > b.sort ? -1 : 0));
 ---
 <Base description={site.hook}>
-  <div class="page front">
-    {pendingFigures >= 3 && (
-      <p class="editors-note">Editor's note. Dotted underlines mark figures not yet approved for publishing.</p>
-    )}
-    <h1 class="hook" id="hook">{site.hook}</h1>
-
-    <div class="front-board">
-      <div class="front-main">
-        {lead && (
-          <article class="lead-story">
-            <p class="kicker">Lead story · {lead.data.company}</p>
-            <h2><a href={url(`/work/${lead.id}`)}>{lead.data.headline}</a></h2>
-            <p class="deck">{lead.data.dek}</p>
-            <StatStrip stats={lead.data.stats} />
-          </article>
-        )}
-        <div class="secondary-stories">
-          {secondary.map((entry) => (
-            <article>
-              <p class="kicker">{entry.data.company}</p>
-              <h2><a href={url(`/work/${entry.id}`)}>{entry.data.headline}</a></h2>
-              <p class="deck">{entry.data.dek}</p>
-              <StatStrip stats={entry.data.stats} compact />
-            </article>
-          ))}
-        </div>
+  <div class="page">
+    <section class="ai-feature" aria-labelledby="ai-product-heading">
+      <p class="note-meta">
+        <span class="pill pill-ai"><span class="glyph" aria-hidden="true">✶</span>ai</span>
+      </p>
+      <h2 id="ai-product-heading">AI in my product work</h2>
+      <p><strong>A churn model for redemptions.</strong> At FundsIndia I owned the redemption journey. Retention outreach only started after someone asked to redeem. The better question was which customers were likely to churn, and when.</p>
+      <p>The model was my idea, and I owned it. I built it with LLMs and Python, iterating to a final version. It uses 98 parameters, mostly behavioural data from onboarding onward, including investment frequency, top-ups, redemptions, last login and SIP status. It is 83% accurate, which helps RMs a lot. Paired with behavioural nudges, the model cut premature exits by 18%.</p>
+      <p><strong>What it changed.</strong> Customers started seeing the loan against mutual funds option. They engaged with it more and understood it isn't a scam or a high-cost product. The flow showed who the loan suited, and told others clearly that it didn't. When a customer showed interest, their RM got an alert to start the conversation. It made our loan offering stronger.</p>
+      <p>Across the redemption work, long-term retention value rose 12% and loan exploration rose from about 6% to 9.5%.</p>
+      <p><strong>Prototyping with AI.</strong> I prototype ideas, designs and models with AI tools. It replaced much of the early design and tech effort, and helped leadership and our tech team see the nuances, so decisions were better informed.</p>
+    </section>
+    <div class="workshop" id="workshop">
+      <p class="workshop-kicker">a workshop note</p>
+      <div class="workshop-row">
+        <p class="workshop-line">
+          call it
+          <span class="workshop-box">
+            <span class="workshop-word workshop-word-broken">perfect</span>
+            <span class="workshop-word workshop-word-fixed" hidden>shipped</span>
+          </span>
+        </p>
+        <CrewPerson who="designer" />
       </div>
-
-      <aside class="front-rail">
-        <section class="rail-block" id="ai-desk" aria-labelledby="ai-heading">
-          <div class="section-head">
-            <h2 id="ai-heading" class="section-label">AI Desk</h2>
-            <a href={url('/ai')}>All dispatches</a>
-          </div>
-          <ul class="ai-teaser">
-            {dispatches.map((entry) => {
-              const data = entry.data;
-              const lines = [data.system, data.problem, data.outcome, data.stillDecide, data.principles].flatMap((value) =>
-                !value ? [] : Array.isArray(value) ? value : [value],
-              );
-              const teaser = lines[0];
-              return (
-                <li>
-                  <a href={url(`/ai#${entry.id}`)}>{data.title}</a>
-                  {teaser ? (
-                    <p><Text text={teaser.text} pending={Boolean(teaser.pending)} /></p>
-                  ) : (
-                    <p class="filed">Filed soon.</p>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-
-        <section class="rail-block" id="off-clock" aria-labelledby="life-heading">
-          <div class="section-head">
-            <h2 id="life-heading" class="section-label">Off the clock</h2>
-            <a href={url('/life')}>Life</a>
-          </div>
-          <ul class="teaser-slots">
-            {site.life.map((slot) => (
-              <li>
-                <span class="work-kicker">{slot.title}</span>
-                <p>{slot.paragraphs[0]}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </aside>
     </div>
-
-    <section class="block" id="writing" aria-labelledby="writing-heading">
-      <div class="section-head">
-        <h2 id="writing-heading" class="section-label">Writing</h2>
-        <a href={url('/writing')}>Archive</a>
+    <section class="selected" aria-labelledby="selected-heading">
+      <div class="crew-slot crew-slot-builder">
+        <CrewPerson who="builder" />
       </div>
-      <ul class="writing-list archive">
-        {writing.map((entry) => {
-          const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;
-          return (
-            <li>
-              <a href={entry.data.href} target="_blank" rel="noopener noreferrer">
-                {entry.data.title}
-                <span class="vh"> (opens in a new tab)</span>
-              </a>
-              <p class="writing-meta">{[entry.data.byline, entry.data.outlet, entry.data.date].filter(Boolean).join(' · ')}</p>
-              <p class="writing-summary">{entry.data.summary}</p>
-              {metric && (
-                <p class="writing-summary">
-                  <Text text={metric.text} pending={metric.pending} />
-                </p>
-              )}
-            </li>
-          );
-        })}
+      <h2 id="selected-heading">Selected work</h2>
+      <ul>
+        {featured.map((entry) => (
+          <li>
+            <a href={url(`/work/${entry.id}`)}>{entry.data.headline}</a>
+          </li>
+        ))}
       </ul>
     </section>
 
-    <section class="classifieds" aria-labelledby="contact-heading">
-      <h2 id="contact-heading" class="section-label">Classifieds / Contact</h2>
-      <ul class="contact-list">
-        <li><a href={url(site.resumePath)}>Resume</a></li>
-        <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span class="vh"> (opens in a new tab)</span></a></li>
-        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-      </ul>
+    <section class="notes" id="notes" aria-label="Notes">
+      <div class="crew-slot crew-slot-intern">
+        <CrewPerson who="intern" />
+      </div>
+      {items.map((item) => (
+        <FeedNote
+          kind={item.kind}
+          date={item.date}
+          title={item.title}
+          paragraphs={item.paragraphs}
+          aside={item.aside}
+          href={item.href}
+          external={item.external}
+          id={item.id}
+          cards={item.cards}
+          more={item.more}
+        />
+      ))}
     </section>
   </div>
+  <script is:inline src={url('/crew.js')} defer></script>
 </Base>

@@ -1,0 +1,107 @@
+---
+import Text from './Text.astro';
+
+interface Para {
+  text: string;
+  pending?: boolean;
+}
+
+interface Card {
+  heading: string;
+  tools?: string;
+  paragraphs: Para[];
+  link?: { href: string; label: string; external?: boolean };
+}
+
+type Kind = 'work' | 'ai' | 'writing' | 'life';
+
+interface Props {
+  kind: Kind;
+  date?: { day: string; year: string };
+  title: string;
+  paragraphs?: Para[];
+  aside?: string;
+  href?: string;
+  external?: boolean;
+  id?: string;
+  cards?: Card[];
+  more?: { href: string; label: string };
+}
+
+const kinds: Record<Kind, { glyph: string; label: string }> = {
+  work: { glyph: '◆', label: 'work' },
+  ai: { glyph: '✶', label: 'ai' },
+  writing: { glyph: '✎', label: 'writing' },
+  life: { glyph: '♡', label: 'life' },
+};
+
+const {
+  kind,
+  date,
+  title,
+  paragraphs = [],
+  aside,
+  href,
+  external = false,
+  id,
+  cards = [],
+  more,
+} = Astro.props;
+const meta = kinds[kind];
+---
+<article class:list={['note', `note-${kind}`]} id={id}>
+  {date && (
+    <p class="note-date">
+      <span class="date-day">{date.day}</span>
+      <span class="date-year">{date.year}</span>
+    </p>
+  )}
+  <div class="note-body">
+  <p class="note-meta">
+    <span class:list={['pill', `pill-${kind}`]}>
+      <span class="glyph" aria-hidden="true">{meta.glyph}</span>
+      {meta.label}
+    </span>
+  </p>
+  <h2>
+    {href ? (
+      <a href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+        {title}
+        {external && <span class="vh"> (opens in a new tab)</span>}
+      </a>
+    ) : (
+      title
+    )}
+  </h2>
+  {paragraphs.map((paragraph) => (
+    <p>
+      <Text text={paragraph.text} pending={paragraph.pending} />
+    </p>
+  ))}
+  {aside && <p class="aside">{aside}</p>}
+  {cards.map((card) => (
+    <section class="card">
+      <h3>{card.heading}</h3>
+      {card.tools && <p class="tools">{card.tools}</p>}
+      {card.paragraphs.map((paragraph) => (
+        <p>
+          <Text text={paragraph.text} pending={paragraph.pending} />
+        </p>
+      ))}
+      {card.link && (
+        <p class="more">
+          <a href={card.link.href} {...(card.link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+            {card.link.label}
+            {card.link.external && <span class="vh"> (opens in a new tab)</span>}
+          </a>
+        </p>
+      )}
+    </section>
+  ))}
+  {more && (
+    <p class="more">
+      <a href={more.href}>{more.label}</a>
+    </p>
+  )}
+  </div>
+</article>

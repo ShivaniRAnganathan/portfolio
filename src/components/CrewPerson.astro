@@ -1,0 +1,147 @@
+---
+type Who = 'builder' | 'intern' | 'designer' | 'shiv';
+
+interface Props {
+  who: Who;
+}
+
+const { who } = Astro.props;
+
+const crew = {
+  builder: {
+    name: 'builder',
+    role: 'ships the scaffolding',
+    lines: [
+      'stacks little blocks until a prototype stands.',
+      'likes a working version more than a polished one.',
+    ],
+    bubble: 'one more block.',
+  },
+  intern: {
+    name: 'intern',
+    role: 'takes the notes',
+    lines: [
+      'coffee, a clipboard, and a small hop.',
+      'asks why. usually the question everyone skipped.',
+    ],
+    bubble: 'why?',
+  },
+  designer: {
+    name: 'designer',
+    role: 'fixes the crooked pixel',
+    lines: [
+      'a soft blob with a pencil.',
+      'cannot leave a misaligned edge alone.',
+    ],
+    bubble: 'that pixel.',
+  },
+  shiv: {
+    name: 'shiv',
+    role: 'points at the problem',
+    lines: [
+      'pm of this tiny workshop.',
+      'board games, pole, pilates, a trek. start with the problem.',
+    ],
+    bubble: 'start there.',
+  },
+} as const;
+
+const person = crew[who];
+const label = `${person.name}, ${person.role}. ${person.lines.join(' ')}`;
+---
+
+<button
+  type="button"
+  class:list={['crew-person', `crew-${who}`]}
+  data-crew={who}
+  aria-expanded="false"
+  aria-label={label}
+>
+  <span class="crew-float">
+    <span class="crew-sprite">
+      {who === 'builder' && (
+        <svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+          <g fill="#111">
+            <rect x="0" y="12" width="4" height="2" />
+            <rect class="crew-block-top" x="0" y="9" width="3" height="2" />
+            <rect x="6" y="14" width="2" height="2" />
+            <rect x="10" y="14" width="2" height="2" />
+            <rect x="7" y="12" width="1" height="2" />
+            <rect x="10" y="12" width="1" height="2" />
+            <rect x="6" y="8" width="6" height="4" />
+            <rect x="7" y="4" width="4" height="4" />
+            <rect x="5" y="9" width="1" height="2" />
+            <rect x="4" y="6" width="1" height="3" />
+            <rect x="3" y="5" width="1" height="2" />
+          </g>
+          <rect class="crew-eye" fill="#fff" x="9" y="5" width="1" height="1" />
+          <rect fill="#c2410c" x="2" y="3" width="3" height="2" />
+        </svg>
+      )}
+      {who === 'intern' && (
+        <svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+          <g fill="#111">
+            <rect x="0" y="8" width="3" height="3" />
+            <rect x="3" y="9" width="1" height="1" />
+            <rect x="12" y="5" width="4" height="6" />
+            <rect fill="#fff" x="13" y="6" width="2" height="1" />
+            <rect fill="#fff" x="13" y="8" width="2" height="1" />
+            <rect x="6" y="13" width="2" height="2" />
+            <rect x="10" y="13" width="2" height="2" />
+            <rect x="7" y="11" width="1" height="2" />
+            <rect x="10" y="11" width="1" height="2" />
+            <rect x="6" y="7" width="5" height="4" />
+            <rect x="6" y="3" width="4" height="4" />
+            <rect x="5" y="8" width="1" height="2" />
+          </g>
+          <rect fill="#c2410c" x="0" y="8" width="3" height="1" />
+          <rect class="crew-eye" fill="#fff" x="8" y="4" width="1" height="1" />
+        </svg>
+      )}
+      {who === 'designer' && (
+        <svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+          <g fill="#111">
+            <rect x="4" y="2" width="6" height="2" />
+            <rect x="2" y="4" width="10" height="2" />
+            <rect x="1" y="6" width="12" height="4" />
+            <rect x="2" y="10" width="10" height="2" />
+            <rect x="5" y="12" width="4" height="1" />
+          </g>
+          <rect class="crew-eye" fill="#fff" x="4" y="7" width="2" height="2" />
+          <rect class="crew-eye" fill="#fff" x="8" y="7" width="2" height="2" />
+          <rect fill="#111" x="5" y="8" width="1" height="1" />
+          <rect fill="#111" x="9" y="8" width="1" height="1" />
+          <g class="crew-pencil">
+            <rect fill="#111" x="13" y="8" width="2" height="4" />
+            <rect fill="#c2410c" x="13" y="12" width="2" height="2" />
+          </g>
+        </svg>
+      )}
+      {who === 'shiv' && (
+        <svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+          <g fill="#111">
+            <rect x="2" y="13" width="2" height="2" />
+            <rect x="6" y="13" width="2" height="2" />
+            <rect x="3" y="11" width="1" height="2" />
+            <rect x="6" y="11" width="1" height="2" />
+            <rect x="2" y="7" width="6" height="4" />
+            <rect x="3" y="3" width="4" height="4" />
+            <rect x="8" y="8" width="2" height="1" />
+            <rect x="11" y="4" width="2" height="2" />
+            <rect x="10" y="6" width="4" height="2" />
+            <rect x="10" y="8" width="1" height="2" />
+            <rect x="13" y="8" width="1" height="2" />
+          </g>
+          <rect class="crew-eye" fill="#fff" x="5" y="4" width="1" height="1" />
+          <rect fill="#c2410c" x="11" y="5" width="1" height="1" />
+        </svg>
+      )}
+    </span>
+  </span>
+  <span class="crew-say" aria-hidden="true">{person.bubble}</span>
+  <span class="crew-card" aria-hidden="true">
+    <span class="crew-name">{person.name}</span>
+    <span class="crew-role">{person.role}</span>
+    {person.lines.map((line) => <span class="crew-line">{line}</span>)}
+  </span>
+</button>

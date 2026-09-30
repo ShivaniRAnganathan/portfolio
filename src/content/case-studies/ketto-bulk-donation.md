@@ -27,6 +27,10 @@ stats:
 scale:
   primary: "[Copy pending]"
 sections:
+  - heading: Scope
+    paragraphs:
+      - primary: "Users: donors on Ketto, a crowdfunding platform for healthcare causes. What I owned: the research, the requirement and the tracking dashboards for a multi-cause checkout, working with design and engineering."
+        approved: true
   - heading: Context
     paragraphs:
       - primary: Ketto is a crowdfunding platform focused on healthcare causes. My brief was to grow gross merchandise value.
@@ -50,20 +54,28 @@ sections:
       - primary: With design, I worked on the prompts and the cart flow. With engineering, I scoped processing several donations in one secure transaction.
       - primary: Personalized cause suggestions were based on past activity and interests.
       - primary: I wrote the requirement. The first PRD ran to 20 pages, which later led me to switch to checklist PRDs.
+        fallback: I wrote the requirement. The first PRD was long, which later led me to switch to checklist PRDs.
+        pending: true
       - primary: I set up dashboards for average donation size, causes per session and drop-off, and A/B tested before the full launch.
   - heading: Result
     paragraphs:
       - primary: These figures come from my own write-up. They have no stated baseline or timeframe. The write-up uses both "GMV" and "revenue" for the ₹50 crore figure. Sample size and the measurement window are not stated.
+        fallback: These figures come from my own write-up. They have no stated baseline or timeframe. The write-up uses both "GMV" and "revenue" for that amount. Sample size and the measurement window are not stated.
+        pending: true
     items:
       - primary: A/B test, 20% more causes supported per session.
+        fallback: An A/B test looked at how many causes were supported per session.
         pending: true
       - primary: Average donation size up 35%.
+        fallback: Average donation size rose.
         pending: true
       - primary: About ₹50 crore in additional revenue attributed to the feature.
+        fallback: Additional revenue was attributed to the feature.
         pending: true
   - heading: Related Ketto work
     items:
       - primary: Personalized donation slabs. One-size preset amounts were replaced with persona-based suggestions. The write-up reports donations up 47% and conversion up 30%, with no baseline, period or test design.
+        fallback: Personalized donation slabs. One-size preset amounts were replaced with persona-based suggestions. No baseline, period or test design is stated.
         pending: true
         href: https://app.notion.com/p/Personalizing-Donation-Slabs-to-Boost-Revenue-A-Product-Manager-s-Journey-at-Ketto-1034655b1f598003aa24e89c419b09d7
       - primary: Optional tipping at checkout, with suggested and custom amounts. An opt-out was added after feedback. No revenue figure is published.
@@ -71,5 +83,7 @@ sections:
   - heading: What I'd do next
     items:
       - primary: Measure repeat-donor rate and donor retention over 6–12 months, to check the cart raised lifetime giving and didn't only pull donations forward.
+        fallback: Measure repeat-donor rate and donor retention over the following months, to check the cart raised lifetime giving and didn't only pull donations forward.
+        pending: true
       - primary: Test cause bundles curated by theme against purely personalized suggestions.
 ---

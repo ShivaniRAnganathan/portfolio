@@ -3,8 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Copy from '../../components/Copy.astro';
 import StatStrip from '../../components/StatStrip.astro';
 import Text from '../../components/Text.astro';
-import { countsAsPendingFigure, visibleCopy, type ResolvedCopy } from '../../lib/copy';
-import { SHOW_PENDING_BADGES, USE_CONFIDENTIAL_FALLBACKS } from '../../data/site';
+import { visibleCopy, type ResolvedCopy } from '../../lib/copy';
 import { url } from '../../lib/url';
 import type { Copy as CopyText } from '../../data/site';
 import { getCollection } from 'astro:content';
@@ -43,52 +42,22 @@ const facts = [
   { label: 'Outcome', value: entry.data.outcome, wide: true },
 ].flatMap((fact) => {
   const parts = resolveFact(fact.value);
-  return parts.length > 0 ? [{ ...fact, parts }] : [];
+  if (parts.length === 0) return [];
+  const sameAsDek = fact.label === 'Outcome' && parts.map((part) => part.text).join(' ') === entry.data.dek;
+  return sameAsDek ? [] : [{ ...fact, parts }];
 });
 
-let pendingFigures = 0;
-const tally = (text: string, pending: boolean) => {
-  if (countsAsPendingFigure(text, pending)) pendingFigures += 1;
-};
-for (const fact of facts) {
-  for (const part of fact.parts) tally(part.text, part.pending);
-}
-for (const section of entry.data.sections) {
-  for (const paragraph of section.paragraphs ?? []) {
-    const visible = visibleCopy(paragraph);
-    if (visible) tally(visible.text, visible.pending);
-  }
-  for (const item of section.items ?? []) {
-    const visible = visibleCopy(item);
-    if (visible) tally(visible.text, visible.pending);
-  }
-}
-for (const stat of entry.data.stats ?? []) {
-  const fallback = stat.fallback?.trim();
-  const usingFallback = USE_CONFIDENTIAL_FALLBACKS && Boolean(fallback);
-  tally(usingFallback ? fallback! : stat.value, !usingFallback && SHOW_PENDING_BADGES && Boolean(stat.pending));
-}
-
 const description = `${entry.data.company}. ${entry.data.headline}`;
-let dropped = false;
-let passedOpening = false;
-
-function opensWithLetter(copy: CopyText) {
-  const visible = visibleCopy(copy);
-  return Boolean(visible && /^[A-Za-z]/.test(visible.text));
-}
 ---
 <Base title={entry.data.headline} description={description}>
   <article class="page">
     <p class="back"><a href={url('/work')}>Work</a></p>
-    {pendingFigures >= 3 && (
-      <p class="editors-note">Editor's note. Dotted underlines mark figures not yet approved for publishing.</p>
-    )}
     <header class="opening">
-      <p class="kicker">Case file · {entry.data.company}</p>
+      <p class="kicker">{entry.data.company}</p>
       <h1>{entry.data.headline}</h1>
       <p class="lede">{entry.data.dek}</p>
       <StatStrip stats={entry.data.stats} />
+      {facts.length > 0 && (
       <div class="summary">
         <p class="fact-kicker">The facts</p>
         <dl>
@@ -106,34 +75,25 @@ function opensWithLetter(copy: CopyText) {
           ))}
         </dl>
       </div>
+      )}
     </header>
 
     {entry.data.sections.map((section) => {
       const paragraphs = (section.paragraphs ?? []).filter((paragraph) => visibleCopy(paragraph));
       const items = (section.items ?? []).filter((item) => visibleCopy(item));
       if (paragraphs.length === 0 && items.length === 0) return null;
-      const inOpening = !passedOpening;
-      passedOpening = true;
       return (
         <section class="case-section">
           <h2>{section.heading}</h2>
           <div class="prose">
-            {paragraphs.map((paragraph) => {
-              const drop = inOpening && !dropped && opensWithLetter(paragraph);
-              if (drop) dropped = true;
-              return <Copy copy={paragraph} drop={drop} />;
-            })}
+            {paragraphs.map((paragraph) => <Copy copy={paragraph} />)}
             {items.length > 0 && (
               <ul>
-                {items.map((item) => {
-                  const drop = inOpening && !dropped && opensWithLetter(item);
-                  if (drop) dropped = true;
-                  return (
-                    <li>
-                      <Copy copy={item} drop={drop} />
-                    </li>
-                  );
-                })}
+                {items.map((item) => (
+                  <li>
+                    <Copy copy={item} />
+                  </li>
+                ))}
               </ul>
             )}
           </div>

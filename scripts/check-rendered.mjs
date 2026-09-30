@@ -22,6 +22,8 @@ const approvedFigures = [
   /18%/g,
   /12%/g,
   /47%/g,
+  /15%/g,
+  /Team: 4\b/g,
   /45%/g,
   /60%/g,
   /more than 40/gi,
@@ -62,7 +64,7 @@ const failures = [];
 
 const figureFiles = [
   'src/content/case-studies/redemption-tax-exit-load.md',
-  'src/content/case-studies/wealth-spectrum-one-view.md',
+  'src/content/case-studies/one-view-platform.md',
   'src/content/case-studies/rm-dashboard.md',
   'src/content/case-studies/voice-of-the-rm.md',
 ];

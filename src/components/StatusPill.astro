@@ -1,0 +1,8 @@
+---
+interface Props {
+  status: 'Planned' | 'In progress';
+}
+
+const { status } = Astro.props;
+---
+<span class:list={['status-pill', status === 'Planned' ? 'status-planned' : 'status-progress']}>{status}</span>

@@ -31,6 +31,10 @@ scale:
     fallback: "Feedback from relationship managers, with a subset picked for the quarter."
     pending: true
 sections:
+  - heading: Scope
+    paragraphs:
+      - primary: "Users: 600 relationship managers in Private Wealth. Team: 4, working with Product Ops, Marketing, design and engineering. What I owned: the Private Wealth roadmap, from RM focus-group follow-ups to a themed quarterly plan and a monthly product newsletter I started."
+        approved: true
   - heading: Problem
     paragraphs:
       - primary: "FundsIndia's platform grew up retail-first and mutual-fund-first. Private Wealth serves high-net-worth clients through a network of 600 relationship managers."
@@ -67,8 +71,6 @@ sections:
       - primary: "19 of 45 feedback items made the quarter. 6 shipped in July and 13 were queued for August and September."
         fallback: "A subset of the feedback made the quarter. Some of those items shipped, and the rest were queued for the following months."
         pending: true
-      - primary: "About 60% of recipients opened the first newsletter."
-        approved: true
       - primary: "It was delivered to 663 people, with 395 unique opens. Clicks were low: 7 unique clicks, about 1%."
         fallback: "It reached the relationship-manager list. Almost nobody clicked."
         pending: true
@@ -76,9 +78,6 @@ sections:
         approved: true
       - primary: "At the May review, the Advisor Productivity pillar was marked 85% complete. That is a delivery status, not a result of the newsletter."
         fallback: "At that review, most of the Advisor Productivity pillar was marked complete. That is a delivery status, not a result of the newsletter."
-        pending: true
-      - primary: "Targets, not results. The deck set onboarding from 14 days to 3, query resolution from 2 days to 1, and platform-adoption queries from 50 to 20 a month. I have no measured results against them yet."
-        fallback: "Targets, not results. The deck set targets for onboarding time, query resolution, and how often relationship managers needed help adopting the platform. I have no measured results against them yet."
         pending: true
   - heading: What I learned
     items:
