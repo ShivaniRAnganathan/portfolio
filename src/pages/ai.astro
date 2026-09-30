@@ -2,9 +2,6 @@
 import Base from '../layouts/Base.astro';
 import DeskMark from '../components/DeskMark.astro';
 import StatusPill from '../components/StatusPill.astro';
-import Text from '../components/Text.astro';
-import { cleanContent } from '../lib/content';
-import { hasUnapprovedFigure } from '../lib/copy';
 import { getCollection } from 'astro:content';
 
 type DeskStatus = 'Planned' | 'In progress';
@@ -16,38 +13,43 @@ type DeskCard = {
   description?: string;
 };
 
-type Note = { text: string; pending?: boolean };
-
-function notes(value?: Note | Note[]): Note[] {
-  if (!value) return [];
-  const list = Array.isArray(value) ? value : [value];
-  return list
-    .map((line) => {
-    const cleaned = cleanContent(line.text);
-    if ((line.pending || cleaned.pending) && hasUnapprovedFigure(cleaned.text)) return null;
-    return { text: cleaned.text, pending: false };
-  })
-  .filter((line): line is Note => line !== null && line.text.length > 0);
-}
-
 const dispatches = (await getCollection('ai'))
   .filter((entry) => entry.id !== 'how-i-build' && entry.id !== 'automating-recurring-tasks')
   .sort((a, b) => a.data.order - b.data.order);
 
 const tiles: DeskCard[] = [
-  { title: 'Hingemonium', status: 'In progress', letter: 'H', motif: 'grid' },
-  { title: 'Coffee table book', status: 'In progress', letter: 'C', motif: 'bars' },
-  { title: 'Carnatic music identifier', status: 'In progress', letter: 'C', motif: 'dots' },
+  {
+    title: 'Hingemonium',
+    status: 'In progress',
+    letter: 'H',
+    motif: 'grid',
+    description:
+      'A harmonium you play with your laptop. Opening and closing the lid pumps the bellows, and the keyboard plays the notes, so the hinge does the job the hand-pumped bellows do on the real instrument.',
+  },
+  {
+    title: 'Coffee table book',
+    status: 'In progress',
+    letter: 'C',
+    motif: 'bars',
+    description:
+      'Give it a folder of photos and it lays them out as a printable coffee table book. It groups the photos, picks page layouts, and exports a print-ready file.',
+  },
+  {
+    title: 'Carnatic music identifier',
+    status: 'In progress',
+    letter: 'C',
+    motif: 'dots',
+    description:
+      'Manodharma is the improvised part of a Carnatic performance, where the musician explores a raga freely instead of playing a fixed composition. This project listens to a recording of that improvisation and suggests which raga it is, from the notes being used and how the phrases move between them.',
+  },
 ];
 
-const fields = [
-  ['problem', 'Problem'],
-  ['principles', 'First principles'],
-  ['system', 'The system'],
-  ['stillDecide', 'What I still decide'],
-  ['outcome', 'Outcome'],
-  ['next', "What's next"],
-] as const;
+const noteLines: Record<string, string> = {
+  'organising-my-work': 'Assistants keep my existing work organised and optimised.',
+  'writing-tickets-and-specs': 'Assistants help me draft tickets and specs.',
+  'streamlining-workflows': 'Assistants help my workflows run more efficiently.',
+};
+
 ---
 <Base title="AI Desk" description="AI Desk.">
   <div class="page">
@@ -58,48 +60,18 @@ const fields = [
         <li class="desk-card">
           <DeskMark letter={card.letter} motif={card.motif} />
           <h2>{card.title}</h2>
-          <p class="desk-status"><StatusPill status={card.status} /></p>
           {card.description ? <p class="desk-desc">{card.description}</p> : null}
+          <p class="desk-status"><StatusPill status={card.status} /></p>
         </li>
       ))}
     </ul>
     <ol class="dispatch-list">
-      {dispatches.map((entry) => {
-        const data = entry.data;
-        const filled = fields.some(([key]) => notes(data[key]).length > 0);
-        return (
-          <li id={entry.id}>
-            <h2>{data.title}</h2>
-            {(data.date || data.autonomy) && (
-              <p class="writing-meta">
-                {[data.date, data.autonomy].filter(Boolean).join(' · ')}
-              </p>
-            )}
-            {filled ? (
-              <dl class="dispatch-fields">
-                {fields.map(([key, label]) => {
-                  const lines = notes(data[key]);
-                  if (lines.length === 0) return null;
-                  return (
-                    <div>
-                      <dt>{label}</dt>
-                      <dd>
-                        {lines.map((line) => (
-                          <p>
-                            <Text text={line.text} pending={line.pending} />
-                          </p>
-                        ))}
-                      </dd>
-                    </div>
-                  );
-                })}
-              </dl>
-            ) : (
-              <p class="filed">Filed soon.</p>
-            )}
-          </li>
-        );
-      })}
+      {dispatches.map((entry) => (
+        <li id={entry.id}>
+          <h2>{entry.data.title}</h2>
+          <p class="desk-note">{noteLines[entry.id]}</p>
+        </li>
+      ))}
     </ol>
   </div>
 </Base>

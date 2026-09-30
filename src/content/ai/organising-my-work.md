@@ -2,5 +2,5 @@
 title: Organising my work
 order: 2
 system:
-  - text: Assistants help me organise and optimise my existing work.
+  - text: Assistants keep my existing work organised and optimised.
 ---
