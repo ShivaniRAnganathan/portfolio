@@ -11,7 +11,6 @@ const writing = (await getCollection('writing')).sort((a, b) => a.data.order - b
   <div class="page">
     <p class="kicker">The archive</p>
     <h1 class="page-title">Writing</h1>
-    <p class="deck">Public links only. A dotted underline marks a result stated without a baseline or timeframe.</p>
     <ul class="writing-list archive">
       {writing.map((entry) => {
         const metric = entry.data.metric ? visibleCopy(entry.data.metric) : undefined;

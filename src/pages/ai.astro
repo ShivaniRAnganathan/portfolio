@@ -19,7 +19,11 @@ function notes(value?: Note | Note[]): Note[] {
   .filter((line): line is Note => line !== null && line.text.length > 0);
 }
 
-const dispatches = (await getCollection('ai')).sort((a, b) => a.data.order - b.data.order);
+const dispatches = (await getCollection('ai'))
+  .filter((entry) => entry.id !== 'how-i-build' && entry.id !== 'automating-recurring-tasks')
+  .sort((a, b) => a.data.order - b.data.order);
+
+const tiles = ['Hingemonium', 'Coffee table book', 'Carnatic music identifier'];
 
 const fields = [
   ['problem', 'Problem'],
@@ -30,12 +34,17 @@ const fields = [
   ['next', "What's next"],
 ] as const;
 ---
-<Base title="AI Desk" description="How I build with AI.">
+<Base title="AI Desk" description="AI Desk.">
   <div class="page">
     <p class="kicker">AI Desk</p>
     <h1 class="page-title">Dispatches</h1>
-    <p class="deck">Each dispatch has the problem, a first-principles breakdown, the system, what I still decide, and the outcome.</p>
     <ol class="dispatch-list">
+      {tiles.map((title) => (
+        <li>
+          <h2>{title}</h2>
+          <p class="filed">In progress.</p>
+        </li>
+      ))}
       {dispatches.map((entry) => {
         const data = entry.data;
         const filled = fields.some(([key]) => notes(data[key]).length > 0);

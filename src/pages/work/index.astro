@@ -15,7 +15,6 @@ const index = (n: number) => String(n + 1).padStart(2, '0');
     <section class="group" aria-labelledby="shipped-heading">
       <p class="kicker">Case files</p>
       <h1 id="shipped-heading" class="page-title">Shipped work</h1>
-      <p class="group-note">Case studies open with the outcome, then the reasoning. The last item is an internship write-up that lives on Notion.</p>
       <ol class="work-list">
         {studies.map((entry, i) => {
           return (
@@ -53,7 +52,6 @@ const index = (n: number) => String(n + 1).padStart(2, '0');
 
     <section class="group" aria-labelledby="proposal-heading">
       <h2 id="proposal-heading" class="section-label">Proposals and take-home assignments</h2>
-      <p class="group-note">These are not shipped work. The two FundsIndia roadmaps were take-home assignments. The BRSR tool is a proposal.</p>
       <ol class="work-list">
         {proposals.map((entry, i) => {
           const when = entry.data.when && !/\[[^\]]*pending\]/i.test(entry.data.when) ? entry.data.when : undefined;
