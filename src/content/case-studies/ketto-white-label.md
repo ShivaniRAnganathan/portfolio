@@ -11,7 +11,7 @@ featured: false
 order: 7
 outcome:
   primary: "[Copy pending]"
-dek: About 86 NGO partners needed a white-label solution.
+dek: About 86 NGO partners needed a white-label solution, and it lifted sales 300%.
 scale:
   primary: "About 86 NGO partners on Ketto."
   approved: true
