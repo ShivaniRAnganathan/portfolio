@@ -39,7 +39,7 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/shivaniranganathan0/',
   resumePath: '/resume.pdf',
   location:
-    "I'm based in Chennai and open to roles in Bangalore, on-site or hybrid, and to remote roles in India.",
+    'Based in Chennai (IST), open to remote PM roles, and on-site or hybrid in Bangalore.',
   /** Front-page headline. Swap this line without touching the layout. */
   hook: "Hi, I'm Shiv. I break problems down to first principles, then build the AI system that solves them.",
   /**
